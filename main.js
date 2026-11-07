@@ -44,6 +44,8 @@
     sec.innerHTML = `
       <div class="plate-head"><span class="num">FIG. ${p.roman}</span><span class="k"><span class="atlas-only">Obsidian plugin</span><span class="film-only">Scene ${p.roman}</span></span></div>
       <span class="file">ITH_PLATE_${p.roman}</span>
+      <span class="tab" aria-hidden="true">${p.roman}</span>
+      <svg class="dots" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${[0,1,2,3,4].map(k => `<circle cx="${8 + (k * 37) % 84}" cy="${12 + (k * 53) % 76}" r="${(k % 3) * .25 + .35}"/>`).join("")}</svg>
       <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="plate">
         <figure class="specimen" style="margin:0">
@@ -149,12 +151,22 @@
       ev.forEach(e => { const k = e.repo.name; if (!seen.has(k)) seen.set(k, { repo: k.split("/")[1], at: new Date(e.created_at), msg: (e.payload.commits || []).slice(-1)[0]?.message?.split("\n")[0] || "" }); });
       const rows = [...seen.values()].slice(0, 6);
       const rel = d => { const h = Math.round((Date.now() - d) / 36e5); return h < 1 ? "just now" : h < 24 ? `${h} h ago` : `${Math.round(h / 24)} d ago`; };
-      feed.innerHTML = rows.length ? rows.map(x => `<li><span class="t">${rel(x.at)}</span><span class="r"><a href="https://github.com/Rexxall/${x.repo}">${x.repo}</a><small>${x.msg.replace(/</g, "&lt;")}</small></span></li>`).join("")
+      const fmt = d => `${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+      feed.innerHTML = rows.length ? rows.map((x, i) => `<li>
+          <span class="t"><i>${fmt(x.at)}</i><small>${rel(x.at)}</small></span>
+          <span class="r"><a href="https://github.com/Rexxall/${x.repo}">${x.repo}</a><small>${x.msg.replace(/</g, "&lt;")}</small></span>
+          <span class="slate" aria-hidden="true"><b>SC. ${["II","III","IV","V","VI","VII","VIII","IX"][i] || "X"}</b><b>TAKE ${rows.length - i}</b><b>${fmt(x.at)}</b></span>
+        </li>`).join("")
         : `<li class="hand dim">a quiet week on GitHub</li>`;
     } catch (e) {
       feed.innerHTML = `<li class="hand dim">GitHub did not answer; the log is at <a href="https://github.com/Rexxall">github.com/Rexxall</a></li>`;
     }
   })();
+
+  // the plate carries today's number, the way the diary does
+  (() => { const d = new Date(), s = new Date(d.getFullYear(), 0, 0), day = Math.floor((d - s) / 864e5);
+    const w = Math.ceil(((d - new Date(d.getFullYear(), 0, 1)) / 864e5 + new Date(d.getFullYear(), 0, 1).getDay() + 1) / 7);
+    const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; })();
 
   /* ---------- credits roll ---------- */
   const roll = document.getElementById("roll"); const inner = document.createElement("div"); inner.className = "roll-inner";
