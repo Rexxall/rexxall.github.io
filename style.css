@@ -53,6 +53,13 @@ body::after {
 
 /* rail: plate index, one numeral per screen */
 .rail { position: fixed; left: max(14px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); z-index: 20; display: grid; gap: 10px; }
+.rail .rt { display: none; }
+:root[data-mode="film"] .rail { gap: 4px; padding: 8px 6px; background: #000; border-radius: 3px; border-left: 4px dotted #2a2a2e; border-right: 4px dotted #2a2a2e; }
+:root[data-mode="film"] .rail .rn { display: none; }
+:root[data-mode="film"] .rail .rt { display: block; width: 44px; height: 26px; object-fit: cover; background: #15131a; border-radius: 1px; opacity: .35; filter: saturate(.6); transition: opacity .3s, filter .3s; }
+:root[data-mode="film"] .rail .rt-blank { background: #0b0b0d; border: 1px solid #1c1c20; }
+:root[data-mode="film"] .rail a.on .rt { opacity: 1; filter: none; box-shadow: 0 0 0 1px var(--m-ink); }
+:root[data-mode="film"] .rail a.on::before { display: none; }
 .rail a { font: 700 11px/1 var(--f-display); letter-spacing: .06em; color: var(--m-mute); opacity: .55; padding: 2px 4px; position: relative; transition: opacity .3s, color .3s; }
 .rail a.on { opacity: 1; color: var(--c, var(--m-ink)); }
 .rail a.on::before { content: ""; position: absolute; left: -10px; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--c, var(--m-red)); transform: translateY(-50%); }
@@ -108,15 +115,19 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 .scene.on .notes .what:nth-child(1) { transition-delay: .7s } .scene.on .notes .what:nth-child(2) { transition-delay: 1s } .scene.on .notes .what:nth-child(3) { transition-delay: 1.3s }
 .what .n { font: 700 13px/1.6 var(--f-display); color: var(--c); }
 .what .hand { margin: 0; color: var(--m-ink); }
-.what .hand b { color: var(--c); font-weight: inherit; }
-:root[data-mode="atlas"] :is(.what .n, .what .hand b, .webgrid .num, .plate-head .num, .rail a.on) { color: color-mix(in srgb, var(--c, var(--m-ink)) 68%, #17160f); }
+.what .hand b { color: inherit; font-weight: inherit; position: relative; padding: 0 3px; }
+.what .hand b .circ { position: absolute; inset: -6px -8px; width: calc(100% + 16px); height: calc(100% + 12px); overflow: visible; pointer-events: none; }
+.what .hand b .circ path { fill: none; stroke: var(--m-red); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; vector-effect: non-scaling-stroke; }
+.scene.on .what .hand b .circ path { animation: draw .9s var(--ease) 1.9s forwards; }
+:root[data-mode="film"] .what .hand b .circ { display: none; }
+:root[data-mode="atlas"] :is(.what .n, .webgrid .num, .plate-head .num, .rail a.on) { color: color-mix(in srgb, var(--c, var(--m-ink)) 68%, #17160f); }
 :root[data-mode="film"] .what .hand { font: 500 11px/1.6 var(--f-label); letter-spacing: .26em; text-transform: uppercase; color: var(--m-body); }
 .leaders { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 2; overflow: visible; }
 .leaders path { fill: none; stroke: var(--m-ink); stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 1; }
 .leaders circle { fill: var(--m-bg); stroke: var(--m-ink); stroke-width: 1; opacity: 0; transition: opacity .3s .9s; }
 .leaders text { font: 700 10px var(--f-display); fill: var(--m-ink); opacity: 0; transition: opacity .3s 1s; }
 .scene.on .leaders text { opacity: 1; }
-.scene.playing .leaders, .scene.playing .frame { opacity: 0; transition: opacity .4s; }
+
 .scene.on .leaders path { animation: draw 1.1s var(--ease) .5s forwards; }
 .scene.on .leaders circle { opacity: 1; }
 :root[data-mode="film"] .leaders { display: none; }
@@ -206,9 +217,28 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
   .mode span { font-size: 10px; letter-spacing: .2em; }
 }
 
-/* play the reel inside the plate */
-.play { position: absolute; right: 12px; bottom: 12px; z-index: 3; border: 1px solid var(--m-line); background: color-mix(in srgb, var(--m-bg) 86%, transparent); backdrop-filter: blur(8px); color: var(--m-ink); border-radius: 999px; padding: 7px 12px; cursor: pointer; font: 500 10px/1 var(--f-label); letter-spacing: .25em; text-transform: uppercase; transition: transform .25s var(--ease); }
-.play:hover { transform: translateY(-1px); }
-.play .play-off, .play[aria-pressed="true"] .play-on { display: none; }
-.play[aria-pressed="true"] .play-off { display: inline; }
-:root[data-mode="film"] .play { display: none; }
+
+/* a sheet of acetate over the specimen catches the light once as the plate comes in */
+.specimen .gloss { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.55) 50%, transparent 60%); transform: translateX(-120%); }
+.scene.on .specimen .gloss { animation: gloss 1.6s var(--ease) .4s forwards; }
+@keyframes gloss { to { transform: translateX(120%); } }
+:root[data-mode="film"] .specimen .gloss { display: none; }
+/* the projector gate blinks when the reel moves to the next scene */
+.blink { position: fixed; inset: 0; z-index: 40; background: #000; opacity: 0; pointer-events: none; }
+:root[data-mode="film"] .blink.go { animation: blink .22s steps(2) 1; }
+@keyframes blink { 0% { opacity: 0 } 50% { opacity: .85 } 100% { opacity: 0 } }
+/* a spotlight follows the pointer through the dark house */
+.spot { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .6s; background: radial-gradient(360px 360px at var(--sx, 50%) var(--sy, 50%), rgba(239,230,214,.07), transparent 70%); }
+:root[data-mode="film"] .spot { opacity: 1; }
+/* the title misregisters for a frame now and then, like a print pulled too fast */
+:root[data-mode="film"] h1 { animation: misreg 9s steps(1) infinite; }
+@keyframes misreg { 0%, 96.5%, 100% { text-shadow: none } 97% { text-shadow: 3px 0 0 rgba(0,180,216,.9), -3px 0 0 rgba(255,45,122,.9) } 98% { text-shadow: -2px 0 0 rgba(0,180,216,.9), 2px 0 0 rgba(255,45,122,.9) } 98.6% { text-shadow: none } }
+@media (prefers-reduced-motion: reduce) { .specimen .gloss, .blink, :root[data-mode="film"] h1 { animation: none !important; } .spot { display: none; } }
+
+/* an old-book verse card: grey paper, printed Song, a line of italic English, the ink a little spread */
+.verse { width: min(560px, 86vw); margin: 0 auto 10px; padding: 26px 30px 22px; background: #d9d4ca; color: #2b2620; text-align: left; position: relative; transform: rotate(-.6deg); box-shadow: 0 14px 40px -20px rgba(0,0,0,.5); }
+.verse::before { content: ""; position: absolute; left: 24px; top: -9px; width: 56px; height: 16px; background: rgba(214,196,160,.6); transform: rotate(-4deg); }
+.verse .en { margin: 0 0 8px; font: italic 15px/1.4 var(--f-display); color: #6a6762; }
+.verse .zh { margin: 0; font: 700 22px/1.5 "Songti SC", "Hiragino Mincho ProN", "Noto Serif SC", serif; text-shadow: 0 0 .6px rgba(43,38,32,.6); }
+.verse .by { margin: 10px 0 0; font: 400 13px/1 var(--f-hand); color: #8a2a1e; }
+:root[data-mode="film"] .verse { background: #9aa6c2; color: #13235e; } :root[data-mode="film"] .verse .en { color: #2c3a6b; } :root[data-mode="film"] .verse .by { color: #1d2e6b; }

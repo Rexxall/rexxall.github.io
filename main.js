@@ -48,11 +48,11 @@
       <div class="plate">
         <figure class="specimen" style="margin:0">
           <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
-          <button class="play" type="button" aria-pressed="false"><span class="play-on">▶ play the reel</span><span class="play-off">■ back to the plate</span></button>
+          <span class="gloss" aria-hidden="true"></span>
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>
         <div class="notes">
-          ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n}</p></div>`).join("")}
+          ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n.replace(/<b>(.*?)<\/b>/, '<b><svg class="circ" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M8 22 C 6 8, 40 2, 60 4 C 86 6, 98 14, 94 24 C 90 36, 50 40, 26 36 C 10 33, 4 28, 8 22"/></svg>$1</b>')}</p></div>`).join("")}
         </div>
       </div>
       <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(j => `<path pathLength="1" d="M0 0"/><circle r="8"/><text text-anchor="middle">${j + 1}</text>`).join("")}</svg>
@@ -83,22 +83,16 @@
   addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
 
   // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
-  // atlas: a still specimen, the reel plays on request; film: the reel always runs
+  // the reel for the current mode: a still first, the GIF once it has loaded and the scene is on screen
   function loadShots() {
     const m = mode() === "film" ? "dark" : "light";
     document.querySelectorAll(".plate-scene").forEach(sec => {
       const img = sec.querySelector(".specimen img");
       const still = img.dataset.still.replace("{m}", m), gif = img.dataset.src.replace("{m}", m);
-      const wantGif = mode() === "film" || sec.classList.contains("playing");
-      img.src = still;
-      if (wantGif) { const pre = new Image(); pre.onload = () => { if ((mode() === "film" || sec.classList.contains("playing")) && img.dataset.still.replace("{m}", mode() === "film" ? "dark" : "light") === still) img.src = gif; }; pre.src = gif; }
+      img.src = still; img.dataset.gif = gif;
+      const pre = new Image(); pre.onload = () => { if (img.dataset.gif === gif) img.src = gif; }; pre.src = gif;
     });
   }
-  document.addEventListener("click", e => {
-    const b = e.target.closest(".play"); if (!b) return;
-    const sec = b.closest(".plate-scene"); const on = !sec.classList.contains("playing");
-    sec.classList.toggle("playing", on); b.setAttribute("aria-pressed", String(on)); loadShots();
-  });
   new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
   loadShots();
 
@@ -106,7 +100,9 @@
   const scenes = [...document.querySelectorAll(".scene")];
   const rail = document.getElementById("rail");
   scenes.forEach(s => {
-    const a = document.createElement("a"); a.href = "#" + s.id; a.textContent = s.dataset.roman; a.setAttribute("aria-label", s.id);
+    const a = document.createElement("a"); a.href = "#" + s.id; a.setAttribute("aria-label", s.id);
+    const img = s.querySelector(".specimen img");
+    a.innerHTML = `<span class="rn">${s.dataset.roman}</span>` + (img ? `<img class="rt" src="${img.dataset.still.replace("{m}", "dark")}" alt="">` : `<span class="rt rt-blank"></span>`);
     if (s.style.getPropertyValue("--c")) a.style.setProperty("--c", s.style.getPropertyValue("--c"));
     rail.appendChild(a);
   });
@@ -117,6 +113,19 @@
     if (en.isIntersecting) { en.target.classList.add("on"); active = i; railLinks.forEach((l, k) => l.classList.toggle("on", k === i)); history.replaceState(null, "", "#" + en.target.id); }
   }), { root: reel, threshold: .55 });
   scenes.forEach(s => io.observe(s));
+  // belt and braces: after any scroll settles, the scene under the viewport is on
+  function markActive() {
+    const i = Math.max(0, Math.min(scenes.length - 1, Math.round(reel.scrollTop / Math.max(1, reel.clientHeight))));
+    scenes[i].classList.add("on"); active = i; railLinks.forEach((l, k) => l.classList.toggle("on", k === i));
+  }
+  let settle; reel.addEventListener("scroll", () => { clearTimeout(settle); settle = setTimeout(markActive, 90); }, { passive: true });
+  setTimeout(markActive, 120); setTimeout(markActive, 600);
+  const blink = document.createElement("div"); blink.className = "blink"; document.body.appendChild(blink);
+  const spot = document.createElement("div"); spot.className = "spot"; document.body.appendChild(spot);
+  let lastActive = -1;
+  const blinkIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { const i = scenes.indexOf(en.target); if (lastActive >= 0 && i !== lastActive && !reduce) { blink.classList.remove("go"); void blink.offsetWidth; blink.classList.add("go"); } lastActive = i; } }), { root: reel, threshold: .55 });
+  scenes.forEach(s => blinkIO.observe(s));
+  addEventListener("pointermove", e => { spot.style.setProperty("--sx", e.clientX + "px"); spot.style.setProperty("--sy", e.clientY + "px"); }, { passive: true });
   // anchors scroll inside the reel
   document.addEventListener("click", e => {
     const a = e.target.closest('a[href^="#"]'); if (!a) return;
