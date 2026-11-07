@@ -11,17 +11,17 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Jost:wght@400;500&family=Caveat:wght@500&family=Pinyon+Script&display=swap">
 <link rel="stylesheet" href="style.css">
 <script>
-  // choose the mode before paint: saved choice, else the system theme
   try { var m = localStorage.getItem('mode'); if (!m) m = matchMedia('(prefers-color-scheme: dark)').matches ? 'film' : 'atlas'; document.documentElement.dataset.mode = m; } catch (e) {}
 </script>
 </head>
 <body>
 
 <header class="top">
-  <span class="fig">FIG. 01 · REXXALL</span>
-  <nav class="top-nav">
-    <a href="#plates">Plugins</a>
-    <a href="#web">Web</a>
+  <a class="fig" href="#i">FIG. 01 · REXXALL</a>
+  <nav class="top-nav" aria-label="Sections">
+    <a href="#ii">Plugins</a>
+    <a href="#x">Web</a>
+    <a href="#now">Now</a>
     <a href="https://github.com/Rexxall" rel="me">GitHub</a>
   </nav>
   <button class="mode" id="mode" type="button" aria-label="Switch between atlas and film">
@@ -29,66 +29,77 @@
   </button>
 </header>
 
-<section class="hero" id="hero">
-  <canvas id="pulse" aria-hidden="true"></canvas>
-  <div class="hero-text">
-    <p class="eyebrow"><span class="atlas-only">PLATE I · THE NOTE, DISSECTED</span><span class="film-only">A PLUGIN SHELF BY</span></p>
-    <h1>Rex</h1>
-    <span class="rule" aria-hidden="true"></span>
-    <p class="tag">Trained as a doctor. Now I build the tools my notes were missing.</p>
-    <p class="principles"><span>the tool proposes</span><span>you decide</span><span>undo always</span></p>
-  </div>
-  <ol class="bands" id="bands" aria-label="Plugins, one per band"></ol>
-  <span class="sign" aria-hidden="true">R.</span>
-</section>
+<nav class="rail" id="rail" aria-label="Plates"></nav>
 
-<section class="plates" id="plates">
-  <h2 class="section-h"><span class="atlas-only">FIG. II – IX · OBSIDIAN PLUGINS</span><span class="film-only">SCENES II – IX · OBSIDIAN PLUGINS</span></h2>
-  <ol class="grid" id="grid"></ol>
-  <p class="aside">AI features use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
-</section>
+<main class="reel" id="reel">
 
-<section class="web" id="web">
-  <h2 class="section-h"><span class="atlas-only">PLATE X – XII · WEB · RUNS IN THE BROWSER, KEEPS NOTHING</span><span class="film-only">SCENES X – XII · WEB</span></h2>
-  <ol class="webgrid">
-    <li style="--c:#30b0c7">
-      <span class="num">FIG. X</span>
-      <h3>Noesis Paper Reader</h3>
-      <p class="hand">read a paper in three passes and come out able to explain it</p>
-      <p class="links"><a class="btn" href="https://rexxall.github.io/noesis-paper-companion/">Open</a><a href="https://github.com/Rexxall/noesis-paper-companion">code</a></p>
-    </li>
-    <li style="--c:#ff9f0a">
-      <span class="num">FIG. XI</span>
-      <h3>Bunmyaku</h3>
-      <p class="hand">turn any Japanese material into a local study desk</p>
-      <p class="links"><a class="btn" href="https://rexxall.github.io/bunmyaku-nihongo/">Open</a><a href="https://github.com/Rexxall/bunmyaku-nihongo">code</a></p>
-    </li>
-    <li style="--c:#7a5af0">
-      <span class="num">FIG. XII</span>
-      <h3>Evidence Inbox</h3>
-      <p class="hand">save a public post into Obsidian with its text, images and source link</p>
-      <p class="links"><a class="btn" href="https://github.com/Rexxall/obsidian-evidence-inbox">Code</a></p>
-    </li>
-  </ol>
-</section>
+  <section class="scene hero" id="i" data-roman="I">
+    <canvas id="pulse" aria-hidden="true"></canvas>
+    <div class="hero-text">
+      <p class="eyebrow"><span class="atlas-only">PLATE I · THE NOTE, DISSECTED</span><span class="film-only">A PLUGIN SHELF BY</span></p>
+      <h1>Rex</h1>
+      <span class="rule" aria-hidden="true"></span>
+      <p class="tag">Trained as a doctor. Now I build the tools my notes were missing.</p>
+      <p class="principles"><span>the tool proposes</span><span>you decide</span><span>undo always</span></p>
+      <p class="hint" aria-hidden="true">scroll, or press ↓</p>
+    </div>
+    <ol class="bands" id="bands" aria-label="Plugins, one per band"></ol>
+    <span class="sign" aria-hidden="true">R.</span>
+  </section>
 
-<footer class="credits" id="credits">
-  <div class="roll" id="roll">
-    <p class="k">WRITTEN, BUILT AND TESTED BY</p>
-    <p class="big">Rex</p>
-    <p class="k">HOW I BUILD</p>
-    <p class="hand-l">start from a real chore</p>
-    <p class="hand-l">keep data local, in Markdown and Git</p>
-    <p class="hand-l">follow the host app's theme</p>
-    <p class="k red">THE TOOL PROPOSES · YOU DECIDE · UNDO ALWAYS</p>
-    <p class="k">LANGUAGES</p>
-    <p class="hand-l">Chinese · Uyghur · English · Japanese</p>
-    <p class="k">FIND ME</p>
-    <p class="hand-l"><a href="https://github.com/Rexxall">github.com/Rexxall</a></p>
-    <p class="k dim">— end of plate —</p>
-  </div>
-  <span class="sign" aria-hidden="true">R.</span>
-</footer>
+  <!-- scenes II–IX are built by main.js from the plugin list -->
+
+  <section class="scene web" id="x" data-roman="X">
+    <div class="plate-head"><span class="num">PLATE X – XII</span><span class="k"><span class="atlas-only">WEB · RUNS IN THE BROWSER, KEEPS NOTHING</span><span class="film-only">SCENES X – XII · WEB</span></span></div>
+    <ol class="webgrid">
+      <li style="--c:#30b0c7">
+        <span class="num">FIG. X</span>
+        <h2>Noesis Paper Reader</h2>
+        <p class="hand">read a paper in three passes and come out able to explain it</p>
+        <p class="links"><a class="btn" href="https://rexxall.github.io/noesis-paper-companion/">Open</a><a href="https://github.com/Rexxall/noesis-paper-companion">code</a></p>
+      </li>
+      <li style="--c:#ff9f0a">
+        <span class="num">FIG. XI</span>
+        <h2>Bunmyaku</h2>
+        <p class="hand">turn any Japanese material into a local study desk</p>
+        <p class="links"><a class="btn" href="https://rexxall.github.io/bunmyaku-nihongo/">Open</a><a href="https://github.com/Rexxall/bunmyaku-nihongo">code</a></p>
+      </li>
+      <li style="--c:#7a5af0">
+        <span class="num">FIG. XII</span>
+        <h2>Evidence Inbox</h2>
+        <p class="hand">save a public post into Obsidian with its text, images and source link</p>
+        <p class="links"><a class="btn" href="https://github.com/Rexxall/obsidian-evidence-inbox">Code</a></p>
+      </li>
+    </ol>
+    <span class="sign" aria-hidden="true">R.</span>
+  </section>
+
+  <section class="scene now" id="now" data-roman="XIII">
+    <div class="plate-head"><span class="num">PLATE XIII</span><span class="k"><span class="atlas-only">LAB NOTES · WHAT MOVED THIS WEEK</span><span class="film-only">DAILIES · WHAT MOVED THIS WEEK</span></span></div>
+    <ol class="feed" id="feed"><li class="hand dim">reading the commit log…</li></ol>
+    <p class="aside">Pulled live from GitHub when the page opens. AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
+    <span class="sign" aria-hidden="true">R.</span>
+  </section>
+
+  <section class="scene credits" id="credits" data-roman="∞">
+    <div class="roll" id="roll">
+      <p class="k">WRITTEN, BUILT AND TESTED BY</p>
+      <p class="big">Rex</p>
+      <p class="k">HOW I BUILD</p>
+      <p class="hand-l">start from a real chore</p>
+      <p class="hand-l">keep data local, in Markdown and Git</p>
+      <p class="hand-l">follow the host app's theme</p>
+      <p class="k red">THE TOOL PROPOSES · YOU DECIDE · UNDO ALWAYS</p>
+      <p class="k">LANGUAGES</p>
+      <p class="hand-l">Chinese · Uyghur · English · Japanese</p>
+      <p class="k">FIND ME</p>
+      <p class="hand-l"><a href="https://github.com/Rexxall">github.com/Rexxall</a></p>
+      <p class="k dim">— end of plate —</p>
+    </div>
+    <span class="sign" aria-hidden="true">R.</span>
+  </section>
+
+</main>
 
 <script src="main.js"></script>
 </body>

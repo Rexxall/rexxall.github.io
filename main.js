@@ -1,169 +1,195 @@
 /* Rex — rexxall.github.io. Vanilla, no build step. */
 (function () {
+  const RAW = "https://raw.githubusercontent.com/Rexxall/";
   const PLUGINS = [
-    { slug: "git-note-history", name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", what: "one sentence, not the file", c: "#7a5af0", roman: "II",
-      desc: "Every save is a Git commit. Search any sentence you ever wrote, see where it was deleted, and take back just that part, with nothing else touched.", dir: "git-note-history", repo: "obsidian-git-history-view" },
-    { slug: "ai-assistant-suite", name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", what: "proposed, never applied", c: "#0a84ff", roman: "III",
-      desc: "Title, tags, folder, summary and related notes, proposed by a model you choose. Nothing changes until you tick it.", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite" },
-    { slug: "polyglot-helper", name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", what: "kept for review", c: "#30b0c7", roman: "IV",
-      desc: "Select a word, get the reading and meaning in place, and keep it in a review list that lives in your vault.", dir: "polyglot-helper", repo: "obsidian-polyglot-helper" },
-    { slug: "video-summary", name: "Video Summary", line: "A video link in, a finished note out.", what: "a note, not a transcript", c: "#ff375f", roman: "V",
-      desc: "Paste a YouTube or Bilibili link. You get a structured note with key points and timestamps that jump back into the video.", dir: "video-summary", repo: "obsidian-video-summary" },
-    { slug: "japan-work-secretary", name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", what: "warned at 28 h", c: "#ff9f0a", roman: "VI",
-      desc: "Log shifts, see the week's hours against the 28-hour student limit, and get warned before you cross it.", dir: "japan-work-secretary", repo: "japan-work-secretary" },
-    { slug: "ai-accounting", name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", what: "checked before it lands", c: "#34c759", roman: "VII",
-      desc: "Photograph a receipt. The entry is read, totalled and shown for you to check before it lands in your ledger.", dir: "ai-accounting", repo: "obsidian-ai-accounting" },
-    { slug: "pass-countdown", name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", what: "the pace to finish", c: "#5e5ce6", roman: "VIII",
-      desc: "For gym passes, lesson tickets, anything with uses and an expiry: how many left, how long left, and the pace you need to finish.", dir: "pass-countdown", repo: "obsidian-pass-countdown" },
-    { slug: "tasknotes-countdown", name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", what: "will you make it", c: "#bf5af2", roman: "IX",
-      desc: "Reads your TaskNotes deadlines and shows each as a countdown with the pace you are on.", dir: "tasknotes-countdown", repo: "tasknotes-countdown" },
+    { slug: "git-note-history", name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", c: "#7a5af0", roman: "II", dir: "git-note-history", repo: "obsidian-git-history-view",
+      notes: ["every save is a <b>commit</b>", "search any sentence you ever wrote", "take back <b>one line</b>, not the file"] },
+    { slug: "ai-assistant-suite", name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", c: "#0a84ff", roman: "III", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite",
+      notes: ["title · tags · folder, <b>proposed</b>", "pick a model, or none", "nothing applied until <b>you tick</b>"] },
+    { slug: "polyglot-helper", name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#30b0c7", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper",
+      notes: ["select a word, reading <b>in place</b>", "Japanese and English, same gesture", "kept in a review list <b>in your vault</b>"] },
+    { slug: "video-summary", name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary",
+      notes: ["paste a YouTube or Bilibili link", "key points with <b>timestamps</b>", "a note, <b>not a transcript</b>"] },
+    { slug: "japan-work-secretary", name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#ff9f0a", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
+      notes: ["log a shift in one line", "the week against the <b>28-hour</b> limit", "warned <b>before</b> you cross it"] },
+    { slug: "ai-accounting", name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", c: "#34c759", roman: "VII", dir: "ai-accounting", repo: "obsidian-ai-accounting",
+      notes: ["photograph a receipt", "read and totalled", "<b>checked</b> before it lands"] },
+    { slug: "pass-countdown", name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#5e5ce6", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
+      notes: ["uses left", "time left", "the <b>pace</b> to finish"] },
+    { slug: "tasknotes-countdown", name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown",
+      notes: ["reads your TaskNotes deadlines", "a countdown for each", "<b>will you make it?</b>"] },
   ];
   const root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reel = document.getElementById("reel");
+  const mode = () => root.dataset.mode;
 
   /* ---------- mode ---------- */
   const modeBtn = document.getElementById("mode");
-  function setMode(m) {
-    root.dataset.mode = m;
-    try { localStorage.setItem("mode", m); } catch (e) {}
-    modeBtn.setAttribute("aria-pressed", String(m === "film"));
-  }
-  modeBtn.addEventListener("click", () => {
-    const next = root.dataset.mode === "film" ? "atlas" : "film";
-    // flip every plate while the colours change
-    if (!reduce) document.querySelectorAll(".card").forEach((c, i) => { c.classList.add("flip"); setTimeout(() => c.classList.remove("flip"), 700 + i * 40); });
-    setMode(next);
-  });
-  modeBtn.setAttribute("aria-pressed", String(root.dataset.mode === "film"));
+  function setMode(m) { root.dataset.mode = m; try { localStorage.setItem("mode", m); } catch (e) {} modeBtn.setAttribute("aria-pressed", String(m === "film")); }
+  modeBtn.addEventListener("click", () => setMode(mode() === "film" ? "atlas" : "film"));
+  modeBtn.setAttribute("aria-pressed", String(mode() === "film"));
 
-  /* ---------- plates ---------- */
-  const grid = document.getElementById("grid");
-  const rough = (x0, y0, x1, y1, seed) => {
-    let s = seed, r = () => ((s = (s * 9301 + 49297) % 233280) / 233280 - .5) * 1.2;
-    const pts = [];
-    const edge = (ax, ay, bx, by) => { for (let i = 0; i < 14; i++) { const t = i / 14; pts.push([ax + (bx - ax) * t + r(), ay + (by - ay) * t + r()]); } };
-    edge(x0, y0, x1, y0); edge(x1, y0, x1, y1); edge(x1, y1, x0, y1); edge(x0, y1, x0, y0);
+  /* ---------- plate scenes ---------- */
+  const rough = (w, h, seed) => {
+    let s = seed; const r = () => ((s = (s * 9301 + 49297) % 233280) / 233280 - .5) * 2.2;
+    const pts = [], edge = (ax, ay, bx, by) => { for (let i = 0; i < 16; i++) { const t = i / 16; pts.push([ax + (bx - ax) * t + r(), ay + (by - ay) * t + r()]); } };
+    edge(4, 4, w - 4, 4); edge(w - 4, 4, w - 4, h - 4); edge(w - 4, h - 4, 4, h - 4); edge(4, h - 4, 4, 4);
     return "M" + pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L") + " Z";
   };
+  const anchor = document.getElementById("x");
   PLUGINS.forEach((p, i) => {
-    const li = document.createElement("li");
-    li.className = "card"; li.id = p.slug; li.style.setProperty("--c", p.c);
-    li.innerHTML = `
-      <div class="card-in">
-        <div class="face front">
-          <div class="hd"><span class="num">FIG. ${p.roman}</span><span class="file">ITH_PLATE_${p.roman}</span></div>
-          <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="specimen"><img src="assets/${p.slug}-light.jpg" alt="${p.name} inside Obsidian" loading="lazy" decoding="async"></div>
-          <svg class="frame" viewBox="0 0 1128 715" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(4, 4, 1124, 711, i + 7)}"/></svg>
-          <svg class="leader" viewBox="0 0 900 560" preserveAspectRatio="none" aria-hidden="true">
-            <path pathLength="1" d="M${430 + (i % 3) * 20} ${150 + (i % 2) * 60} C 520 ${120 + (i % 2) * 60}, 560 ${150}, 620 150 H 648"/>
-            <circle cx="${430 + (i % 3) * 20}" cy="${150 + (i % 2) * 60}" r="3.2"/>
-          </svg>
-          <div class="what"><span class="k">What it does</span><p class="hand">${p.what}</p></div>
-          <div class="name"><h3>${p.name}</h3><p>${p.line}</p></div>
-          <span class="sign" aria-hidden="true">R.</span>
-          <button class="flipbtn" type="button" aria-label="Turn the plate over">↻</button>
+    const sec = document.createElement("section");
+    sec.className = "scene plate-scene"; sec.id = p.slug; sec.dataset.roman = p.roman; sec.style.setProperty("--c", p.c);
+    sec.innerHTML = `
+      <div class="plate-head"><span class="num">FIG. ${p.roman}</span><span class="k"><span class="atlas-only">Obsidian plugin</span><span class="film-only">Scene ${p.roman}</span></span></div>
+      <span class="file">ITH_PLATE_${p.roman}</span>
+      <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="plate">
+        <figure class="specimen" style="margin:0">
+          <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
+          <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
+        </figure>
+        <div class="notes">
+          ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n}</p></div>`).join("")}
         </div>
-        <div class="face back">
-          <div class="hd"><span class="num">FIG. ${p.roman}</span><span class="file">VERSO</span></div>
-          <h3>${p.name}</h3>
-          <p>${p.desc}</p>
-          <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
-          <button class="flipbtn" type="button" aria-label="Turn the plate back">↺</button>
-        </div>
-      </div>`;
-    grid.appendChild(li);
+      </div>
+      <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/><circle r="3.2"/>`).join("")}</svg>
+      <div class="name">
+        <div><h2>${p.name}</h2><p>${p.line}</p></div>
+        <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
+      </div>
+      <span class="sign" aria-hidden="true">R.</span>`;
+    anchor.before(sec);
   });
-  grid.addEventListener("click", (e) => {
-    const b = e.target.closest(".flipbtn"); if (!b) return;
-    b.closest(".card").classList.toggle("flip");
+
+  // leaders: from three points inside the specimen to the three notes, measured after layout
+  function layoutLeaders(sec) {
+    const svg = sec.querySelector(".leaders"), spec = sec.querySelector(".specimen"), notes = [...sec.querySelectorAll(".notes .what")];
+    if (!svg || !spec || !notes.length) return;
+    const R = sec.getBoundingClientRect(), S = spec.getBoundingClientRect();
+    svg.setAttribute("viewBox", `0 0 ${R.width} ${R.height}`); svg.setAttribute("width", R.width); svg.setAttribute("height", R.height);
+    const paths = svg.querySelectorAll("path"), dots = svg.querySelectorAll("circle");
+    notes.forEach((n, j) => {
+      const N = n.getBoundingClientRect();
+      const x1 = S.left - R.left + S.width * (.55 + j * .13), y1 = S.top - R.top + S.height * (.28 + j * .22);
+      const x2 = N.left - R.left - 14, y2 = N.top - R.top + 14, xm = S.right - R.left + 18;
+      paths[j].setAttribute("d", `M${x1} ${y1} L${xm} ${y2} H${x2}`);
+      dots[j].setAttribute("cx", x1); dots[j].setAttribute("cy", y1);
+    });
+  }
+  const relayout = () => document.querySelectorAll(".plate-scene").forEach(layoutLeaders);
+  addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
+
+  // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
+  function loadShots() {
+    const m = mode() === "film" ? "dark" : "light";
+    document.querySelectorAll(".specimen img").forEach(img => {
+      const still = img.dataset.still.replace("{m}", m), gif = img.dataset.src.replace("{m}", m);
+      img.src = still;
+      const pre = new Image(); pre.onload = () => { if (mode() === (m === "dark" ? "film" : "atlas")) img.src = gif; }; pre.src = gif;
+    });
+  }
+  new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
+  loadShots();
+
+  /* ---------- rail + active scene ---------- */
+  const scenes = [...document.querySelectorAll(".scene")];
+  const rail = document.getElementById("rail");
+  scenes.forEach(s => {
+    const a = document.createElement("a"); a.href = "#" + s.id; a.textContent = s.dataset.roman; a.setAttribute("aria-label", s.id);
+    if (s.style.getPropertyValue("--c")) a.style.setProperty("--c", s.style.getPropertyValue("--c"));
+    rail.appendChild(a);
   });
-  // film mode swaps the screenshot for its dark twin
-  const swapShots = () => document.querySelectorAll(".specimen img").forEach(img => {
-    img.src = img.src.replace(/-(light|dark)\.jpg$/, root.dataset.mode === "film" ? "-dark.jpg" : "-light.jpg");
+  const railLinks = [...rail.children];
+  let active = 0;
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    const i = scenes.indexOf(en.target);
+    if (en.isIntersecting) { en.target.classList.add("on"); active = i; railLinks.forEach((l, k) => l.classList.toggle("on", k === i)); history.replaceState(null, "", "#" + en.target.id); }
+  }), { root: reel, threshold: .55 });
+  scenes.forEach(s => io.observe(s));
+  // anchors scroll inside the reel
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const t = document.getElementById(a.getAttribute("href").slice(1)); if (!t) return;
+    e.preventDefault(); t.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   });
-  new MutationObserver(swapShots).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
-  swapShots();
-  // draw the frame and leader when a plate scrolls in
-  const io = new IntersectionObserver((es) => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } }), { threshold: .35 });
-  document.querySelectorAll(".card").forEach(c => io.observe(c));
+  addEventListener("keydown", e => {
+    if (e.target.matches("input, textarea")) return;
+    if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); scenes[Math.min(scenes.length - 1, active + 1)].scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
+    if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); scenes[Math.max(0, active - 1)].scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
+  });
+  if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) { reel.style.scrollBehavior = "auto"; t.scrollIntoView({ behavior: "instant" }); setTimeout(() => { t.scrollIntoView({ behavior: "instant" }); reel.style.scrollBehavior = ""; }, 80); } }
+
+  /* ---------- now: live from GitHub ---------- */
+  (async () => {
+    const feed = document.getElementById("feed");
+    try {
+      const r = await fetch("https://api.github.com/users/Rexxall/events/public?per_page=60", { headers: { Accept: "application/vnd.github+json" } });
+      const ev = (await r.json()).filter(e => e.type === "PushEvent" && e.repo.name.startsWith("Rexxall/"));
+      const seen = new Map();
+      ev.forEach(e => { const k = e.repo.name; if (!seen.has(k)) seen.set(k, { repo: k.split("/")[1], at: new Date(e.created_at), msg: (e.payload.commits || []).slice(-1)[0]?.message?.split("\n")[0] || "" }); });
+      const rows = [...seen.values()].slice(0, 6);
+      const rel = d => { const h = Math.round((Date.now() - d) / 36e5); return h < 1 ? "just now" : h < 24 ? `${h} h ago` : `${Math.round(h / 24)} d ago`; };
+      feed.innerHTML = rows.length ? rows.map(x => `<li><span class="t">${rel(x.at)}</span><span class="r"><a href="https://github.com/Rexxall/${x.repo}">${x.repo}</a><small>${x.msg.replace(/</g, "&lt;")}</small></span></li>`).join("")
+        : `<li class="hand dim">a quiet week on GitHub</li>`;
+    } catch (e) {
+      feed.innerHTML = `<li class="hand dim">GitHub did not answer; the log is at <a href="https://github.com/Rexxall">github.com/Rexxall</a></li>`;
+    }
+  })();
 
   /* ---------- credits roll ---------- */
-  const roll = document.getElementById("roll");
-  const inner = document.createElement("div"); inner.className = "roll-inner";
-  while (roll.firstChild) inner.appendChild(roll.firstChild);
-  roll.appendChild(inner);
+  const roll = document.getElementById("roll"); const inner = document.createElement("div"); inner.className = "roll-inner";
+  while (roll.firstChild) inner.appendChild(roll.firstChild); roll.appendChild(inner);
 
-  /* ---------- hero: ECG → prism → eight bands ---------- */
+  /* ---------- hero: ECG → prism → eight bands, driven by the pointer and by scroll ---------- */
   const cv = document.getElementById("pulse"), ctx = cv.getContext("2d");
   const bands = document.getElementById("bands");
-  PLUGINS.forEach(p => {
-    const li = document.createElement("li"); li.style.setProperty("--c", p.c);
-    li.innerHTML = `<a href="#${p.slug}">${p.name}</a>`; bands.appendChild(li);
-  });
+  PLUGINS.forEach(p => { const li = document.createElement("li"); li.style.setProperty("--c", p.c); li.innerHTML = `<a href="#${p.slug}">${p.name}</a>`; bands.appendChild(li); });
   const bandEls = [...bands.children];
-  let W = 0, H = 0, dpr = 1, mouse = { x: -1, y: -1 }, t0 = performance.now();
-  function size() {
-    dpr = Math.min(2, devicePixelRatio || 1);
-    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
+  let W = 0, H = 0, mouse = { x: -1, y: -1 }, t0 = performance.now(), smoothY = null, scrollK = 0;
+  function size() { const dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener("resize", size); size();
-  cv.parentElement.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  cv.parentElement.addEventListener("pointerleave", () => { mouse.x = mouse.y = -1; });
+  const hero = document.getElementById("i");
+  hero.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  hero.addEventListener("pointerleave", () => { mouse.x = mouse.y = -1; });
+  reel.addEventListener("scroll", () => { scrollK = Math.min(1, reel.scrollTop / Math.max(1, H)); }, { passive: true });
   const css = () => getComputedStyle(root);
-  function ecgY(u) { // one heartbeat over u in [0,1]
-    if (u < .28) return 0;
-    if (u < .33) return -(u - .28) / .05 * 10;
-    if (u < .38) return -10 + (u - .33) / .05 * 10;
-    if (u < .44) return 0;
-    if (u < .48) return -(u - .44) / .04 * 70;
-    if (u < .54) return -70 + (u - .48) / .06 * 120;
-    if (u < .59) return 50 - (u - .54) / .05 * 68;
-    if (u < .63) return -18 + (u - .59) / .04 * 18;
-    if (u < .72) return 0;
-    if (u < .84) return -Math.sin((u - .72) / .12 * Math.PI) * 20;
-    return 0;
+  function ecgY(u) {
+    if (u < .28) return 0; if (u < .33) return -(u - .28) / .05 * 10; if (u < .38) return -10 + (u - .33) / .05 * 10; if (u < .44) return 0;
+    if (u < .48) return -(u - .44) / .04 * 70; if (u < .54) return -70 + (u - .48) / .06 * 120; if (u < .59) return 50 - (u - .54) / .05 * 68; if (u < .63) return -18 + (u - .59) / .04 * 18;
+    if (u < .72) return 0; if (u < .84) return -Math.sin((u - .72) / .12 * Math.PI) * 20; return 0;
   }
-  let smoothY = null;
   function draw(now) {
-    const dark = root.dataset.mode === "film";
-    const ink = css().getPropertyValue("--m-ink").trim(), mute = css().getPropertyValue("--m-mute").trim();
+    const dark = mode() === "film", ink = css().getPropertyValue("--m-ink").trim(), mute = css().getPropertyValue("--m-mute").trim();
     ctx.clearRect(0, 0, W, H);
-    const wide = W > 720;
-    const baseY = H * (wide ? .5 : .78);
-    const targetY = mouse.y > 0 && wide ? Math.min(H * .8, Math.max(H * .2, mouse.y)) : baseY;
+    const wide = W > 860, baseY = H * (wide ? .5 : .8);
+    const targetY = mouse.y > 0 && wide ? Math.min(H * .78, Math.max(H * .22, mouse.y)) : baseY;
     smoothY = smoothY == null ? baseY : smoothY + (targetY - smoothY) * .08;
-    const x0 = wide ? W * .50 : 24, px = wide ? W * .74 : W * .62, prismH = Math.min(190, H * .32);
+    const x0 = wide ? W * .50 : 16, px = wide ? W * .74 : W * .42, h = Math.min(wide ? 220 : 150, H * .34) * (1 + scrollK * .6);
     const speed = reduce ? 0 : (now - t0) / 1000;
-    // the line: beats scroll leftwards, 1 beat per 420 px
+    // the pulse, beating faster the further you have scrolled
     ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = ink; ctx.beginPath();
-    for (let x = x0; x <= px - prismH * .36; x += 2) {
-      const u = (((x + speed * 110) / 420) % 1 + 1) % 1;
-      const y = smoothY + ecgY(u) * (prismH / 190);
+    for (let x = x0; x <= px - h * .36; x += 2) {
+      const u = (((x + speed * (110 + scrollK * 160)) / 420) % 1 + 1) % 1, y = smoothY + ecgY(u) * (h / 220);
       x === x0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.stroke();
-    // the prism
-    const cx = px, cy = smoothY, h = prismH;
-    ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.beginPath();
-    ctx.moveTo(cx, cy - h * .58); ctx.lineTo(cx + h * .5, cy + h * .36); ctx.lineTo(cx - h * .5, cy + h * .36); ctx.closePath(); ctx.stroke();
+    const cx = px, cy = smoothY;
+    ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx, cy - h * .58); ctx.lineTo(cx + h * .5, cy + h * .36); ctx.lineTo(cx - h * .5, cy + h * .36); ctx.closePath(); ctx.stroke();
     ctx.globalAlpha = .35; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx - h * .1, cy + h * .05); ctx.lineTo(cx + h * .18, cy - h * .18); ctx.lineTo(cx + h * .24, cy + h * .18); ctx.stroke(); ctx.globalAlpha = 1;
-    // eight bands out of the right face
-    const ex = cx + h * .32, exitY = cy;
-    const spread = Math.min(H * .42, 260), endX = W - (wide ? 28 : 12);
+    // bands open wider as you scroll towards the plates
+    const ex = cx + h * .32, spread = Math.min(H * .5, 300) * (1 + scrollK * 1.2), endX = W - (wide ? 28 : 10);
     PLUGINS.forEach((p, i) => {
-      const y1 = exitY - spread / 2 + (i + .5) * (spread / 8), thick = spread / 8 * .78;
-      ctx.beginPath(); ctx.moveTo(ex, exitY - 4 + i * 1); ctx.lineTo(endX, y1 - thick / 2); ctx.lineTo(endX, y1 + thick / 2); ctx.lineTo(ex, exitY - 3 + i * 1); ctx.closePath();
-      ctx.fillStyle = p.c; ctx.globalAlpha = dark ? .9 : .82; ctx.fill(); ctx.globalAlpha = 1;
-      const el = bandEls[i]; if (wide) { el.style.left = (endX - 180) + "px"; el.style.top = (y1 - 12) + "px"; el.style.right = "auto"; }
-      const near = mouse.x > ex && Math.abs(mouse.y - y1) < spread / 16;
-      el.classList.toggle("on", near);
+      const y1 = cy - spread / 2 + (i + .5) * (spread / 8), thick = spread / 8 * .78;
+      ctx.beginPath(); ctx.moveTo(ex, cy - 4 + i); ctx.lineTo(endX, y1 - thick / 2); ctx.lineTo(endX, y1 + thick / 2); ctx.lineTo(ex, cy - 3 + i); ctx.closePath();
+      ctx.fillStyle = p.c; ctx.globalAlpha = (dark ? .92 : .84) - scrollK * .3; ctx.fill(); ctx.globalAlpha = 1;
+      const el = bandEls[i]; if (wide) { el.style.left = (endX - 190) + "px"; el.style.top = (y1 - 12) + "px"; }
+      el.classList.toggle("on", mouse.x > ex && Math.abs(mouse.y - y1) < spread / 16);
     });
-    // a faint caption under the prism
-    ctx.fillStyle = mute; ctx.font = "500 10px " + css().getPropertyValue("--f-label"); ctx.textAlign = "center";
-    ctx.fillText("E I G H T   T O O L S", cx, cy + h * .36 + 26);
+    ctx.fillStyle = mute; ctx.font = "500 10px " + css().getPropertyValue("--f-label"); ctx.textAlign = "center"; ctx.fillText("E I G H T   T O O L S", cx, cy + h * .36 + 26);
     if (!reduce) requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
-  if (reduce) { new MutationObserver(() => requestAnimationFrame(draw)).observe(root, { attributes: true }); }
+  if (reduce) new MutationObserver(() => requestAnimationFrame(draw)).observe(root, { attributes: true });
 })();
