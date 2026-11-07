@@ -48,13 +48,14 @@
       <div class="plate">
         <figure class="specimen" style="margin:0">
           <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
+          <button class="play" type="button" aria-pressed="false"><span class="play-on">▶ play the reel</span><span class="play-off">■ back to the plate</span></button>
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>
         <div class="notes">
           ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n}</p></div>`).join("")}
         </div>
       </div>
-      <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/><circle r="3.2"/>`).join("")}</svg>
+      <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(j => `<path pathLength="1" d="M0 0"/><circle r="8"/><text text-anchor="middle">${j + 1}</text>`).join("")}</svg>
       <div class="name">
         <div><h2>${p.name}</h2><p>${p.line}</p></div>
         <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
@@ -72,24 +73,32 @@
     const paths = svg.querySelectorAll("path"), dots = svg.querySelectorAll("circle");
     notes.forEach((n, j) => {
       const N = n.getBoundingClientRect();
-      const x1 = S.left - R.left + S.width * (.55 + j * .13), y1 = S.top - R.top + S.height * (.28 + j * .22);
-      const x2 = N.left - R.left - 14, y2 = N.top - R.top + 14, xm = S.right - R.left + 18;
+      const x1 = S.right - R.left + 10, y1 = S.top - R.top + S.height * (.22 + j * .28);
+      const x2 = N.left - R.left - 14, y2 = N.top - R.top + 14, xm = S.right - R.left + 34;
       paths[j].setAttribute("d", `M${x1} ${y1} L${xm} ${y2} H${x2}`);
-      dots[j].setAttribute("cx", x1); dots[j].setAttribute("cy", y1);
+      dots[j].setAttribute("cx", x1); dots[j].setAttribute("cy", y1); const lab = svg.querySelectorAll("text")[j]; if (lab) { lab.setAttribute("x", x1); lab.setAttribute("y", y1 + 3.5); }
     });
   }
   const relayout = () => document.querySelectorAll(".plate-scene").forEach(layoutLeaders);
   addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
 
   // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
+  // atlas: a still specimen, the reel plays on request; film: the reel always runs
   function loadShots() {
     const m = mode() === "film" ? "dark" : "light";
-    document.querySelectorAll(".specimen img").forEach(img => {
+    document.querySelectorAll(".plate-scene").forEach(sec => {
+      const img = sec.querySelector(".specimen img");
       const still = img.dataset.still.replace("{m}", m), gif = img.dataset.src.replace("{m}", m);
+      const wantGif = mode() === "film" || sec.classList.contains("playing");
       img.src = still;
-      const pre = new Image(); pre.onload = () => { if (mode() === (m === "dark" ? "film" : "atlas")) img.src = gif; }; pre.src = gif;
+      if (wantGif) { const pre = new Image(); pre.onload = () => { if ((mode() === "film" || sec.classList.contains("playing")) && img.dataset.still.replace("{m}", mode() === "film" ? "dark" : "light") === still) img.src = gif; }; pre.src = gif; }
     });
   }
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".play"); if (!b) return;
+    const sec = b.closest(".plate-scene"); const on = !sec.classList.contains("playing");
+    sec.classList.toggle("playing", on); b.setAttribute("aria-pressed", String(on)); loadShots();
+  });
   new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
   loadShots();
 
