@@ -1,120 +1,123 @@
 <!doctype html>
-<html lang="en" data-mode="atlas">
+<html lang="en" data-mood="tense">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rex — a plugin shelf</title>
 <meta name="description" content="Rex: trained as a doctor, now building the tools his notes were missing. Eight Obsidian plugins and three web apps. The tool proposes, you decide, undo always.">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Jost:wght@400;500&family=Caveat:wght@500&family=Pinyon+Script&display=swap">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=12">
 <script>
-  try { var m = localStorage.getItem('mode'); if (!m) m = matchMedia('(prefers-color-scheme: dark)').matches ? 'film' : 'atlas'; document.documentElement.dataset.mode = m; } catch (e) {}
+  // the page wears the day's mood: what you picked last time, else night after midnight, else your system's light or dark
+  try { var m = localStorage.getItem('mood'); if (!m) { var h = new Date().getHours(); m = h < 5 ? 'night' : matchMedia('(prefers-color-scheme: light)').matches ? 'quiet' : 'tense'; } document.documentElement.dataset.mood = m; } catch (e) {}
 </script>
 </head>
 <body>
 
 <header class="top">
-  <a class="fig" href="#i">REXXALL</a>
   <nav class="top-nav" aria-label="Sections">
-    <a href="#ii">Plugins</a>
-    <a href="#x">Web</a>
-    <a href="#now">Now</a>
-    <a href="https://github.com/Rexxall" rel="me">GitHub</a>
+    <a href="#ii">Plugins</a><a href="#x">Web</a><a href="#now">Now</a><a href="https://github.com/Rexxall" rel="me">GitHub</a>
   </nav>
-  <button class="mode" id="mode" type="button" aria-label="Switch between atlas and film">
-    <span class="mode-a">Atlas</span><span class="mode-k" aria-hidden="true"></span><span class="mode-f">Film</span>
-  </button>
+  <div class="moods" role="radiogroup" aria-label="Mood">
+    <button type="button" role="radio" data-m="tense">Tense</button>
+    <button type="button" role="radio" data-m="quiet">Quiet</button>
+    <button type="button" role="radio" data-m="night">Night</button>
+    <button type="button" role="radio" data-m="happy">Happy</button>
+  </div>
 </header>
-
-<nav class="rail" id="rail" aria-label="Plates"></nav>
 
 <main class="reel" id="reel">
 
-  <section class="scene hero" id="i" data-roman="I">
-    <canvas id="pulse" aria-hidden="true"></canvas>
-    <div class="hero-text">
-      <p class="eyebrow"><span class="atlas-only">PLATE I · <span id="day"></span>THE NOTE, DISSECTED</span><span class="film-only">A PLUGIN SHELF BY</span></p>
-      <h1>Rex</h1>
-      <svg class="rule" viewBox="0 0 64 8" aria-hidden="true"><defs><filter id="brush" filterUnits="userSpaceOnUse" x="-4" y="-6" width="72" height="20"><feTurbulence type="fractalNoise" baseFrequency=".9 .08" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/></filter></defs><path d="M1 4 H63" filter="url(#brush)"/></svg>
-      <p class="tag type">Trained as a doctor. Now I build the tools my notes were missing.</p>
-      <p class="principles"><span>the tool proposes</span><span>you decide</span><span>undo always</span></p>
-      <p class="hint" aria-hidden="true">scroll, or press ↓</p>
+  <section class="scene hero" id="i">
+    <div class="stage">
+      <p class="fig">FIG. 01 · <span id="day"></span>HOME</p>
+      <h1 class="big">Rex</h1>
+      <p class="en">Trained as a doctor, building the tools my notes were missing.</p>
+      <span class="file">REX_HOME_<span id="stamp"></span></span>
+
+      <div class="lens">
+        <span class="halo" aria-hidden="true"></span>
+        <span class="orbit" aria-hidden="true"></span>
+        <div class="glass"><canvas id="pulse" aria-hidden="true"></canvas></div>
+        <span class="ink" aria-hidden="true"></span>
+      </div>
+
+      <div class="an a"><b>A · the rule</b><p>the tool proposes</p><small>nothing changes until you look</small></div>
+      <div class="an b"><b>B · always</b><p><em class="circled">you decide<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M8 22 C 6 8, 40 2, 60 4 C 86 6, 98 14, 94 24 C 90 36, 50 40, 26 36 C 10 33, 4 28, 8 22"/></svg></em></p><small>tick what to keep</small></div>
+      <div class="an c"><b>C · and</b><p>undo, always</p><small>one line back, not the file</small></div>
+      <div class="an d"><b>D · the shelf</b><p>eight plugins, three web apps</p><small>scroll, or press ↓</small></div>
+
+      <ol class="widgets" id="ticks" aria-label="Plugins"></ol>
     </div>
-    <ol class="ticks" id="ticks" aria-label="Plugins"></ol>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
-  <!-- scenes II–IX are built by main.js from the plugin list -->
+  <!-- plugin scenes II–IX are built by main.js -->
 
-  <section class="scene web" id="x" data-roman="X">
-    <div class="plate-head"><span class="num">PLATE X – XII</span><span class="k"><span class="atlas-only">Web · runs in the browser, keeps nothing</span><span class="film-only">Scenes X – XII · Web</span></span></div>
-    <span class="file">REX_PLATE_X</span>
-    <span class="tab" aria-hidden="true">X</span>
-    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
-    <ol class="webgrid">
-      <li>
-        <figure class="specimen"><img data-still="assets/noesis-{m}.jpg" alt="Noesis Paper Reader" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="31"/></svg></figure>
-        <span class="num">FIG. X</span>
-        <h2>Noesis Paper Reader</h2>
-        <p class="hand">read a paper in three passes and come out able to explain it</p>
-        <p class="links"><a class="btn" href="https://rexxall.github.io/noesis-paper-companion/">Open</a><a href="https://github.com/Rexxall/noesis-paper-companion">code</a></p>
-      </li>
-      <li>
-        <figure class="specimen"><img data-still="assets/bunmyaku-{m}.jpg" alt="Bunmyaku" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="32"/></svg></figure>
-        <span class="num">FIG. XI</span>
-        <h2>Bunmyaku</h2>
-        <p class="hand">turn any Japanese material into a local study desk</p>
-        <p class="links"><a class="btn" href="https://rexxall.github.io/bunmyaku-nihongo/">Open</a><a href="https://github.com/Rexxall/bunmyaku-nihongo">code</a></p>
-      </li>
-      <li>
-        <figure class="specimen"><img data-still="assets/evidence-inbox-{m}.jpg" alt="Evidence Inbox" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="33"/></svg></figure>
-        <span class="num">FIG. XII</span>
-        <h2>Evidence Inbox</h2>
-        <p class="hand">save a public post into Obsidian with its text, images and source link</p>
-        <p class="links"><a class="btn" href="https://github.com/Rexxall/obsidian-evidence-inbox">Code</a></p>
-      </li>
-    </ol>
-    <div class="name"><div><p class="type">Three things that run in a tab. Nothing leaves your machine.</p></div></div>
-    <span class="sign" aria-hidden="true">R.</span>
-  </section>
+  <section class="scene web" id="x">
+    <div class="stage">
+      <p class="fig">FIG. X – XII · WEB</p>
+      <h2 class="big">In a tab</h2>
+      <p class="en">Three things that run in the browser and keep nothing.</p>
+      <span class="file">REX_PLATE_X</span>
 
-  <section class="scene now" id="now" data-roman="XIII">
-    <div class="plate-head"><span class="num">PLATE XIII</span><span class="k"><span class="atlas-only">Lab notes · what moved this week</span><span class="film-only">Dailies · what moved this week</span></span></div>
-    <span class="file">REX_PLATE_XIII</span>
-    <span class="tab" aria-hidden="true">XIII</span>
-    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="plate">
-      <ol class="feed" id="feed"><li class="hand dim">reading the commit log…</li></ol>
-      <p class="aside"><span class="hand">pulled live from GitHub when the page opens</span>AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
+      <div class="lens">
+        <span class="halo" aria-hidden="true"></span>
+        <span class="orbit" aria-hidden="true"></span>
+        <div class="glass" id="webglass">
+          <img data-still="assets/noesis-light.jpg" alt="Noesis Paper Reader">
+          <img data-still="assets/bunmyaku-light.jpg" alt="Bunmyaku">
+          <img data-still="assets/evidence-inbox-light.jpg" alt="Evidence Inbox">
+        </div>
+        <span class="ink" aria-hidden="true"></span>
+      </div>
+
+      <a class="an a web-an" data-k="0" href="https://rexxall.github.io/noesis-paper-companion/"><b>X · Noesis</b><p>read a paper in three passes</p><small>open →</small></a>
+      <a class="an b web-an" data-k="1" href="https://rexxall.github.io/bunmyaku-nihongo/"><b>XI · Bunmyaku</b><p>Japanese, learnt in context</p><small>open →</small></a>
+      <a class="an c web-an" data-k="2" href="https://github.com/Rexxall/obsidian-evidence-inbox"><b>XII · Evidence Inbox</b><p>a public post, kept with its source</p><small>code →</small></a>
     </div>
-    <div class="name"><div><p class="type">The last commit on each repository, newest first.</p></div><p class="links"><a class="btn" href="https://github.com/Rexxall">All repositories</a></p></div>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
-  <section class="scene credits" id="credits" data-roman="∞">
-    <div class="roll" id="roll">
-      <div class="verse"><p class="en">The tool proposes, you decide, undo always.</p><p class="zh">工具提议，你来决定，随时撤销。</p><p class="by">— the one line under every plugin</p></div>
-      <p class="k">WRITTEN, BUILT AND TESTED BY</p>
-      <p class="big">Rex</p>
-      <p class="k">HOW I BUILD</p>
-      <p class="hand-l">start from a real chore</p>
-      <p class="hand-l">keep data local, in Markdown and Git</p>
-      <p class="hand-l">follow the host app's theme</p>
-      <p class="k red">THE TOOL PROPOSES · YOU DECIDE · UNDO ALWAYS</p>
-      <p class="k">LANGUAGES</p>
-      <p class="hand-l">Chinese · Uyghur · English · Japanese</p>
-      <p class="k">FIND ME</p>
-      <p class="hand-l"><a href="https://github.com/Rexxall">github.com/Rexxall</a></p>
-      <p class="k dim">— end of plate —</p>
+  <section class="scene now" id="now">
+    <div class="stage">
+      <p class="fig">FIG. XIII · LAB NOTES</p>
+      <h2 class="big">This week</h2>
+      <p class="en">The last commit on each repository, pulled live from GitHub.</p>
+      <span class="file">REX_PLATE_XIII</span>
+      <ol class="feed" id="feed"><li class="w dim"><span class="lab">reading the commit log</span></li></ol>
+      <p class="aside">AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
+      <a class="go" href="https://github.com/Rexxall">all repositories →</a>
+    </div>
+    <span class="sign" aria-hidden="true">R.</span>
+  </section>
+
+  <section class="scene credits" id="credits">
+    <div class="stage">
+      <p class="fig">FIG. ∞ · WRITTEN, BUILT AND TESTED BY</p>
+      <h2 class="big">Rex</h2>
+      <p class="en">Chinese · Uyghur · English · Japanese</p>
+      <figure class="slip">
+        <span class="slip-k">TODAY'S LINE</span>
+        <p class="slip-en"></p>
+        <p class="slip-zh"></p>
+        <p class="slip-by"></p>
+      </figure>
+      <ul class="how">
+        <li><b>start</b>from a real chore</li>
+        <li><b>keep</b>data local, in Markdown and Git</li>
+        <li><b>follow</b>the host app's theme</li>
+      </ul>
+      <a class="go" href="https://github.com/Rexxall">github.com/Rexxall →</a>
     </div>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
 </main>
 
-<script src="main.js?v=5"></script>
+<script src="main.js?v=11"></script>
 </body>
 </html>
