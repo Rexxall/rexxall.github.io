@@ -192,59 +192,88 @@
   const roll = document.getElementById("roll"); const inner = document.createElement("div"); inner.className = "roll-inner";
   while (roll.firstChild) inner.appendChild(roll.firstChild); roll.appendChild(inner);
 
-  /* ---------- hero: one ink trace across the plate, beating faster the further you scroll ---------- */
-  const cv = document.getElementById("pulse"), ctx = cv.getContext("2d");
+  /* ---------- the hero's row of plugins ---------- */
   const ticks = document.getElementById("ticks");
   PLUGINS.forEach(p => { const li = document.createElement("li"); li.innerHTML = `<a href="#${p.slug}"><b>${p.roman}</b><small>${p.name}</small></a>`; ticks.appendChild(li); });
-  let W = 0, H = 0, mouse = { x: -1, y: -1 }, t0 = performance.now(), smoothY = null, scrollK = 0;
-  function size() { const dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
-  addEventListener("resize", size); size();
+
+  /* ---------- one sky behind the whole page: scrolling is the night passing ----------
+     the monitor trace is the horizon. dusk from 红光, the small hours from 深夜冷蓝, the teal before dawn
+     from 蓝绿舞台光, the fog and the white page from 苍白留白. one keyframe per scene, eased between. */
   const hero = document.getElementById("i");
-  hero.addEventListener("pointermove", e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  hero.addEventListener("pointerleave", () => { mouse.x = mouse.y = -1; });
-  reel.addEventListener("scroll", () => { scrollK = Math.min(1, reel.scrollTop / Math.max(1, H)); }, { passive: true });
-  const css = () => getComputedStyle(root);
+  const cv = document.createElement("canvas"); cv.id = "sky"; cv.setAttribute("aria-hidden", "true"); document.body.prepend(cv);
+  const ctx = cv.getContext("2d");
+  let W = 0, H = 0, t0 = performance.now(), mouseY = -1, smoothBase = null;
+  function size() { const dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px"; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  addEventListener("resize", size); size();
+  hero.addEventListener("pointermove", e => { mouseY = e.clientY; }); hero.addEventListener("pointerleave", () => { mouseY = -1; });
   function ecgY(u) {
     if (u < .28) return 0; if (u < .33) return -(u - .28) / .05 * 10; if (u < .38) return -10 + (u - .33) / .05 * 10; if (u < .44) return 0;
     if (u < .48) return -(u - .44) / .04 * 70; if (u < .54) return -70 + (u - .48) / .06 * 120; if (u < .59) return 50 - (u - .54) / .05 * 68; if (u < .63) return -18 + (u - .59) / .04 * 18;
     if (u < .72) return 0; if (u < .84) return -Math.sin((u - .72) / .12 * Math.PI) * 20; return 0;
   }
-  const gutPx = () => parseFloat(css().getPropertyValue("--gut")) || 64;
+  // top, horizon glow, glow height, ground, sun [x, y above horizon, r, alpha], moon [x, y, alpha], stars, fog, mist ground
+  const K = [
+    { top: "#07090b", glow: "#a24328", gh: .62, ground: "#07090b", sun: [.76, .2, 86, .92], moon: [.12, -.1, 0], stars: 0, fog: 0 },   // 18:40
+    { top: "#07090b", glow: "#7a1d15", gh: .42, ground: "#07090b", sun: [.56, .03, 70, .85], moon: [.12, -.1, 0], stars: 0, fog: 0 },  // 19:30
+    { top: "#07090b", glow: "#4a120e", gh: .3, ground: "#07090b", sun: [.58, -.08, 60, .7], moon: [.12, -.1, 0], stars: .15, fog: 0 }, // 20:50
+    { top: "#05081a", glow: "#2a1636", gh: .26, ground: "#06081a", sun: [.86, -.2, 50, 0], moon: [0.52, .06, .5], stars: .45, fog: 0 },   // 22:10
+    { top: "#040a1c", glow: "#0e2350", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.58, .26, .95], stars: .8, fog: 0 },   // 23:40
+    { top: "#040a1c", glow: "#0d2148", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.66, .44, 1], stars: 1, fog: 0 },     // 00:50
+    { top: "#030817", glow: "#0b1e48", gh: .28, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.74, .52, 1], stars: 1, fog: 0 },    // 02:10
+    { top: "#030817", glow: "#0d2552", gh: .3, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.82, .46, .95], stars: .9, fog: 0 },  // 03:20
+    { top: "#040b1e", glow: "#123a5a", gh: .36, ground: "#040b1e", sun: [.86, -.2, 50, 0], moon: [0.9, .3, .8], stars: .6, fog: 0 },   // 04:10
+    { top: "#06112a", glow: "#2c6a72", gh: .46, ground: "#06112a", sun: [.86, -.2, 50, 0], moon: [0.97, .14, .3], stars: .3, fog: .1 }, // 04:50
+    { top: "#dfe5ec", glow: "#f5f5f3", gh: .7, ground: "#c9ced6", sun: [.7, -.02, 60, .25], moon: [0.97, .1, 0], stars: 0, fog: .8 },     // 05:40
+    { top: "#f5f5f3", glow: "#f5f5f3", gh: .7, ground: "#dcdcd8", sun: [.7, .08, 60, 0], moon: [0.97, .1, 0], stars: 0, fog: .5 },        // 06:30
+  ];
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mixc = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(",")})`; };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const STARS = Array.from({ length: 140 }, (_, i) => { let s = (i + 1) * 9301; const r = () => ((s = (s * 9301 + 49297) % 233280) / 233280); return [r(), r() * .62, r() * 1.2 + .3, r() * 6.28]; });
   function draw(now) {
-    if (W < 861) { requestAnimationFrame(draw); return; }
-    const hs = getComputedStyle(hero), md = hero.dataset.mood, ink = hs.getPropertyValue("--m-ink").trim(), bg = hs.getPropertyValue("--m-bg").trim();
-    ctx.clearRect(0, 0, W, H);
-    const text = hero.querySelector(".hero-text").getBoundingClientRect(), heroR = hero.getBoundingClientRect();
-    const x0 = text.right - heroR.left + Math.max(48, W * .04), x1 = W - gutPx();
-    const baseY = H * (md === "tense" ? .58 : .5);
-    const targetY = mouse.y > 0 ? Math.min(H * .66, Math.max(H * .34, mouse.y)) : baseY;
-    smoothY = smoothY == null ? baseY : smoothY + (targetY - smoothY) * .06;
-    const amp = Math.min(260, H * .3) * (1 + scrollK * .5), speed = reduce ? 0 : (now - t0) / 1000, period = Math.max(360, (x1 - x0) / 2.2);
-    const pts = [];
-    for (let x = x0; x <= x1; x += 2) { const u = (((x + speed * (110 + scrollK * 160)) / period) % 1 + 1) % 1; pts.push([x, smoothY + ecgY(u) * (amp / 220)]); }
-    const trace = () => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); };
-
-    if (md === "tense") {
-      // a flat red sky, a pale sun low in it, and the trace as the black ridge in front
-      const top = H * .17, bot = H * .78;
-      const g = ctx.createLinearGradient(0, top, 0, bot); g.addColorStop(0, "#2a0a09"); g.addColorStop(.55, "#641311"); g.addColorStop(1, "#a24328");
-      ctx.fillStyle = g; ctx.fillRect(x0, top, x1 - x0, bot - top);
-      ctx.fillStyle = "rgba(215,180,133,.9)"; ctx.beginPath(); ctx.arc(x0 + (x1 - x0) * .64, smoothY - amp * .62, Math.min(86, amp * .36), 0, Math.PI * 2); ctx.fill();
-      trace(); ctx.lineTo(x1, bot); ctx.lineTo(x0, bot); ctx.closePath(); ctx.fillStyle = bg; ctx.fill();
-      // the sky rises out of the dark instead of sitting in a box
-      ctx.save(); ctx.globalCompositeOperation = "destination-in";
-      const fx = ctx.createLinearGradient(x0, 0, x1, 0); fx.addColorStop(0, "rgba(0,0,0,0)"); fx.addColorStop(.22, "#000"); fx.addColorStop(.94, "#000"); fx.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = fx; ctx.fillRect(x0, 0, x1 - x0, H);
-      const fy = ctx.createLinearGradient(0, top, 0, top + (bot - top) * .45); fy.addColorStop(0, "rgba(0,0,0,0)"); fy.addColorStop(1, "#000");
-      ctx.fillStyle = fy; ctx.fillRect(x0, top, x1 - x0, bot - top); ctx.restore();
-    } else if (md === "night") {
-      // a line of blue light across the dark, like a blade
-      ctx.save(); ctx.strokeStyle = "#cfe4ff"; ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.lineJoin = "round";
-      ctx.shadowColor = "#8ec5ff"; ctx.shadowBlur = 18; trace(); ctx.stroke(); ctx.shadowBlur = 6; trace(); ctx.stroke(); ctx.restore();
-    } else {
-      ctx.strokeStyle = ink; ctx.globalAlpha = .18; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, smoothY); ctx.lineTo(x1, smoothY); ctx.stroke(); ctx.globalAlpha = 1;
-      ctx.strokeStyle = ink; ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; trace(); ctx.stroke();
-    }
+    const f = Math.max(0, Math.min(K.length - 1, reel.scrollTop / Math.max(1, reel.clientHeight)));
+    const i = Math.min(K.length - 2, Math.floor(f)), t0e = f - i, t = t0e * t0e * (3 - 2 * t0e), A = K[i], B = K[i + 1];
+    const wide = W > 860, heroK = Math.min(1, f);
+    // the horizon: high and wide on the cover, low along the bottom edge on every plate after
+    const text = hero.querySelector(".hero-text").getBoundingClientRect();
+    const xStart = wide ? lerp(text.right + Math.max(48, W * .04), 0, heroK) : 0;
+    const baseHero = wide ? H * .58 : H * .93, baseLow = H - (wide ? 26 : 18);
+    let base = lerp(baseHero, baseLow, heroK);
+    if (heroK < .05 && mouseY > 0 && wide) { const target = Math.min(H * .66, Math.max(H * .44, mouseY)); smoothBase = smoothBase == null ? base : smoothBase + (target - smoothBase) * .06; base = smoothBase; } else smoothBase = null;
+    const amp = lerp(Math.min(260, H * .3), wide ? 120 : 80, heroK) / 220;
+    const top = mixc(A.top, B.top, t), glow = mixc(A.glow, B.glow, t), ground = mixc(A.ground, B.ground, t), gh = lerp(A.gh, B.gh, t);
+    ctx.fillStyle = top; ctx.fillRect(0, 0, W, H);
+    // the glow rises from the horizon
+    const gy = base - H * gh, g = ctx.createLinearGradient(0, gy, 0, base);
+    g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, glow);
+    ctx.save(); ctx.fillStyle = top; ctx.fillRect(0, gy, W, base - gy);
+    const gg = ctx.createLinearGradient(0, gy, 0, base); gg.addColorStop(0, top); gg.addColorStop(1, glow); ctx.fillStyle = gg;
+    ctx.fillRect(xStart, gy, W - xStart, base - gy + 2);
+    if (xStart > 0) { const fx = ctx.createLinearGradient(xStart, 0, xStart + W * .14, 0); fx.addColorStop(0, top); fx.addColorStop(1, "rgba(0,0,0,0)"); ctx.fillStyle = fx; ctx.fillRect(xStart, gy, W * .14, base - gy + 2); }
+    ctx.restore();
+    // stars
+    const st = lerp(A.stars, B.stars, t), sec = (now - t0) / 1000;
+    if (st > .01) { ctx.fillStyle = "#e6eefc"; STARS.forEach(([sx, sy, r, ph]) => { if (sx * W < xStart) return; ctx.globalAlpha = st * (.35 + .35 * Math.sin(sec * .8 + ph)); ctx.beginPath(); ctx.arc(sx * W, sy * H, r, 0, 6.283); ctx.fill(); }); ctx.globalAlpha = 1; }
+    // sun
+    const sa = lerp(A.sun[3], B.sun[3], t);
+    if (sa > .01) { const sx = lerp(A.sun[0], B.sun[0], t) * W, sy = base - lerp(A.sun[1], B.sun[1], t) * H - lerp(A.sun[2], B.sun[2], t) * .4, sr = lerp(A.sun[2], B.sun[2], t) * (wide ? 1 : .36);
+      const syP = wide ? sy : lerp(H * .085, sy, heroK);
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, base); ctx.clip(); ctx.globalAlpha = sa; ctx.fillStyle = "#d7b485"; ctx.beginPath(); ctx.arc(wide ? sx : W * .8, syP, sr, 0, 6.283); ctx.fill(); ctx.restore(); }
+    // moon, with a faint ring of light
+    const ma = lerp(A.moon[2], B.moon[2], t);
+    if (ma > .01) { const mx = lerp(A.moon[0], B.moon[0], t) * W, my = wide ? H * (.31 - .19 * Math.max(0, lerp(A.moon[1], B.moon[1], t)) / .52) : H * .085, mr = wide ? 20 : 14;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, base); ctx.clip(); ctx.globalAlpha = ma;
+      const halo = ctx.createRadialGradient(mx, my, mr, mx, my, mr * 5); halo.addColorStop(0, "rgba(142,197,255,.22)"); halo.addColorStop(1, "rgba(142,197,255,0)"); ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(mx, my, mr * 5, 0, 6.283); ctx.fill();
+      ctx.fillStyle = "#e6eefc"; ctx.beginPath(); ctx.arc(mx, my, mr, 0, 6.283); ctx.fill();
+      ctx.globalCompositeOperation = "destination-out"; ctx.beginPath(); ctx.arc(mx + mr * .45, my - mr * .2, mr * .92, 0, 6.283); ctx.fill(); ctx.restore(); }
+    // the horizon itself: the monitor trace, filled down as ground
+    const speed = reduce ? 0 : sec, period = Math.max(360, (W - xStart) / (wide ? 2.2 : 1.4)) * lerp(1, 1.6, heroK);
+    ctx.beginPath();
+    for (let x = xStart; x <= W + 2; x += 2) { const u = (((x + speed * (110 + heroK * 60)) / period) % 1 + 1) % 1, y = base + ecgY(u) * amp * H / 900 * (900 / Math.max(H, 1)) * 1; x === xStart ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+    ctx.lineTo(W + 2, H + 2); ctx.lineTo(xStart, H + 2); ctx.closePath(); ctx.fillStyle = ground; ctx.fill();
+    // fog before dawn
+    const fog = lerp(A.fog, B.fog, t);
+    if (fog > .01) { const fg = ctx.createLinearGradient(0, H * .35, 0, H); fg.addColorStop(0, "rgba(245,245,243,0)"); fg.addColorStop(1, `rgba(245,245,243,${fog})`); ctx.fillStyle = fg; ctx.fillRect(0, H * .35, W, H * .65); }
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);

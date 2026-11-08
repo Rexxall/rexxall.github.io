@@ -269,3 +269,10 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 /* one night shift, dusk to dawn: each plate carries its hour */
 .clock { font: italic 400 15px/1 var(--f-display); letter-spacing: .02em; color: var(--m-mute); margin-left: 4px; }
 .scene[data-mood="quiet"].dawn::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 46%; pointer-events: none; background: linear-gradient(180deg, #d9e2ec 0%, rgba(245,245,243,0) 100%); }
+
+/* the sky behind every scene */
+#sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; display: block; }
+.reel { position: relative; z-index: 1; }
+.scene, .scene[data-mood] { background: transparent !important; }
+#pulse { display: none !important; }
+.ticks { border-top-color: transparent; }
