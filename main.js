@@ -22,13 +22,13 @@
   const root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const reel = document.getElementById("reel");
-  const mode = () => root.dataset.mode;
+  const mood = () => root.dataset.mood; const dark = () => mood() !== "quiet";
 
-  /* ---------- mode ---------- */
-  const modeBtn = document.getElementById("mode");
-  function setMode(m) { root.dataset.mode = m; try { localStorage.setItem("mode", m); } catch (e) {} modeBtn.setAttribute("aria-pressed", String(m === "film")); }
-  modeBtn.addEventListener("click", () => setMode(mode() === "film" ? "atlas" : "film"));
-  modeBtn.setAttribute("aria-pressed", String(mode() === "film"));
+  /* ---------- mood ---------- */
+  const moodBtns = [...document.querySelectorAll(".moods button")];
+  function setMood(m, save) { root.dataset.mood = m; if (save) try { localStorage.setItem("mood", m); } catch (e) {} moodBtns.forEach(b => b.setAttribute("aria-checked", String(b.dataset.m === m))); }
+  moodBtns.forEach(b => b.addEventListener("click", () => setMood(b.dataset.m, true)));
+  setMood(mood(), false);
 
   /* ---------- plate scenes ---------- */
   const rough = (w, h, seed) => {
@@ -85,7 +85,7 @@
   // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
   // the reel for the current mode: a still first, the GIF once it has loaded and the scene is on screen
   function loadShots() {
-    const m = mode() === "film" ? "dark" : "light";
+    const m = dark() ? "dark" : "light";
     document.querySelectorAll(".specimen img[data-still]").forEach(img => {
       const still = img.dataset.still.replace("{m}", m); img.src = still;
       if (!img.dataset.src) return;
@@ -93,7 +93,7 @@
       const pre = new Image(); pre.onload = () => { if (img.dataset.gif === gif) img.src = gif; }; pre.src = gif;
     });
   }
-  new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mode"] });
+  new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mood"] });
   loadShots();
 
   /* ---------- rail + active scene ---------- */
@@ -210,26 +210,39 @@
   const gutPx = () => parseFloat(css().getPropertyValue("--gut")) || 64;
   function draw(now) {
     if (W < 861) { requestAnimationFrame(draw); return; }
-    const ink = css().getPropertyValue("--m-ink").trim(), red = css().getPropertyValue("--m-red").trim();
+    const md = mood(), ink = css().getPropertyValue("--m-ink").trim(), bg = css().getPropertyValue("--m-bg").trim();
     ctx.clearRect(0, 0, W, H);
     const text = hero.querySelector(".hero-text").getBoundingClientRect(), heroR = hero.getBoundingClientRect();
     const x0 = text.right - heroR.left + Math.max(48, W * .04), x1 = W - gutPx();
-    const baseY = H * .5;
-    const targetY = mouse.y > 0 ? Math.min(H * .72, Math.max(H * .28, mouse.y)) : baseY;
-    smoothY = smoothY == null ? baseY : smoothY + (targetY - smoothY) * .08;
+    const baseY = H * (md === "tense" ? .58 : .5);
+    const targetY = mouse.y > 0 ? Math.min(H * .66, Math.max(H * .34, mouse.y)) : baseY;
+    smoothY = smoothY == null ? baseY : smoothY + (targetY - smoothY) * .06;
     const amp = Math.min(260, H * .3) * (1 + scrollK * .5), speed = reduce ? 0 : (now - t0) / 1000, period = Math.max(360, (x1 - x0) / 2.2);
-    // the baseline, faint, like the paper's own rule
-    ctx.strokeStyle = ink; ctx.globalAlpha = .18; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, smoothY); ctx.lineTo(x1, smoothY); ctx.stroke(); ctx.globalAlpha = 1;
-    // the trace
-    ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath();
-    let peak = null;
-    for (let x = x0; x <= x1; x += 2) {
-      const u = (((x + speed * (110 + scrollK * 160)) / period) % 1 + 1) % 1, dy = ecgY(u), y = smoothY + dy * (amp / 220);
-      if (!peak || dy < peak.dy) peak = { x, y, dy };
-      x === x0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    const pts = [];
+    for (let x = x0; x <= x1; x += 2) { const u = (((x + speed * (110 + scrollK * 160)) / period) % 1 + 1) % 1; pts.push([x, smoothY + ecgY(u) * (amp / 220)]); }
+    const trace = () => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); };
+
+    if (md === "tense") {
+      // a flat red sky, a pale sun low in it, and the trace as the black ridge in front
+      const top = H * .17, bot = H * .78;
+      const g = ctx.createLinearGradient(0, top, 0, bot); g.addColorStop(0, "#2a0a09"); g.addColorStop(.55, "#641311"); g.addColorStop(1, "#a24328");
+      ctx.fillStyle = g; ctx.fillRect(x0, top, x1 - x0, bot - top);
+      ctx.fillStyle = "rgba(215,180,133,.9)"; ctx.beginPath(); ctx.arc(x0 + (x1 - x0) * .64, smoothY - amp * .62, Math.min(86, amp * .36), 0, Math.PI * 2); ctx.fill();
+      trace(); ctx.lineTo(x1, bot); ctx.lineTo(x0, bot); ctx.closePath(); ctx.fillStyle = bg; ctx.fill();
+      // the sky rises out of the dark instead of sitting in a box
+      ctx.save(); ctx.globalCompositeOperation = "destination-in";
+      const fx = ctx.createLinearGradient(x0, 0, x1, 0); fx.addColorStop(0, "rgba(0,0,0,0)"); fx.addColorStop(.22, "#000"); fx.addColorStop(.94, "#000"); fx.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = fx; ctx.fillRect(x0, 0, x1 - x0, H);
+      const fy = ctx.createLinearGradient(0, top, 0, top + (bot - top) * .45); fy.addColorStop(0, "rgba(0,0,0,0)"); fy.addColorStop(1, "#000");
+      ctx.fillStyle = fy; ctx.fillRect(x0, top, x1 - x0, bot - top); ctx.restore();
+    } else if (md === "night") {
+      // a line of blue light across the dark, like a blade
+      ctx.save(); ctx.strokeStyle = "#cfe4ff"; ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.shadowColor = "#8ec5ff"; ctx.shadowBlur = 18; trace(); ctx.stroke(); ctx.shadowBlur = 6; trace(); ctx.stroke(); ctx.restore();
+    } else {
+      ctx.strokeStyle = ink; ctx.globalAlpha = .18; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, smoothY); ctx.lineTo(x1, smoothY); ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.strokeStyle = ink; ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; trace(); ctx.stroke();
     }
-    ctx.stroke();
-    // the R wave carries the one red mark on the plate
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);

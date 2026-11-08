@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-mode="atlas">
+<html lang="en" data-mood="quiet">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Jost:wght@400;500&family=Caveat:wght@500&family=Pinyon+Script&display=swap">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=20">
 <script>
-  try { var m = localStorage.getItem('mode'); if (!m) m = matchMedia('(prefers-color-scheme: dark)').matches ? 'film' : 'atlas'; document.documentElement.dataset.mode = m; } catch (e) {}
+  try { var q = new URLSearchParams(location.search).get('mood'); var m = /^(tense|quiet|night)$/.test(q) ? q : localStorage.getItem('mood'); if (!m) { var h = new Date().getHours(); m = h < 5 ? 'night' : matchMedia('(prefers-color-scheme: dark)').matches ? 'tense' : 'quiet'; } document.documentElement.dataset.mood = m; } catch (e) {}
 </script>
 </head>
 <body>
@@ -24,9 +24,9 @@
     <a href="#now">Now</a>
     <a href="https://github.com/Rexxall" rel="me">GitHub</a>
   </nav>
-  <button class="mode" id="mode" type="button" aria-label="Switch between atlas and film">
-    <span class="mode-a">Atlas</span><span class="mode-k" aria-hidden="true"></span><span class="mode-f">Film</span>
-  </button>
+  <div class="moods" role="radiogroup" aria-label="Mood">
+    <button type="button" role="radio" data-m="tense">Tense</button><button type="button" role="radio" data-m="quiet">Quiet</button><button type="button" role="radio" data-m="night">Night</button>
+  </div>
 </header>
 
 <nav class="rail" id="rail" aria-label="Plates"></nav>
@@ -115,6 +115,6 @@
 
 </main>
 
-<script src="main.js?v=5"></script>
+<script src="main.js?v=21"></script>
 </body>
 </html>
