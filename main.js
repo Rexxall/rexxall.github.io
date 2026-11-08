@@ -2,21 +2,21 @@
 (function () {
   const RAW = "https://raw.githubusercontent.com/Rexxall/";
   const PLUGINS = [
-    { slug: "git-note-history", name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", c: "#7a5af0", roman: "II", dir: "git-note-history", repo: "obsidian-git-history-view",
+    { slug: "git-note-history", red: 2, name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", c: "#7a5af0", roman: "II", dir: "git-note-history", repo: "obsidian-git-history-view",
       notes: ["every save is a <b>commit</b>", "search any sentence you ever wrote", "take back <b>one line</b>, not the file"] },
-    { slug: "ai-assistant-suite", name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", c: "#0a84ff", roman: "III", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite",
+    { slug: "ai-assistant-suite", red: 2, name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", c: "#0a84ff", roman: "III", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite",
       notes: ["title · tags · folder, <b>proposed</b>", "pick a model, or none", "nothing applied until <b>you tick</b>"] },
-    { slug: "polyglot-helper", name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#30b0c7", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper",
+    { slug: "polyglot-helper", red: 0, name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#30b0c7", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper",
       notes: ["select a word, reading <b>in place</b>", "Japanese and English, same gesture", "kept in a review list <b>in your vault</b>"] },
-    { slug: "video-summary", name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary",
+    { slug: "video-summary", red: 2, name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary",
       notes: ["paste a YouTube or Bilibili link", "key points with <b>timestamps</b>", "a note, <b>not a transcript</b>"] },
-    { slug: "japan-work-secretary", name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#ff9f0a", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
+    { slug: "japan-work-secretary", red: 2, name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#ff9f0a", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
       notes: ["log a shift in one line", "the week against the <b>28-hour</b> limit", "warned <b>before</b> you cross it"] },
-    { slug: "ai-accounting", name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", c: "#34c759", roman: "VII", dir: "ai-accounting", repo: "obsidian-ai-accounting",
+    { slug: "ai-accounting", red: 2, name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", c: "#34c759", roman: "VII", dir: "ai-accounting", repo: "obsidian-ai-accounting",
       notes: ["photograph a receipt", "read and totalled", "<b>checked</b> before it lands"] },
-    { slug: "pass-countdown", name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#5e5ce6", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
+    { slug: "pass-countdown", red: 2, name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#5e5ce6", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
       notes: ["uses left", "time left", "the <b>pace</b> to finish"] },
-    { slug: "tasknotes-countdown", name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown",
+    { slug: "tasknotes-countdown", red: 2, name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown",
       notes: ["reads your TaskNotes deadlines", "a countdown for each", "<b>will you make it?</b>"] },
   ];
   const root = document.documentElement;
@@ -43,7 +43,7 @@
     sec.className = "scene plate-scene"; sec.id = p.slug; sec.dataset.roman = p.roman; sec.style.setProperty("--c", p.c);
     sec.innerHTML = `
       <div class="plate-head"><span class="num">FIG. ${p.roman}</span><span class="k"><span class="atlas-only">Obsidian plugin</span><span class="film-only">Scene ${p.roman}</span></span></div>
-      <span class="file">ITH_PLATE_${p.roman}</span>
+      <span class="file">REX_PLATE_${p.roman}</span>
       <span class="tab" aria-hidden="true">${p.roman}</span>
       <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="plate">
@@ -52,7 +52,7 @@
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>
         <div class="notes">
-          ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n.replace(/<b>(.*?)<\/b>/, '<b><svg class="circ" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M8 22 C 6 8, 40 2, 60 4 C 86 6, 98 14, 94 24 C 90 36, 50 40, 26 36 C 10 33, 4 28, 8 22"/></svg>$1</b>')}</p></div>`).join("")}
+          ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${(j === p.red ? n : n.replace(/<\/?b>/g, "")).replace(/<b>(.*?)<\/b>/, '<b><svg class="circ" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M8 22 C 6 8, 40 2, 60 4 C 86 6, 98 14, 94 24 C 90 36, 50 40, 26 36 C 10 33, 4 28, 8 22"/></svg>$1</b>')}</p></div>`).join("")}
         </div>
       </div>
       <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/>`).join("")}</svg>
@@ -121,11 +121,9 @@
   let settle; reel.addEventListener("scroll", () => { clearTimeout(settle); settle = setTimeout(markActive, 90); }, { passive: true });
   setTimeout(markActive, 120); setTimeout(markActive, 600);
   const blink = document.createElement("div"); blink.className = "blink"; document.body.appendChild(blink);
-  const spot = document.createElement("div"); spot.className = "spot"; document.body.appendChild(spot);
   let lastActive = -1;
   const blinkIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { const i = scenes.indexOf(en.target); if (lastActive >= 0 && i !== lastActive && !reduce) { blink.classList.remove("go"); void blink.offsetWidth; blink.classList.add("go"); } lastActive = i; } }), { root: reel, threshold: .55 });
   scenes.forEach(s => blinkIO.observe(s));
-  addEventListener("pointermove", e => { spot.style.setProperty("--sx", e.clientX + "px"); spot.style.setProperty("--sy", e.clientY + "px"); }, { passive: true });
   // anchors scroll inside the reel
   document.addEventListener("click", e => {
     const a = e.target.closest('a[href^="#"]'); if (!a) return;
@@ -150,7 +148,7 @@
       const rows = [...seen.values()].slice(0, 6);
       const rel = d => { const h = Math.round((Date.now() - d) / 36e5); return h < 1 ? "just now" : h < 24 ? `${h} h ago` : `${Math.round(h / 24)} d ago`; };
       const fmt = d => `${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
-      feed.innerHTML = rows.length ? rows.map((x, i) => `<li>
+      feed.innerHTML = rows.length ? rows.map((x, i) => `<li${i === 0 ? ' class="new"' : ""}>
           <span class="t"><i>${fmt(x.at)}</i><small>${rel(x.at)}</small></span>
           <span class="r"><a href="https://github.com/Rexxall/${x.repo}">${x.repo}</a><small>${x.msg.replace(/</g, "&lt;")}</small></span>
           <span class="slate" aria-hidden="true"><b>SC. ${["II","III","IV","V","VI","VII","VIII","IX"][i] || "X"}</b><b>TAKE ${rows.length - i}</b><b>${fmt(x.at)}</b></span>
@@ -232,7 +230,6 @@
     }
     ctx.stroke();
     // the R wave carries the one red mark on the plate
-    if (peak && peak.dy < -40) { ctx.fillStyle = red; ctx.beginPath(); ctx.arc(peak.x, peak.y, 4, 0, Math.PI * 2); ctx.fill(); }
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
