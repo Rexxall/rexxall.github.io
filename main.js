@@ -22,13 +22,6 @@
   const root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const reel = document.getElementById("reel");
-  const mood = () => root.dataset.mood; const dark = () => mood() !== "quiet";
-
-  /* ---------- mood ---------- */
-  const moodBtns = [...document.querySelectorAll(".moods button")];
-  function setMood(m, save) { root.dataset.mood = m; if (save) try { localStorage.setItem("mood", m); } catch (e) {} moodBtns.forEach(b => b.setAttribute("aria-checked", String(b.dataset.m === m))); }
-  moodBtns.forEach(b => b.addEventListener("click", () => setMood(b.dataset.m, true)));
-  setMood(mood(), false);
 
   /* ---------- plate scenes ---------- */
   const rough = (w, h, seed) => {
@@ -64,6 +57,16 @@
     anchor.before(sec);
   });
 
+  /* ---------- one night shift: dusk in red, the small hours in blue, dawn on white paper ---------- */
+  const SHIFT = { i: ["tense", "18:40"], "git-note-history": ["tense", "19:30"], "ai-assistant-suite": ["tense", "20:50"], "polyglot-helper": ["tense", "22:10"],
+    "video-summary": ["night", "23:40"], "japan-work-secretary": ["night", "00:50"], "ai-accounting": ["night", "02:10"], "pass-countdown": ["night", "03:20"],
+    "tasknotes-countdown": ["night", "04:10"], x: ["night", "04:50"], now: ["quiet", "05:40"], credits: ["quiet", "06:30"] };
+  document.querySelectorAll(".scene").forEach(sc => {
+    const [m, t] = SHIFT[sc.id] || ["quiet", ""]; sc.dataset.mood = m;
+    const num = sc.querySelector(".plate-head .num"); if (num && t) num.insertAdjacentHTML("beforeend", ` <span class="clock">· ${t}</span>`);
+  });
+  document.getElementById("now").classList.add("dawn");
+
   // leaders: from three points inside the specimen to the three notes, measured after layout
   function layoutLeaders(sec) {
     const svg = sec.querySelector(".leaders"), spec = sec.querySelector(".specimen"), notes = [...sec.querySelectorAll(".notes .what")];
@@ -85,15 +88,14 @@
   // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
   // the reel for the current mode: a still first, the GIF once it has loaded and the scene is on screen
   function loadShots() {
-    const m = dark() ? "dark" : "light";
     document.querySelectorAll(".specimen img[data-still]").forEach(img => {
+      const m = img.closest(".scene").dataset.mood === "quiet" ? "light" : "dark";
       const still = img.dataset.still.replace("{m}", m); img.src = still;
       if (!img.dataset.src) return;
       const gif = img.dataset.src.replace("{m}", m); img.dataset.gif = gif;
       const pre = new Image(); pre.onload = () => { if (img.dataset.gif === gif) img.src = gif; }; pre.src = gif;
     });
   }
-  new MutationObserver(loadShots).observe(root, { attributes: true, attributeFilter: ["data-mood"] });
   loadShots();
 
   /* ---------- rail + active scene ---------- */
@@ -110,13 +112,13 @@
   let active = 0;
   const io = new IntersectionObserver(es => es.forEach(en => {
     const i = scenes.indexOf(en.target);
-    if (en.isIntersecting) { en.target.classList.add("on"); active = i; railLinks.forEach((l, k) => l.classList.toggle("on", k === i)); history.replaceState(null, "", "#" + en.target.id); }
+    if (en.isIntersecting) { en.target.classList.add("on"); active = i; root.dataset.chrome = en.target.dataset.mood; railLinks.forEach((l, k) => l.classList.toggle("on", k === i)); history.replaceState(null, "", "#" + en.target.id); }
   }), { root: reel, threshold: .55 });
   scenes.forEach(s => io.observe(s));
   // belt and braces: after any scroll settles, the scene under the viewport is on
   function markActive() {
     const i = Math.max(0, Math.min(scenes.length - 1, Math.round(reel.scrollTop / Math.max(1, reel.clientHeight))));
-    scenes[i].classList.add("on"); active = i; railLinks.forEach((l, k) => l.classList.toggle("on", k === i));
+    scenes[i].classList.add("on"); active = i; root.dataset.chrome = scenes[i].dataset.mood; railLinks.forEach((l, k) => l.classList.toggle("on", k === i));
   }
   let settle; reel.addEventListener("scroll", () => { clearTimeout(settle); settle = setTimeout(markActive, 90); }, { passive: true });
   setTimeout(markActive, 120); setTimeout(markActive, 600);
@@ -162,7 +164,7 @@
   // the plate carries today's number, the way the diary does
   (() => { const d = new Date(), s = new Date(d.getFullYear(), 0, 0), day = Math.floor((d - s) / 864e5);
     const w = Math.ceil(((d - new Date(d.getFullYear(), 0, 1)) / 864e5 + new Date(d.getFullYear(), 0, 1).getDay() + 1) / 7);
-    const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; })();
+    const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; const e2 = document.getElementById("day2"); if (e2) e2.textContent = `DAY ${day} · 18:40 · `; })();
 
   /* ---------- film: lines are typed one character at a time ---------- */
   document.querySelectorAll(".type").forEach(el => {
@@ -210,7 +212,7 @@
   const gutPx = () => parseFloat(css().getPropertyValue("--gut")) || 64;
   function draw(now) {
     if (W < 861) { requestAnimationFrame(draw); return; }
-    const md = mood(), ink = css().getPropertyValue("--m-ink").trim(), bg = css().getPropertyValue("--m-bg").trim();
+    const hs = getComputedStyle(hero), md = hero.dataset.mood, ink = hs.getPropertyValue("--m-ink").trim(), bg = hs.getPropertyValue("--m-bg").trim();
     ctx.clearRect(0, 0, W, H);
     const text = hero.querySelector(".hero-text").getBoundingClientRect(), heroR = hero.getBoundingClientRect();
     const x0 = text.right - heroR.left + Math.max(48, W * .04), x1 = W - gutPx();
