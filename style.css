@@ -3,6 +3,7 @@
    Film: a letterboxed film, one scene per screen. Tokens from 签名.css (2026-11-08). */
 
 :root {
+  --gut: max(64px, 7vw);
   --f-display: "Didot", "Bodoni 72", "Bodoni Moda", Georgia, serif;
   --f-label: "Futura", "Avenir Next", "Jost", "Helvetica Neue", Arial, sans-serif;
   --f-hand: "Bradley Hand", "Caveat", cursive;
@@ -12,7 +13,7 @@
   --t: .7s;
 }
 :root[data-mode="atlas"] {
-  --m-bg: #efeee9; --m-page: #e4e2dc; --m-ink: #17160f; --m-body: #45423c; --m-mute: #6e6a62; --m-line: #c9c5bc;
+  --m-bg: #efeee9; --m-page: #e4e2dc; --m-ink: #17160f; --m-body: #45423c; --m-mute: #65615a; --m-line: #c9c5bc;
   --m-still: #f7f6f2; --m-hole: #d6d3cb; --m-red: #c8291c; --m-grain: .09; color-scheme: light;
 }
 :root[data-mode="film"] {
@@ -69,36 +70,40 @@ body::after {
 .reel::-webkit-scrollbar { display: none; }
 .scene { position: relative; min-height: 100%; height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; background: var(--m-bg); transition: background var(--t); }
 :root[data-mode="film"] .scene { border-top: 1px solid #000; }
+/* the film strip rail needs room on the left */
+:root[data-mode="film"] { --gut: max(112px, 7vw); }
 
 /* hero */
 #pulse { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.hero-text { position: absolute; left: max(64px, 7vw); top: 50%; transform: translateY(-50%); max-width: 46ch; z-index: 2; }
+.hero-text { position: absolute; left: var(--gut); top: 50%; transform: translateY(-50%); max-width: 46ch; z-index: 2; }
 .eyebrow { margin: 0 0 10px; }
 .eyebrow span { font-family: var(--f-label); font-size: 11px; letter-spacing: .42em; color: var(--m-mute); }
 h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); letter-spacing: -.03em; color: var(--m-ink); transition: color var(--t); }
-.rule { display: block; width: 64px; height: 2px; background: var(--m-red); margin: 24px 0 18px; }
+.rule { display: block; width: 64px; height: 8px; margin: 22px 0 16px; overflow: visible; }
+.rule path { stroke: var(--m-red); stroke-width: 2.6; stroke-linecap: butt; fill: none; }
 .tag { margin: 0 0 12px; font-size: clamp(16px, 1.6vw, 21px); color: var(--m-body); max-width: 34ch; }
 .principles { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font: 500 12px/1 var(--f-label); letter-spacing: .3em; text-transform: uppercase; color: var(--m-mute); }
 :root[data-mode="film"] .principles { color: var(--m-red); }
-.hint { margin: 42px 0 0; font: 500 10px/1 var(--f-label); letter-spacing: .3em; text-transform: uppercase; color: var(--m-mute); animation: hint 2.4s var(--ease) infinite; }
+.hint { margin: 42px 0 0; font: 500 11px/1 var(--f-label); letter-spacing: .3em; text-transform: uppercase; color: var(--m-mute); animation: hint 2.4s var(--ease) infinite; }
 @keyframes hint { 0%, 100% { transform: translateY(0); opacity: .5 } 50% { transform: translateY(6px); opacity: 1 } }
 .bands { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .bands li { position: absolute; pointer-events: auto; }
-.bands a { display: inline-block; padding: 6px 10px; border-radius: 999px; text-decoration: none; font: 500 10px/1 var(--f-label); letter-spacing: .3em; text-transform: uppercase; color: var(--m-ink); background: color-mix(in srgb, var(--m-bg) 85%, transparent); border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); opacity: 0; transform: translateX(-6px); transition: opacity .3s, transform .3s var(--ease); }
+.bands a { display: inline-block; padding: 6px 10px; border-radius: 999px; text-decoration: none; font: 500 11px/1 var(--f-label); letter-spacing: .3em; text-transform: uppercase; color: var(--m-ink); background: color-mix(in srgb, var(--m-bg) 85%, transparent); border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); opacity: 0; transform: translateX(-6px); transition: opacity .3s, transform .3s var(--ease); }
 .bands li.on a, .bands a:focus-visible { opacity: 1; transform: none; }
 
 /* plate scenes */
-.plate-head { position: absolute; left: max(64px, 7vw); top: 76px; display: flex; align-items: baseline; gap: 18px; z-index: 3; }
+.plate-head { position: absolute; left: var(--gut); top: 76px; display: flex; align-items: baseline; gap: 18px; z-index: 3; }
 .plate-head .num { color: var(--c, var(--m-ink)); }
 .file { position: absolute; right: 34px; top: 82px; font: 400 10px/1 var(--f-label); letter-spacing: .3em; color: var(--m-mute); z-index: 3; }
 .holes { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); display: grid; gap: 120px; z-index: 3; }
 .holes i { width: 16px; height: 16px; border-radius: 50%; background: var(--m-hole); border: 1px solid var(--m-line); display: block; }
 :root[data-mode="film"] .holes { display: none; }
 
-.plate { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 0 56px; align-items: center; height: 100%; padding: 120px max(64px, 7vw) 90px; }
+.plate { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 0 56px; align-items: center; height: 100%; padding: 120px var(--gut) 90px; }
 .specimen { position: relative; aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden; background: var(--m-still); box-shadow: 0 30px 80px -40px rgba(0,0,0,.6); }
 .specimen img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter var(--t); }
-:root[data-mode="atlas"] .specimen img { filter: saturate(.72) contrast(1.04); }
+:root[data-mode="atlas"] .specimen img { filter: grayscale(1) contrast(1.04); transition: filter 1.8s ease .3s; }
+:root[data-mode="atlas"] .scene.on .specimen img { filter: saturate(.72) contrast(1.04); }
 :root[data-mode="film"] .specimen { aspect-ratio: auto; width: fit-content; max-width: 100%; margin: 0 auto; border-radius: 2px; background: #000; box-shadow: 0 50px 120px -50px rgba(0,0,0,.9); outline: 1px solid rgba(239,230,214,.14); outline-offset: 12px; }
 :root[data-mode="film"] .specimen img { width: auto; height: auto; max-width: 100%; max-height: 56svh; object-fit: contain; filter: contrast(1.04); }
 :root[data-mode="film"] .specimen::before, :root[data-mode="film"] .specimen::after { content: ""; position: absolute; left: -12px; right: -12px; height: 6px; background: repeating-linear-gradient(90deg, transparent 0 14px, rgba(239,230,214,.22) 14px 22px, transparent 22px 30px); pointer-events: none; }
@@ -132,7 +137,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 .scene.on .leaders circle { opacity: 1; }
 :root[data-mode="film"] .leaders { display: none; }
 
-.name { position: absolute; left: max(64px, 7vw); bottom: 56px; right: 34px; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.name { position: absolute; left: var(--gut); bottom: 56px; right: 34px; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .name h2 { margin: 0; font: italic 400 clamp(36px, 4.6vw, 64px)/1 var(--f-display); color: var(--m-ink); letter-spacing: -.015em; }
 .name p { margin: 6px 0 0; color: var(--m-mute); font-size: 15px; }
 .name .links { display: flex; gap: 14px; align-items: center; margin: 0 0 6px; }
@@ -149,7 +154,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 :root[data-mode="film"] .scene.plate-scene::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); pointer-events: none; }
 
 /* web */
-.webgrid { list-style: none; margin: 0; padding: 0; position: absolute; left: max(64px, 7vw); right: max(64px, 7vw); top: 50%; transform: translateY(-46%); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.webgrid { list-style: none; margin: 0; padding: 0; position: absolute; left: var(--gut); right: var(--gut); top: 50%; transform: translateY(-46%); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
 .webgrid li { min-width: 0; border-top: 1px solid var(--m-line); padding-top: 18px; }
 .webgrid .num { color: var(--c); font-size: 14px; }
 .webgrid h2 { margin: 8px 0 6px; font: italic 400 clamp(28px, 3vw, 44px)/1.05 var(--f-display); color: var(--m-ink); }
@@ -160,10 +165,10 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 :root[data-mode="film"] .webgrid .num::after { content: ""; display: block; width: 40px; height: 2px; margin: 10px auto 0; background: var(--c); }
 
 /* now */
-.feed { list-style: none; margin: 0; padding: 0; position: absolute; left: max(64px, 7vw); right: max(64px, 7vw); top: 50%; transform: translateY(-50%); display: grid; gap: 14px; max-width: 70ch; }
+.feed { list-style: none; margin: 0; padding: 0; position: absolute; left: var(--gut); right: var(--gut); top: 50%; transform: translateY(-50%); display: grid; gap: 14px; max-width: 70ch; }
 .feed li { display: grid; grid-template-columns: 110px 1fr; gap: 20px; align-items: baseline; padding: 10px 0 6px; position: relative; }
 .feed .t i { font: italic 700 20px/1.1 var(--f-display); color: var(--m-ink); font-style: italic; display: block; }
-.feed .t small { font: 500 10px/1.6 var(--f-label); letter-spacing: .25em; text-transform: uppercase; color: var(--m-red); }
+.feed .t small { font: 500 11px/1.6 var(--f-label); letter-spacing: .25em; text-transform: uppercase; color: var(--m-red); }
 .feed .r a { color: var(--m-ink); text-decoration: none; font-family: var(--f-hand); font-size: 20px; }
 .feed .r small { display: block; color: var(--m-mute); font-size: 13px; margin-top: 2px; }
 .feed .slate { display: none; }
@@ -178,7 +183,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 :root[data-mode="film"] .feed .t { display: flex; gap: 16px; align-items: baseline; }
 :root[data-mode="film"] .feed .t i { font-size: 16px; }
 :root[data-mode="film"] .feed .r a { font: 400 18px/1.3 var(--f-display); font-style: italic; }
-.aside { position: absolute; left: max(64px, 7vw); right: 120px; bottom: 36px; margin: 0; font-size: 13px; color: var(--m-mute); max-width: 70ch; }
+.aside { position: absolute; left: var(--gut); right: 120px; bottom: 36px; margin: 0; font-size: 13px; color: var(--m-mute); max-width: 70ch; }
 
 /* credits */
 .roll { height: 100%; overflow: hidden; text-align: center; position: relative; }
@@ -232,8 +237,8 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
   .sign { right: 22px; bottom: 16px; }
   .roll { height: 100svh; }
   .mode { gap: 8px; padding: 5px 9px 5px 10px; }
-  .mode span { font-size: 10px; letter-spacing: .2em; }
-  .fig { font-size: 10px; letter-spacing: .25em; }
+  .mode span { font-size: 11px; letter-spacing: .2em; }
+  .fig { font-size: 11px; letter-spacing: .25em; }
 }
 
 
@@ -266,7 +271,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 .tab { position: absolute; right: -2px; top: 42%; z-index: 3; writing-mode: vertical-rl; background: var(--m-ink); color: var(--m-bg); font: italic 700 15px/1 var(--f-display); letter-spacing: .08em; padding: 14px 7px 14px 9px; border-radius: 3px 0 0 3px; transition: background var(--t), color var(--t); }
 :root[data-mode="film"] .tab { display: none; }
 /* a few ink dots fly off the frame once it is drawn */
-.dots { position: absolute; left: max(64px, 7vw); top: 120px; width: 60px; height: 60px; overflow: visible; pointer-events: none; z-index: 2; }
+.dots { position: absolute; left: var(--gut); top: 120px; width: 60px; height: 60px; overflow: visible; pointer-events: none; z-index: 2; }
 .dots circle { fill: var(--m-ink); opacity: 0; transform-origin: center; }
 .dots circle:nth-child(4) { fill: var(--m-red); }
 .scene.on .dots circle { animation: dot .4s var(--ease) forwards; }
@@ -274,3 +279,27 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 @keyframes dot { from { opacity: 0; transform: scale(0) } to { opacity: .85; transform: scale(1) } }
 :root[data-mode="film"] .dots { display: none; }
 @media (prefers-reduced-motion: reduce) { .scene.on .dots circle { animation: none; opacity: .85; } }
+
+/* atlas: the annotation is written, left to right, not faded in */
+:root[data-mode="atlas"] .notes .what .hand { clip-path: inset(-10px 100% -10px -10px); transition: clip-path .9s var(--ease); }
+:root[data-mode="atlas"] .scene.on .notes .what .hand { clip-path: inset(-10px -10px -10px -10px); }
+:root[data-mode="atlas"] .scene.on .notes .what:nth-child(1) .hand { transition-delay: .8s } :root[data-mode="atlas"] .scene.on .notes .what:nth-child(2) .hand { transition-delay: 1.15s } :root[data-mode="atlas"] .scene.on .notes .what:nth-child(3) .hand { transition-delay: 1.5s }
+/* film: the one line under the title is typed, with a red cursor that blinks out */
+:root[data-mode="film"] .type span { opacity: 0; }
+:root[data-mode="film"] .scene.on .type span { animation: tchar 0s steps(1) calc(.45s + var(--i) * 26ms) forwards; }
+@keyframes tchar { to { opacity: 1 } }
+.type::after { content: ""; display: none; width: .55em; height: 1em; background: var(--m-red); vertical-align: -.15em; margin-left: .18em; opacity: 0; }
+:root[data-mode="film"] .scene.on .type::after { display: inline-block; animation: tcur .7s steps(2) var(--d, 1.5s) 3 forwards; }
+@keyframes tcur { 0% { opacity: 0 } 50% { opacity: 1 } 100% { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) {
+  :root[data-mode="atlas"] .notes .what .hand { clip-path: none; transition: none; }
+  :root[data-mode="atlas"] .specimen img { filter: saturate(.72) contrast(1.04); transition: none; }
+  :root[data-mode="film"] .type span { opacity: 1; animation: none; }
+  .type::after { display: none !important; }
+}
+@media (max-width: 860px) {
+  :root[data-mode="film"] .type span { opacity: 1; animation: none; }
+  .type::after { display: none !important; }
+  :root[data-mode="atlas"] .notes .what .hand { clip-path: none; }
+  :root[data-mode="atlas"] .specimen img { filter: saturate(.72) contrast(1.04); }
+}

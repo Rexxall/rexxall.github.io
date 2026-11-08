@@ -59,7 +59,7 @@
       </div>
       <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(j => `<path pathLength="1" d="M0 0"/><circle r="8"/><text text-anchor="middle">${j + 1}</text>`).join("")}</svg>
       <div class="name">
-        <div><h2>${p.name}</h2><p>${p.line}</p></div>
+        <div><h2>${p.name}</h2><p class="type">${p.line}</p></div>
         <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
       </div>
       <span class="sign" aria-hidden="true">R.</span>`;
@@ -168,7 +168,29 @@
     const w = Math.ceil(((d - new Date(d.getFullYear(), 0, 1)) / 864e5 + new Date(d.getFullYear(), 0, 1).getDay() + 1) / 7);
     const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; })();
 
-  /* ---------- credits roll ---------- */
+  /* ---------- film: lines are typed one character at a time ---------- */
+  document.querySelectorAll(".type").forEach(el => {
+    const chars = [...el.textContent]; el.style.setProperty("--d", (.45 + chars.length * .026 + .1).toFixed(2) + "s");
+    el.innerHTML = chars.map((ch, i) => `<span style="--i:${i}">${ch === "<" ? "&lt;" : ch === "&" ? "&amp;" : ch}</span>`).join("");
+  });
+
+  /* ---------- credits roll: a different line on the verse card each time the page opens ---------- */
+  const VERSES = [
+    ["The tool proposes, you decide, undo always.", "工具提议，你来决定，随时撤销。", "the one line under every plugin"],
+    ["Find a sentence you deleted. Take back only that part.", "找回删掉的那句话，只拿回那一部分。", "Git Note History"],
+    ["AI suggests title, tags and folder. You tick what to apply.", "AI 提议标题、标签和文件夹，你勾选要用的。", "AI Assistant Suite"],
+    ["Look up Japanese and English words, keep them for review.", "查日文和英文单词，留下来复习。", "Polyglot Helper"],
+    ["A video link in, a finished note out.", "进去一个视频链接，出来一篇写好的笔记。", "Video Summary"],
+    ["Part-time shifts in Japan, warned before 28 hours.", "在日本打工的班表，到 28 小时之前先提醒。", "Japan Work Secretary"],
+    ["A receipt in, a checked ledger entry out.", "进去一张小票，出来一条核过的账。", "AI Accounting"],
+    ["Uses left, time left, and the pace to finish.", "还剩几次、还剩多久、照这个速度赶不赶得完。", "Pass Countdown"],
+    ["Deadlines from TaskNotes, and whether you will make it.", "TaskNotes 里的截止日，和你赶不赶得上。", "TaskNotes Countdown"],
+    ["Start from a real chore.", "从一件真实的杂事开始。", "how I build"],
+    ["Keep data local, in Markdown and Git.", "数据留在本地，用 Markdown 和 Git。", "how I build"],
+    ["Follow the host app's theme.", "跟着宿主应用的主题走。", "how I build"],
+  ];
+  (() => { const v = VERSES[Math.floor(Math.random() * VERSES.length)], card = document.querySelector(".verse"); if (!card) return;
+    card.querySelector(".en").textContent = v[0]; card.querySelector(".zh").textContent = v[1]; card.querySelector(".by").textContent = "— " + v[2]; })();
   const roll = document.getElementById("roll"); const inner = document.createElement("div"); inner.className = "roll-inner";
   while (roll.firstChild) inner.appendChild(roll.firstChild); roll.appendChild(inner);
 
