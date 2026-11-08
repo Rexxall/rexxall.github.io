@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Jost:wght@400;500&family=Caveat:wght@500&family=Pinyon+Script&display=swap">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <script>
   try { var m = localStorage.getItem('mode'); if (!m) m = matchMedia('(prefers-color-scheme: dark)').matches ? 'film' : 'atlas'; document.documentElement.dataset.mode = m; } catch (e) {}
 </script>
@@ -43,41 +43,54 @@
       <p class="principles"><span>the tool proposes</span><span>you decide</span><span>undo always</span></p>
       <p class="hint" aria-hidden="true">scroll, or press ↓</p>
     </div>
-    <ol class="bands" id="bands" aria-label="Plugins, one per band"></ol>
+    <ol class="ticks" id="ticks" aria-label="Plugins"></ol>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
   <!-- scenes II–IX are built by main.js from the plugin list -->
 
   <section class="scene web" id="x" data-roman="X">
-    <div class="plate-head"><span class="num">PLATE X – XII</span><span class="k"><span class="atlas-only">WEB · RUNS IN THE BROWSER, KEEPS NOTHING</span><span class="film-only">SCENES X – XII · WEB</span></span></div>
+    <div class="plate-head"><span class="num">PLATE X – XII</span><span class="k"><span class="atlas-only">Web · runs in the browser, keeps nothing</span><span class="film-only">Scenes X – XII · Web</span></span></div>
+    <span class="file">ITH_PLATE_X</span>
+    <span class="tab" aria-hidden="true">X</span>
+    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
     <ol class="webgrid">
-      <li style="--c:#30b0c7">
+      <li>
+        <figure class="specimen" style="margin:0"><img data-still="assets/noesis-{m}.jpg" alt="Noesis Paper Reader" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="31"/></svg></figure>
         <span class="num">FIG. X</span>
         <h2>Noesis Paper Reader</h2>
         <p class="hand">read a paper in three passes and come out able to explain it</p>
         <p class="links"><a class="btn" href="https://rexxall.github.io/noesis-paper-companion/">Open</a><a href="https://github.com/Rexxall/noesis-paper-companion">code</a></p>
       </li>
-      <li style="--c:#ff9f0a">
+      <li>
+        <figure class="specimen" style="margin:0"><img data-still="assets/bunmyaku-{m}.jpg" alt="Bunmyaku" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="32"/></svg></figure>
         <span class="num">FIG. XI</span>
         <h2>Bunmyaku</h2>
         <p class="hand">turn any Japanese material into a local study desk</p>
         <p class="links"><a class="btn" href="https://rexxall.github.io/bunmyaku-nihongo/">Open</a><a href="https://github.com/Rexxall/bunmyaku-nihongo">code</a></p>
       </li>
-      <li style="--c:#7a5af0">
+      <li>
+        <figure class="specimen" style="margin:0"><img data-still="assets/evidence-inbox-{m}.jpg" alt="Evidence Inbox" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="33"/></svg></figure>
         <span class="num">FIG. XII</span>
         <h2>Evidence Inbox</h2>
         <p class="hand">save a public post into Obsidian with its text, images and source link</p>
         <p class="links"><a class="btn" href="https://github.com/Rexxall/obsidian-evidence-inbox">Code</a></p>
       </li>
     </ol>
+    <div class="name"><div><p class="type">Three things that run in a tab. Nothing leaves your machine.</p></div></div>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
   <section class="scene now" id="now" data-roman="XIII">
-    <div class="plate-head"><span class="num">PLATE XIII</span><span class="k"><span class="atlas-only">LAB NOTES · WHAT MOVED THIS WEEK</span><span class="film-only">DAILIES · WHAT MOVED THIS WEEK</span></span></div>
-    <ol class="feed" id="feed"><li class="hand dim">reading the commit log…</li></ol>
-    <p class="aside">Pulled live from GitHub when the page opens. AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
+    <div class="plate-head"><span class="num">PLATE XIII</span><span class="k"><span class="atlas-only">Lab notes · what moved this week</span><span class="film-only">Dailies · what moved this week</span></span></div>
+    <span class="file">ITH_PLATE_XIII</span>
+    <span class="tab" aria-hidden="true">XIII</span>
+    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="plate">
+      <ol class="feed" id="feed"><li class="hand dim">reading the commit log…</li></ol>
+      <p class="aside"><span class="hand">pulled live from GitHub when the page opens</span>AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
+    </div>
+    <div class="name"><div><p class="type">The last commit on each repository, newest first.</p></div><p class="links"><a class="btn" href="https://github.com/Rexxall">All repositories</a></p></div>
     <span class="sign" aria-hidden="true">R.</span>
   </section>
 
@@ -102,6 +115,6 @@
 
 </main>
 
-<script src="main.js"></script>
+<script src="main.js?v=2"></script>
 </body>
 </html>

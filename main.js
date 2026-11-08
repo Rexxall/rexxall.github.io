@@ -45,19 +45,17 @@
       <div class="plate-head"><span class="num">FIG. ${p.roman}</span><span class="k"><span class="atlas-only">Obsidian plugin</span><span class="film-only">Scene ${p.roman}</span></span></div>
       <span class="file">ITH_PLATE_${p.roman}</span>
       <span class="tab" aria-hidden="true">${p.roman}</span>
-      <svg class="dots" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${[0,1,2,3,4].map(k => `<circle cx="${8 + (k * 37) % 84}" cy="${12 + (k * 53) % 76}" r="${(k % 3) * .25 + .35}"/>`).join("")}</svg>
       <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="plate">
         <figure class="specimen" style="margin:0">
           <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
-          <span class="gloss" aria-hidden="true"></span>
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>
         <div class="notes">
           ${p.notes.map((n, j) => `<div class="what"><span class="n">${j + 1}</span><p class="hand">${n.replace(/<b>(.*?)<\/b>/, '<b><svg class="circ" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M8 22 C 6 8, 40 2, 60 4 C 86 6, 98 14, 94 24 C 90 36, 50 40, 26 36 C 10 33, 4 28, 8 22"/></svg>$1</b>')}</p></div>`).join("")}
         </div>
       </div>
-      <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(j => `<path pathLength="1" d="M0 0"/><circle r="8"/><text text-anchor="middle">${j + 1}</text>`).join("")}</svg>
+      <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/>`).join("")}</svg>
       <div class="name">
         <div><h2>${p.name}</h2><p class="type">${p.line}</p></div>
         <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
@@ -72,15 +70,15 @@
     if (!svg || !spec || !notes.length) return;
     const R = sec.getBoundingClientRect(), S = spec.getBoundingClientRect();
     svg.setAttribute("viewBox", `0 0 ${R.width} ${R.height}`); svg.setAttribute("width", R.width); svg.setAttribute("height", R.height);
-    const paths = svg.querySelectorAll("path"), dots = svg.querySelectorAll("circle");
+    const paths = svg.querySelectorAll("path");
     notes.forEach((n, j) => {
-      const N = n.getBoundingClientRect();
-      const x1 = S.right - R.left + 10, y1 = S.top - R.top + S.height * (.22 + j * .28);
-      const x2 = N.left - R.left - 14, y2 = N.top - R.top + 14, xm = S.right - R.left + 34;
-      paths[j].setAttribute("d", `M${x1} ${y1} L${xm} ${y2} H${x2}`);
-      dots[j].setAttribute("cx", x1); dots[j].setAttribute("cy", y1); const lab = svg.querySelectorAll("text")[j]; if (lab) { lab.setAttribute("x", x1); lab.setAttribute("y", y1 + 3.5); }
+      const N = n.getBoundingClientRect(), y = N.top - R.top + 13;
+      const x1 = S.right - R.left + 14, x2 = N.left - R.left - 16;
+      // a short tick down into the specimen's edge, then straight across to the note
+      paths[j].setAttribute("d", `M${x1 - 6} ${y} H${x2}`);
     });
   }
+  document.querySelectorAll(".frame path[data-seed]").forEach(pa => pa.setAttribute("d", rough(1000, 625, +pa.dataset.seed)));
   const relayout = () => document.querySelectorAll(".plate-scene").forEach(layoutLeaders);
   addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
 
@@ -88,10 +86,10 @@
   // the reel for the current mode: a still first, the GIF once it has loaded and the scene is on screen
   function loadShots() {
     const m = mode() === "film" ? "dark" : "light";
-    document.querySelectorAll(".plate-scene").forEach(sec => {
-      const img = sec.querySelector(".specimen img");
-      const still = img.dataset.still.replace("{m}", m), gif = img.dataset.src.replace("{m}", m);
-      img.src = still; img.dataset.gif = gif;
+    document.querySelectorAll(".specimen img[data-still]").forEach(img => {
+      const still = img.dataset.still.replace("{m}", m); img.src = still;
+      if (!img.dataset.src) return;
+      const gif = img.dataset.src.replace("{m}", m); img.dataset.gif = gif;
       const pre = new Image(); pre.onload = () => { if (img.dataset.gif === gif) img.src = gif; }; pre.src = gif;
     });
   }
@@ -194,11 +192,10 @@
   const roll = document.getElementById("roll"); const inner = document.createElement("div"); inner.className = "roll-inner";
   while (roll.firstChild) inner.appendChild(roll.firstChild); roll.appendChild(inner);
 
-  /* ---------- hero: ECG → prism → eight bands, driven by the pointer and by scroll ---------- */
+  /* ---------- hero: one ink trace across the plate, beating faster the further you scroll ---------- */
   const cv = document.getElementById("pulse"), ctx = cv.getContext("2d");
-  const bands = document.getElementById("bands");
-  PLUGINS.forEach(p => { const li = document.createElement("li"); li.style.setProperty("--c", p.c); li.innerHTML = `<a href="#${p.slug}">${p.name}</a>`; bands.appendChild(li); });
-  const bandEls = [...bands.children];
+  const ticks = document.getElementById("ticks");
+  PLUGINS.forEach(p => { const li = document.createElement("li"); li.innerHTML = `<a href="#${p.slug}"><b>${p.roman}</b><small>${p.name}</small></a>`; ticks.appendChild(li); });
   let W = 0, H = 0, mouse = { x: -1, y: -1 }, t0 = performance.now(), smoothY = null, scrollK = 0;
   function size() { const dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener("resize", size); size();
@@ -212,36 +209,31 @@
     if (u < .48) return -(u - .44) / .04 * 70; if (u < .54) return -70 + (u - .48) / .06 * 120; if (u < .59) return 50 - (u - .54) / .05 * 68; if (u < .63) return -18 + (u - .59) / .04 * 18;
     if (u < .72) return 0; if (u < .84) return -Math.sin((u - .72) / .12 * Math.PI) * 20; return 0;
   }
+  const gutPx = () => parseFloat(css().getPropertyValue("--gut")) || 64;
   function draw(now) {
-    const dark = mode() === "film", ink = css().getPropertyValue("--m-ink").trim(), mute = css().getPropertyValue("--m-mute").trim();
+    if (W < 861) { requestAnimationFrame(draw); return; }
+    const ink = css().getPropertyValue("--m-ink").trim(), red = css().getPropertyValue("--m-red").trim();
     ctx.clearRect(0, 0, W, H);
-    const wide = W > 860, baseY = H * (wide ? .5 : .8);
-    const targetY = mouse.y > 0 && wide ? Math.min(H * .78, Math.max(H * .22, mouse.y)) : baseY;
+    const text = hero.querySelector(".hero-text").getBoundingClientRect(), heroR = hero.getBoundingClientRect();
+    const x0 = text.right - heroR.left + Math.max(48, W * .04), x1 = W - gutPx();
+    const baseY = H * .5;
+    const targetY = mouse.y > 0 ? Math.min(H * .72, Math.max(H * .28, mouse.y)) : baseY;
     smoothY = smoothY == null ? baseY : smoothY + (targetY - smoothY) * .08;
-    const x0 = wide ? W * .50 : 16, px = wide ? W * .74 : W * .42, h = Math.min(wide ? 220 : 150, H * .34) * (1 + scrollK * .6);
-    const speed = reduce ? 0 : (now - t0) / 1000;
-    // the pulse, beating faster the further you have scrolled
-    ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = ink; ctx.beginPath();
-    for (let x = x0; x <= px - h * .36; x += 2) {
-      const u = (((x + speed * (110 + scrollK * 160)) / 420) % 1 + 1) % 1, y = smoothY + ecgY(u) * (h / 220);
+    const amp = Math.min(260, H * .3) * (1 + scrollK * .5), speed = reduce ? 0 : (now - t0) / 1000, period = Math.max(360, (x1 - x0) / 2.2);
+    // the baseline, faint, like the paper's own rule
+    ctx.strokeStyle = ink; ctx.globalAlpha = .18; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, smoothY); ctx.lineTo(x1, smoothY); ctx.stroke(); ctx.globalAlpha = 1;
+    // the trace
+    ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath();
+    let peak = null;
+    for (let x = x0; x <= x1; x += 2) {
+      const u = (((x + speed * (110 + scrollK * 160)) / period) % 1 + 1) % 1, dy = ecgY(u), y = smoothY + dy * (amp / 220);
+      if (!peak || dy < peak.dy) peak = { x, y, dy };
       x === x0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.stroke();
-    const cx = px, cy = smoothY;
-    ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx, cy - h * .58); ctx.lineTo(cx + h * .5, cy + h * .36); ctx.lineTo(cx - h * .5, cy + h * .36); ctx.closePath(); ctx.stroke();
-    ctx.globalAlpha = .35; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx - h * .1, cy + h * .05); ctx.lineTo(cx + h * .18, cy - h * .18); ctx.lineTo(cx + h * .24, cy + h * .18); ctx.stroke(); ctx.globalAlpha = 1;
-    // bands open wider as you scroll towards the plates
-    const ex = cx + h * .32, spread = Math.min(H * .5, 300) * (1 + scrollK * 1.2), endX = W - (wide ? 28 : 10);
-    PLUGINS.forEach((p, i) => {
-      const y1 = cy - spread / 2 + (i + .5) * (spread / 8), thick = spread / 8 * .78;
-      ctx.beginPath(); ctx.moveTo(ex, cy - 4 + i); ctx.lineTo(endX, y1 - thick / 2); ctx.lineTo(endX, y1 + thick / 2); ctx.lineTo(ex, cy - 3 + i); ctx.closePath();
-      ctx.fillStyle = p.c; ctx.globalAlpha = (dark ? .92 : .84) - scrollK * .3; ctx.fill(); ctx.globalAlpha = 1;
-      const el = bandEls[i]; if (wide) { el.style.left = (endX - 190) + "px"; el.style.top = (y1 - 12) + "px"; }
-      el.classList.toggle("on", mouse.x > ex && Math.abs(mouse.y - y1) < spread / 16);
-    });
-    ctx.fillStyle = mute; ctx.font = "500 10px " + css().getPropertyValue("--f-label"); ctx.textAlign = "center"; ctx.fillText("E I G H T   T O O L S", cx, cy + h * .36 + 26);
-    if (!reduce) requestAnimationFrame(draw);
+    // the R wave carries the one red mark on the plate
+    if (peak && peak.dy < -40) { ctx.fillStyle = red; ctx.beginPath(); ctx.arc(peak.x, peak.y, 4, 0, Math.PI * 2); ctx.fill(); }
+    requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
-  if (reduce) new MutationObserver(() => requestAnimationFrame(draw)).observe(root, { attributes: true });
 })();
