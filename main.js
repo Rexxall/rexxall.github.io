@@ -47,7 +47,7 @@
       <span class="tab" aria-hidden="true">${p.roman}</span>
       <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="plate">
-        <figure class="specimen" style="margin:0">
+        <figure class="specimen">
           <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>

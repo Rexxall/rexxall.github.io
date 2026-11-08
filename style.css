@@ -30,6 +30,7 @@
 html { height: 100%; }
 body { margin: 0; height: 100%; background: var(--m-page); color: var(--m-body); font: 16px/1.6 var(--f-ui); -webkit-font-smoothing: antialiased; transition: background var(--t), color var(--t); overflow: hidden; }
 a { color: inherit; }
+::selection { background: var(--m-red); color: #fff; }
 .atlas-only, .film-only { display: none; }
 :root[data-mode="atlas"] .atlas-only, :root[data-mode="film"] .film-only { display: inline; }
 
@@ -61,10 +62,11 @@ body::after {
 
 /* rail: the plate index. Atlas: numerals. Film: a strip of frames. */
 .rail { position: fixed; left: max(14px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); z-index: 20; display: grid; gap: 10px; }
-.rail a { font: 700 11px/1 var(--f-display); letter-spacing: .06em; color: var(--m-mute); opacity: .55; padding: 2px 4px; position: relative; text-decoration: none; transition: opacity .3s, color .3s; }
+.rail a { font: 700 11px/1 var(--f-display); letter-spacing: .06em; color: var(--m-mute); opacity: .8; padding: 2px 4px; position: relative; text-decoration: none; transition: opacity .3s, color .3s; }
 .rail a.on { opacity: 1; color: var(--m-ink); }
 .rail a.on::before { content: ""; position: absolute; left: -10px; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--m-red); transform: translateY(-50%); }
 .rail .rt { display: none; }
+:root[data-mode="atlas"] .rail { left: 50px; }
 :root[data-mode="film"] .rail { gap: 4px; padding: 8px 6px; background: #000; border-radius: 3px; border-left: 4px dotted #2a2a2e; border-right: 4px dotted #2a2a2e; }
 :root[data-mode="film"] .rail .rn, :root[data-mode="film"] .rail a.on::before { display: none; }
 :root[data-mode="film"] .rail .rt { display: block; width: 44px; height: 26px; object-fit: cover; background: #15131a; border-radius: 1px; opacity: .35; filter: saturate(.6); transition: opacity .3s, filter .3s; }
@@ -86,8 +88,9 @@ body::after {
 .tab { position: absolute; right: -2px; top: 42%; z-index: 3; writing-mode: vertical-rl; background: var(--m-ink); color: var(--m-bg); font: italic 700 15px/1 var(--f-display); letter-spacing: .08em; padding: 14px 7px 14px 9px; border-radius: 3px 0 0 3px; transition: background var(--t), color var(--t); }
 :root[data-mode="film"] :is(.holes, .tab) { display: none; }
 
-.plate { position: absolute; left: var(--gut); right: var(--gut); top: var(--top); bottom: calc(var(--foot) + 96px); display: grid; grid-template-columns: minmax(0, 7fr) minmax(260px, 4fr); gap: 0 clamp(40px, 5vw, 96px); align-items: center; }
-.specimen { position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 100%; border-radius: 3px; overflow: hidden; background: var(--m-still); box-shadow: 0 30px 80px -40px rgba(0,0,0,.6); }
+.plate { position: absolute; left: var(--gut); right: var(--gut); top: var(--top); bottom: calc(var(--foot) + 96px); display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 0 clamp(40px, 5vw, 96px); align-items: center; }
+figure.specimen { margin: 0; }
+.specimen { position: relative; width: min(520px, 64svh, 40vw); aspect-ratio: 16 / 10; max-height: 100%; border-radius: 3px; overflow: hidden; background: var(--m-still); box-shadow: 0 30px 80px -40px rgba(0,0,0,.6); }
 .specimen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 :root[data-mode="atlas"] .specimen img { filter: grayscale(1) contrast(1.04); transition: filter 1.8s ease .3s; }
 :root[data-mode="atlas"] .scene.on .specimen img { filter: saturate(.72) contrast(1.04); }
@@ -145,12 +148,12 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 .ticks a { display: block; text-decoration: none; color: var(--m-mute); transition: color .3s; }
 .ticks a:hover { color: var(--m-ink); }
 .ticks b { display: block; font: 700 14px/1 var(--f-display); color: var(--m-ink); margin-bottom: 8px; }
-.ticks small { display: block; font-size: 10.5px; letter-spacing: .12em; line-height: 1.5; }
+.ticks small { display: block; font-size: 11px; letter-spacing: .12em; line-height: 1.5; }
 
 /* ── plate X–XII: web. Three small specimens on the same grid. ── */
 .webgrid { list-style: none; margin: 0; padding: 0; position: absolute; left: var(--gut); right: var(--gut); top: var(--top); bottom: calc(var(--foot) + 96px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 64px); align-content: center; }
 .webgrid li { min-width: 0; }
-.webgrid .specimen { aspect-ratio: 16 / 10; margin-bottom: 32px; }
+.webgrid .specimen { width: min(100%, 300px); aspect-ratio: 16 / 10; margin-bottom: 30px; }
 .webgrid .num { font-size: 13px; display: block; margin-bottom: 6px; }
 .webgrid h2 { margin: 0 0 6px; font: italic 400 clamp(24px, 2.4vw, 34px)/1.05 var(--f-display); color: var(--m-ink); }
 .webgrid .hand { margin: 0 0 14px; color: var(--m-body); font-size: 17px; }
@@ -186,7 +189,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 /* the old-book verse card */
 .verse { width: min(560px, 100%); margin: 0 0 10px; padding: 26px 30px 22px; background: #d9d4ca; color: #2b2620; position: relative; transform: rotate(-.6deg); box-shadow: 0 14px 40px -20px rgba(0,0,0,.5); }
 .verse::before { content: ""; position: absolute; left: 24px; top: -9px; width: 56px; height: 16px; background: rgba(214,196,160,.6); transform: rotate(-4deg); }
-.verse .en { margin: 0 0 8px; font: italic 15px/1.4 var(--f-display); color: #6a6762; }
+.verse .en { margin: 0 0 8px; font: italic 15px/1.4 var(--f-display); color: #55524c; }
 .verse .zh { margin: 0; font: 700 22px/1.5 "Songti SC", "Hiragino Mincho ProN", "Noto Serif SC", serif; text-shadow: 0 0 .6px rgba(43,38,32,.6); }
 .verse .by { margin: 10px 0 0; font: 400 13px/1 var(--f-hand); color: #8a2a1e; }
 :root[data-mode="film"] .verse { background: #9aa6c2; color: #13235e; } :root[data-mode="film"] .verse .en { color: #2c3a6b; } :root[data-mode="film"] .verse .by { color: #1d2e6b; }
@@ -225,7 +228,7 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
   .reel { scroll-snap-type: none; }
   .plate-head { position: static; padding: 92px var(--gut) 0; }
   .plate, .webgrid, .hero-text { position: static; display: block; padding: 18px var(--gut) 0; max-width: none; }
-  .specimen { margin: 0 0 22px; box-shadow: 0 24px 60px -34px rgba(0,0,0,.6); }
+  .specimen { width: 100%; margin: 0 0 22px; box-shadow: 0 24px 60px -34px rgba(0,0,0,.6); }
   :root[data-mode="film"] .specimen { outline-offset: 6px; }
   :root[data-mode="film"] .specimen::before, :root[data-mode="film"] .specimen::after { left: 0; right: 0; }
   :root[data-mode="film"] .specimen::before { top: -16px; } :root[data-mode="film"] .specimen::after { bottom: -16px; }
