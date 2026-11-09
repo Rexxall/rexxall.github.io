@@ -57,13 +57,12 @@
     anchor.before(sec);
   });
 
-  /* ---------- one night shift: dusk in red, the small hours in blue, dawn on white paper ---------- */
-  const SHIFT = { i: ["tense", "18:40"], "git-note-history": ["tense", "19:30"], "ai-assistant-suite": ["tense", "20:50"], "polyglot-helper": ["tense", "22:10"],
-    "video-summary": ["night", "23:40"], "japan-work-secretary": ["night", "00:50"], "ai-accounting": ["night", "02:10"], "pass-countdown": ["night", "03:20"],
-    "tasknotes-countdown": ["night", "04:10"], x: ["night", "04:50"], now: ["quiet", "05:40"], credits: ["quiet", "06:30"] };
+  /* ---------- dusk in red, the small hours in blue, dawn on white paper: each scene's ink ---------- */
+  const MOODS = { i: "tense", "git-note-history": "tense", "ai-assistant-suite": "tense", "polyglot-helper": "tense",
+    "video-summary": "night", "japan-work-secretary": "night", "ai-accounting": "night", "pass-countdown": "night",
+    "tasknotes-countdown": "night", x: "night", now: "quiet", credits: "quiet" };
   document.querySelectorAll(".scene").forEach(sc => {
-    const [m, t] = SHIFT[sc.id] || ["quiet", ""]; sc.dataset.mood = m;
-    const num = sc.querySelector(".plate-head .num"); if (num && t) num.insertAdjacentHTML("beforeend", ` <span class="clock">· ${t}</span>`);
+    sc.dataset.mood = MOODS[sc.id] || "quiet";
   });
   document.getElementById("now").classList.add("dawn");
 
@@ -159,7 +158,7 @@
   // the plate carries today's number, the way the diary does
   (() => { const d = new Date(), s = new Date(d.getFullYear(), 0, 0), day = Math.floor((d - s) / 864e5);
     const w = Math.ceil(((d - new Date(d.getFullYear(), 0, 1)) / 864e5 + new Date(d.getFullYear(), 0, 1).getDay() + 1) / 7);
-    const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; const e2 = document.getElementById("day2"); if (e2) e2.textContent = `DAY ${day} · 18:40 · `; })();
+    const el = document.getElementById("day"); if (el) el.textContent = `DAY ${day} · W${w} · `; })();
 
   /* ---------- film: lines are typed one character at a time ---------- */
   document.querySelectorAll(".type").forEach(el => {
@@ -191,7 +190,7 @@
   const ticks = document.getElementById("ticks");
   PLUGINS.forEach(p => { const li = document.createElement("li"); li.innerHTML = `<a href="#${p.slug}"><b>${p.roman}</b><small>${p.name}</small></a>`; ticks.appendChild(li); });
 
-  /* ---------- one sky behind the whole page: scrolling is the night passing ----------
+  /* ---------- one sky behind the whole page: scrolling moves it from dusk through night to dawn ----------
      the monitor trace is the horizon. dusk from 红光, the small hours from 深夜冷蓝, the teal before dawn
      from 蓝绿舞台光, the fog and the white page from 苍白留白. one keyframe per scene, eased between. */
   const hero = document.getElementById("i");
@@ -208,18 +207,18 @@
   }
   // top, horizon glow, glow height, ground, sun [x, y above horizon, r, alpha], moon [x, y, alpha], stars, fog, mist ground
   const K = [
-    { top: "#07090b", glow: "#a24328", gh: .62, ground: "#07090b", sun: [.76, .2, 86, .92], moon: [.12, -.1, 0], stars: 0, fog: 0 },   // 18:40
-    { top: "#07090b", glow: "#7a1d15", gh: .42, ground: "#07090b", sun: [.56, .03, 70, .85], moon: [.12, -.1, 0], stars: 0, fog: 0 },  // 19:30
-    { top: "#07090b", glow: "#4a120e", gh: .3, ground: "#07090b", sun: [.58, -.08, 60, .7], moon: [.12, -.1, 0], stars: .15, fog: 0 }, // 20:50
-    { top: "#05081a", glow: "#2a1636", gh: .26, ground: "#06081a", sun: [.86, -.2, 50, 0], moon: [0.52, .06, .5], stars: .45, fog: 0 },   // 22:10
-    { top: "#040a1c", glow: "#0e2350", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.58, .26, .95], stars: .8, fog: 0 },   // 23:40
-    { top: "#040a1c", glow: "#0d2148", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.66, .44, 1], stars: 1, fog: 0 },     // 00:50
-    { top: "#030817", glow: "#0b1e48", gh: .28, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.74, .52, 1], stars: 1, fog: 0 },    // 02:10
-    { top: "#030817", glow: "#0d2552", gh: .3, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.82, .46, .95], stars: .9, fog: 0 },  // 03:20
-    { top: "#040b1e", glow: "#123a5a", gh: .36, ground: "#040b1e", sun: [.86, -.2, 50, 0], moon: [0.9, .3, .8], stars: .6, fog: 0 },   // 04:10
-    { top: "#06112a", glow: "#2c6a72", gh: .46, ground: "#06112a", sun: [.86, -.2, 50, 0], moon: [0.97, .14, .3], stars: .3, fog: .1 }, // 04:50
-    { top: "#dfe5ec", glow: "#f5f5f3", gh: .7, ground: "#c9ced6", sun: [.7, -.02, 60, .25], moon: [0.97, .1, 0], stars: 0, fog: .8 },     // 05:40
-    { top: "#f5f5f3", glow: "#f5f5f3", gh: .7, ground: "#dcdcd8", sun: [.7, .08, 60, 0], moon: [0.97, .1, 0], stars: 0, fog: .5 },        // 06:30
+    { top: "#07090b", glow: "#a24328", gh: .62, ground: "#07090b", sun: [.76, .2, 86, .92], moon: [.12, -.1, 0], stars: 0, fog: 0 },
+    { top: "#07090b", glow: "#7a1d15", gh: .42, ground: "#07090b", sun: [.56, .03, 70, .85], moon: [.12, -.1, 0], stars: 0, fog: 0 },
+    { top: "#07090b", glow: "#4a120e", gh: .3, ground: "#07090b", sun: [.58, -.08, 60, .7], moon: [.12, -.1, 0], stars: .15, fog: 0 },
+    { top: "#05081a", glow: "#2a1636", gh: .26, ground: "#06081a", sun: [.86, -.2, 50, 0], moon: [0.52, .06, .5], stars: .45, fog: 0 },
+    { top: "#040a1c", glow: "#0e2350", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.58, .26, .95], stars: .8, fog: 0 },
+    { top: "#040a1c", glow: "#0d2148", gh: .3, ground: "#040a1c", sun: [.86, -.2, 50, 0], moon: [0.66, .44, 1], stars: 1, fog: 0 },
+    { top: "#030817", glow: "#0b1e48", gh: .28, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.74, .52, 1], stars: 1, fog: 0 },
+    { top: "#030817", glow: "#0d2552", gh: .3, ground: "#030817", sun: [.86, -.2, 50, 0], moon: [0.82, .46, .95], stars: .9, fog: 0 },
+    { top: "#040b1e", glow: "#123a5a", gh: .36, ground: "#040b1e", sun: [.86, -.2, 50, 0], moon: [0.9, .3, .8], stars: .6, fog: 0 },
+    { top: "#06112a", glow: "#2c6a72", gh: .46, ground: "#06112a", sun: [.86, -.2, 50, 0], moon: [0.97, .14, .3], stars: .3, fog: .1 },
+    { top: "#dfe5ec", glow: "#f5f5f3", gh: .7, ground: "#c9ced6", sun: [.7, -.02, 60, .25], moon: [0.97, .1, 0], stars: 0, fog: .8 },
+    { top: "#f5f5f3", glow: "#f5f5f3", gh: .7, ground: "#dcdcd8", sun: [.7, .08, 60, 0], moon: [0.97, .1, 0], stars: 0, fog: .5 },
   ];
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
   const mixc = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(",")})`; };

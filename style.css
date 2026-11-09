@@ -1,6 +1,6 @@
 /* Rex — rexxall.github.io
-   One page, one night shift. A single sky sits behind every plate (drawn in main.js) and scrolling is the night
-   passing: dusk in red, the small hours in blue, dawn on white paper. Each plate keeps the same grid: a header line,
+   One page, dusk to dawn. A single sky sits behind every plate (drawn in main.js) and scrolling moves it
+   along: dusk in red, the small hours in blue, dawn on white paper. Each plate keeps the same grid: a header line,
    a specimen, notes in the margin, a name line at the foot. Scenes carry data-mood (tense / night / quiet) for their
    ink; the fixed chrome follows the scene in view through data-chrome. Tokens from 签名.css (2026-11-08). */
 
@@ -247,8 +247,6 @@ h1 { margin: 0; font: italic 400 clamp(84px, 13vw, 180px)/.88 var(--f-display); 
 :root[data-chrome="night"] .rail { border-color: #16274f; background: #020611; }
 
 
-/* one night shift, dusk to dawn: each plate carries its hour */
-.clock { font: italic 400 15px/1 var(--f-display); letter-spacing: .02em; color: var(--m-mute); margin-left: 4px; }
 .scene[data-mood="quiet"].dawn::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 46%; pointer-events: none; background: linear-gradient(180deg, #d9e2ec 0%, rgba(245,245,243,0) 100%); }
 
 /* the sky behind every scene */
