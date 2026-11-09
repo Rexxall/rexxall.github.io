@@ -85,8 +85,7 @@
   const relayout = () => document.querySelectorAll(".plate-scene").forEach(layoutLeaders);
   addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
 
-  // the demo GIF for the current mode; a still from this site while it loads, and if GitHub is slow
-  // the reel for the current mode: a still first, the GIF once it has loaded and the scene is on screen
+  // each specimen: a still from this site first, the demo GIF once it has loaded; dark reels for the night scenes
   function loadShots() {
     document.querySelectorAll(".specimen img[data-still]").forEach(img => {
       const m = img.closest(".scene").dataset.mood === "quiet" ? "light" : "dark";
@@ -122,10 +121,6 @@
   }
   let settle; reel.addEventListener("scroll", () => { clearTimeout(settle); settle = setTimeout(markActive, 90); }, { passive: true });
   setTimeout(markActive, 120); setTimeout(markActive, 600);
-  const blink = document.createElement("div"); blink.className = "blink"; document.body.appendChild(blink);
-  let lastActive = -1;
-  const blinkIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { const i = scenes.indexOf(en.target); if (lastActive >= 0 && i !== lastActive && !reduce) { blink.classList.remove("go"); void blink.offsetWidth; blink.classList.add("go"); } lastActive = i; } }), { root: reel, threshold: .55 });
-  scenes.forEach(s => blinkIO.observe(s));
   // anchors scroll inside the reel
   document.addEventListener("click", e => {
     const a = e.target.closest('a[href^="#"]'); if (!a) return;
