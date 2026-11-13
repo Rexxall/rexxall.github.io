@@ -128,6 +128,8 @@
   });
   addEventListener("keydown", e => {
     if (e.target.matches("input, textarea")) return;
+    const h = scenes[0];
+    if (active === 0 && (e.key === "ArrowDown" || e.key === "PageDown") && !h.classList.contains("x-open")) { e.preventDefault(); h.querySelector(".f-x").click(); return; }
     if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); scenes[Math.min(scenes.length - 1, active + 1)].scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
     if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); scenes[Math.max(0, active - 1)].scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
   });
@@ -194,6 +196,14 @@
      the monitor trace is the horizon. dusk from 红光, the small hours from 深夜冷蓝, the teal before dawn
      from 蓝绿舞台光, the fog and the white page from 苍白留白. one keyframe per scene, eased between. */
   const hero = document.getElementById("i");
+  /* rexxall = Rex × all: the formula opens out into its terms on hover, on the first scroll, or by itself after a moment */
+  const fx = hero.querySelector(".f-x");
+  const openTerms = v => { hero.classList.toggle("x-open", v); fx.setAttribute("aria-expanded", String(v)); };
+  if (reduce) openTerms(true);
+  fx.addEventListener("click", () => openTerms(!hero.classList.contains("x-open")));
+  hero.querySelector(".formula").addEventListener("pointerenter", () => openTerms(true));
+  reel.addEventListener("wheel", e => { if (active === 0 && e.deltaY > 0 && !hero.classList.contains("x-open")) { e.preventDefault(); openTerms(true); } }, { passive: false });
+  setTimeout(() => openTerms(true), 2400);
   const cv = document.createElement("canvas"); cv.id = "sky"; cv.setAttribute("aria-hidden", "true"); document.body.prepend(cv);
   const ctx = cv.getContext("2d");
   let W = 0, H = 0, t0 = performance.now(), mouseY = -1, smoothBase = null;
@@ -242,8 +252,9 @@
     g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, glow);
     ctx.save(); ctx.fillStyle = top; ctx.fillRect(0, gy, W, base - gy);
     const gg = ctx.createLinearGradient(0, gy, 0, base); gg.addColorStop(0, top); gg.addColorStop(1, glow); ctx.fillStyle = gg;
-    ctx.fillRect(xStart, gy, W - xStart, base - gy + 2);
-    if (xStart > 0) { const fx = ctx.createLinearGradient(xStart, 0, xStart + W * .14, 0); fx.addColorStop(0, top); fx.addColorStop(1, "rgba(0,0,0,0)"); ctx.fillStyle = fx; ctx.fillRect(xStart, gy, W * .14, base - gy + 2); }
+    const xs = Math.floor(xStart); ctx.fillRect(xs, gy, W - xs, base - gy + 2);
+    // start the fade a few px early on a whole pixel, so the glow never shows a hairline seam at its edge
+    if (xStart > 0) { const fx = ctx.createLinearGradient(xs - 3, 0, xs + W * .14, 0); fx.addColorStop(0, top); fx.addColorStop(.02, top); fx.addColorStop(1, "rgba(0,0,0,0)"); ctx.fillStyle = fx; ctx.fillRect(xs - 3, gy, W * .14 + 3, base - gy + 2); }
     ctx.restore();
     // stars
     const st = lerp(A.stars, B.stars, t), sec = (now - t0) / 1000;
