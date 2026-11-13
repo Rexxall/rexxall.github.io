@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88"><defs><filter id="tG_tnc" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+<rect width="88" height="88" rx="12" fill="#000" stroke="#282626" stroke-width="1"/>
+<text x="44" y="58" text-anchor="middle" style="font-family:Futura,'Avenir Next',sans-serif;font-weight:500;font-size:40px" fill="#ffffff" filter="url(#tG_tnc)" opacity=".7">7</text>
+<text x="44" y="58" text-anchor="middle" style="font-family:Futura,'Avenir Next',sans-serif;font-weight:500;font-size:40px" fill="#ffffff">7</text>
+<path d="M30 44.5 H58" stroke="#000" stroke-width="1.6"/>
+<text x="45" y="74" text-anchor="middle" style="font-family:Futura,'Avenir Next',sans-serif;font-weight:500;font-size:5.6px;letter-spacing:.6em" fill="#93948c">DAYS</text></svg>

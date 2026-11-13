@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88"><defs><linearGradient id="pL_pc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5885a5" stop-opacity=".95"/><stop offset="1" stop-color="#91c2bc" stop-opacity=".35"/></linearGradient></defs>
+<path d="M41 0 H47 L54 30 H34Z" fill="url(#pL_pc)"/>
+<path d="M4 28 H84 V44 a7 7 0 0 0 0 14 V76 H4 V58 a7 7 0 0 0 0 -14Z" fill="#91c2bc" stroke="#051b3e" stroke-width="2.6" stroke-linejoin="round"/>
+<path d="M62 31 V73" stroke="#051b3e" stroke-width="2.2" stroke-dasharray="3 3" stroke-linecap="round"/>
+<circle class="hole" cx="73" cy="51" r="5" fill="#111113" stroke="#502a5a" stroke-width="2.2"/>
+<path d="M14 41 h36 M14 51 h24" stroke="#051b3e" stroke-width="3.4" stroke-linecap="round"/>
+<path d="M14 63 h6 M24 63 h3 M31 63 h8 M43 63 h4" stroke="#3a5980" stroke-width="4"/>
+<ellipse cx="44" cy="30" rx="12" ry="2.2" fill="#e6fbf7" opacity=".85"/></svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88" viewBox="0 0 88 88"><defs><pattern id="pgH_pg" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#ff2d7a"/></pattern>
+<clipPath id="pgS_pg"><rect x="32" y="14" width="52" height="64"/></clipPath></defs>
+<rect x="32" y="14" width="52" height="64" fill="#c6ff00"/>
+<g clip-path="url(#pgS_pg)"><rect x="32" y="46" width="52" height="34" fill="url(#pgH_pg)"/></g>
+<rect class="hole" x="32" y="14" width="52" height="64" fill="none" stroke="#fefdfd" stroke-width="5" stroke-dasharray="0 6.4" stroke-linecap="round"/>
+<rect x="39" y="21" width="38" height="50" fill="none" stroke="#ff2d7a" stroke-width="1.8"/>
+<g class="pgm" style="mix-blend-mode:multiply" fill="none" stroke="#ff2d7a" transform="translate(2.4 1.6)">
+<circle cx="30" cy="38" r="24" stroke-width="4"/><path d="M56 30 q6 -4 12 0 t12 0 M58 40 q6 -4 12 0 t12 0 M56 50 q6 -4 12 0 t12 0" stroke-width="3"/></g>
+<g class="pgm" style="mix-blend-mode:multiply" fill="none" stroke="#1e5bff">
+<circle cx="30" cy="38" r="24" stroke-width="4"/><circle cx="30" cy="38" r="17" stroke-width="1.6"/>
+<path d="M56 30 q6 -4 12 0 t12 0 M58 40 q6 -4 12 0 t12 0 M56 50 q6 -4 12 0 t12 0" stroke-width="3"/></g>
+<text x="30" y="45" text-anchor="middle" style="font-family:'Avenir Next Condensed','Helvetica Neue',sans-serif;font-weight:800;font-size:19px;" class="pgm" fill="#1e5bff">あ</text></svg>

@@ -50,7 +50,7 @@
       </div>
       <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/>`).join("")}</svg>
       <div class="name">
-        <div><h2>${p.name}</h2><p class="type">${p.line}</p></div>
+        <div class="nm"><img class="picon" data-icon="assets/icons/${p.slug}-{m}.svg" alt="" width="64" height="64"><div><h2>${p.name}</h2><p class="type">${p.line}</p></div></div>
         <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
       </div>
       <span class="sign" aria-hidden="true">R.</span>`;
@@ -95,6 +95,11 @@
     });
   }
   loadShots();
+
+  // plugin icons: same light/dark choice as the stills, by the scene's mood
+  const loadIcons = () => document.querySelectorAll("img[data-icon]").forEach(img => {
+    const sc = img.closest(".scene"); img.src = img.dataset.icon.replace("{m}", sc && sc.dataset.mood === "quiet" ? "light" : "dark");
+  });
 
   /* ---------- rail + active scene ---------- */
   const scenes = [...document.querySelectorAll(".scene")];
@@ -190,7 +195,8 @@
 
   /* ---------- the hero's row of plugins ---------- */
   const ticks = document.getElementById("ticks");
-  PLUGINS.forEach(p => { const li = document.createElement("li"); li.innerHTML = `<a href="#${p.slug}"><b>${p.roman}</b><small>${p.name}</small></a>`; ticks.appendChild(li); });
+  PLUGINS.forEach(p => { const li = document.createElement("li"); li.innerHTML = `<a href="#${p.slug}"><img class="ticon" data-icon="assets/icons/${p.slug}-{m}.svg" alt="" width="28" height="28"><b>${p.roman}</b><small>${p.name}</small></a>`; ticks.appendChild(li); });
+  loadIcons();
 
   /* ---------- one sky behind the whole page: scrolling moves it from dusk through night to dawn ----------
      the monitor trace is the horizon. dusk from 红光, the small hours from 深夜冷蓝, the teal before dawn

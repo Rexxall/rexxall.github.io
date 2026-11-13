@@ -108,6 +108,10 @@ figure.specimen { margin: 0; }
 
 /* the name line at the foot: name and one line left, actions right */
 .name { position: absolute; left: var(--gut); right: var(--gut); bottom: var(--foot); z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--m-line); padding-top: 22px; }
+.name .nm { display: flex; align-items: flex-end; gap: 18px; }
+.picon { width: 64px; height: 64px; flex: none; margin-bottom: 2px; }
+.ticks .ticon { display: block; width: 28px; height: 28px; margin-bottom: 10px; opacity: .85; transition: opacity .3s; }
+.ticks a:hover .ticon { opacity: 1; }
 .name h2 { margin: 0; font: italic 400 clamp(34px, 3.8vw, 56px)/1 var(--f-display); color: var(--m-ink); letter-spacing: -.015em; }
 .name p { margin: 8px 0 0; color: var(--m-mute); font-size: 15px; }
 .links { display: flex; gap: 16px; align-items: center; margin: 0 0 4px; }
@@ -255,6 +259,7 @@ h1.formula { font-size: clamp(76px, 10.5vw, 150px); display: flex; flex-wrap: wr
   [data-mood="quiet"] .specimen img { filter: saturate(.72) contrast(1.04); }
   .name { position: static; display: block; margin: 26px var(--gut) 0; padding: 18px 0 64px; }
   .name h2 { font-size: 34px; }
+  .picon { width: 48px; height: 48px; }
   .links { margin-top: 14px; }
   .hero-text { padding-top: 120px; }
   .ticks { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 36px var(--gut) 0; padding: 18px 0 64px; }
