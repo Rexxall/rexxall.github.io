@@ -41,7 +41,7 @@
       <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="plate">
         <figure class="specimen">
-          <img data-src="${RAW}${p.repo}/main/assets/readme/demo-{m}.gif" data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
+          <img data-still="assets/${p.slug}-{m}.jpg" alt="${p.name} in use" loading="lazy" decoding="async">
           <svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${rough(1000, 625, i + 11)}"/></svg>
         </figure>
         <div class="notes">
@@ -84,7 +84,7 @@
   const relayout = () => document.querySelectorAll(".plate-scene").forEach(layoutLeaders);
   addEventListener("resize", relayout); setTimeout(relayout, 60); document.fonts && document.fonts.ready.then(relayout);
 
-  // each specimen: a still from this site first, the demo GIF once it has loaded; dark reels for the night scenes
+  // each specimen: a still from this site (Ithaca look); add data-src back to swap in a README demo GIF once those are re-recorded in the same look
   function loadShots() {
     document.querySelectorAll(".specimen img[data-still]").forEach(img => {
       const m = img.closest(".scene").dataset.mood === "quiet" ? "light" : "dark";
