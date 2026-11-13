@@ -82,7 +82,8 @@ a{color:inherit}
 .page h2{margin:0;font:600 clamp(36px,4.6vw,72px)/.92 var(--f-cond);text-transform:uppercase;color:var(--night)}
 .page p{margin:20px 0 0;max-width:34ch;color:rgb(23 11 10/.86)}
 .page figure{margin:0;position:relative}
-.page figure img{display:block;width:100%;border-radius:10px;box-shadow:0 40px 90px -30px rgb(23 11 10/.8)}
+.page figure picture{display:block}
+.page figure img{display:block;width:100%;height:auto;border-radius:10px;box-shadow:0 40px 90px -30px rgb(23 11 10/.8)}
 .page figcaption{margin-top:12px;color:rgb(23 11 10/.7)}
 
 /* IV. how it runs */
@@ -139,8 +140,8 @@ const V={
     c:'The interlocutor is neither the abstract model nor a single server; it is a <mark>thread</mark>.',
     li:[['The model fails: unchanging, “like talking to the number two”.','56:46',3406],['A hardware instance fails on distributed serving and multi-tenancy.','58:57',3537]]}],
   link:'https://www.youtube.com/watch?v=uUjJOMcNU9w',
-  page:'page.jpg',pageAlt:'The finished Chalmers note in Obsidian: a red-pen takeaway, the key frames, the summary and points with times.',
-  pageCap:'The whole note, unedited plugin output, in the Ithaca look.',
+  page:'page.jpg',pageAlt:'A YouTube link goes into the Video Summary side panel; when the job is done the Chalmers note opens and scrolls past the red-pen takeaway, the key frames, the summary and points with times.',
+  pageCap:'Link in, note out. Unedited plugin output, in the Ithaca look.',
   src:'Example: David Chalmers, Sarah Douglas Lecture in Philosophy and AI, UC Berkeley (CC BY). Frames from the public recording.'}
 };
 const D=V.chal, A='f/';
@@ -161,7 +162,7 @@ ${D.picks.map((p,i)=>`<article class="pk"><div class="shot"><span class="tc">${p
  <div class="blk"><h2>${p.h}</h2><p class="claim">${p.c}</p><ul>${p.li.map(l=>`<li>${l[0]}<a href="${D.link}&t=${l[2]}">${l[1]}</a></li>`).join('')}</ul></div></article>`).join('')}
 </section>
 <section class="page"><div><h2>Then the whole page, in your vault.</h2><p>A one-line takeaway in red pen, the key frames, a summary and points that each jump back to their second. Your own backend does the fetching and talks only to the services you picked.</p></div>
- <figure><img src="page.jpg" alt="${D.pageAlt}" loading="lazy"><figcaption class="k">${D.pageCap}</figcaption></figure></section>
+ <figure><picture><source media="(prefers-reduced-motion: reduce)" srcset="page.jpg"><img src="demo.webp" alt="${D.pageAlt}" loading="lazy" width="960" height="600"></picture><figcaption class="k">${D.pageCap}</figcaption></figure></section>
 <section class="how" id="how"><ol>
  <li><b>Paste a link</b><span>YouTube, Bilibili, a local recording, or a transcript you already have. Several at once, one per line.</span></li>
  <li><b>Your backend reads it</b><span>Subtitles first, speech-to-text only when there are none. It runs on your computer, with your keys.</span></li>
