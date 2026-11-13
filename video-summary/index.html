@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Summary — Rex</title>
+<meta name="description" content="Video Summary for Obsidian: a long video in, one page of notes out, with the frames worth keeping and every point a click from its second.">
+<link rel="icon" href="../assets/x.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400&family=Oswald:wght@500;600&family=Jost:wght@400;500&family=Caveat:wght@500&display=swap">
+<style>
+:root{
+  --red:#a24328; --red-deep:#641311; --night:#170b0a; --base:#0d0706; --sand:#d7b485; --cream:#efe4d2;
+  --crayon:#e2502f; --mute:rgb(239 228 210/.62); --line:rgb(239 228 210/.16);
+  --f-cond:"DIN Condensed","Oswald","Arial Narrow",sans-serif;
+  --f-display:"Didot","Bodoni 72","Bodoni Moda",Georgia,serif;
+  --f-label:"Futura","Avenir Next","Jost","Helvetica Neue",sans-serif;
+  --f-hand:"Bradley Hand","Caveat",cursive;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  --gut:clamp(16px,5vw,72px); --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{background:var(--base)}
+body{margin:0;background:var(--base);color:var(--cream);font:16px/1.6 var(--f-ui);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.k{font:500 11px/1.4 var(--f-label);letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+
+/* top */
+.top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:12px;padding:20px var(--gut)}
+.top img{width:30px;height:30px}
+.top .k{color:var(--cream)}
+.top nav{margin-left:auto;display:flex;gap:22px}
+.top nav a{text-decoration:none}
+
+/* I. the red field and the contact sheet */
+.field{position:relative;min-height:100svh;background:var(--red);overflow:hidden;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,4vw,64px);padding:96px var(--gut) 72px}
+.field::after{content:"";position:absolute;left:0;right:0;bottom:0;height:11%;background:var(--night)}
+.say{position:relative;z-index:2}
+.say h1{margin:0;font:600 clamp(44px,6.4vw,104px)/.9 var(--f-cond);letter-spacing:.005em;text-transform:uppercase;color:var(--night)}
+.say h1 span{display:block;color:var(--cream)}
+.say p{margin:26px 0 0;max-width:30ch;font-size:clamp(16px,1.25vw,19px);line-height:1.5;color:rgb(23 11 10/.86)}
+.say .credit{margin-top:28px;color:rgb(23 11 10/.7);letter-spacing:.24em}
+
+.sheet{position:relative;z-index:2;background:var(--night);padding:26px 20px 30px;border-radius:2px;transform:rotate(-2.2deg);box-shadow:0 30px 80px -30px rgb(0 0 0/.65)}
+.sheet .edge{display:flex;justify-content:space-between;font:500 9px/1 var(--f-label);letter-spacing:.3em;color:#7a6457;margin:0 2px 10px}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;position:relative;padding:12px 0}
+.strip::before,.strip::after{content:"";position:absolute;left:0;right:0;height:5px;background:radial-gradient(circle,#3a2a24 1.6px,transparent 2px) 0 0/14px 5px repeat-x}
+.strip::before{top:2px}.strip::after{bottom:2px}
+.fr{position:relative;aspect-ratio:16/9;background:#2a1c18}
+.fr img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(.82);transition:filter 1.2s var(--ease)}
+.fr .no{position:absolute;left:3px;bottom:-12px;font:500 8px/1 var(--f-label);letter-spacing:.12em;color:#6d5a50}
+.fr.pick img{filter:none}
+.loop{position:absolute;inset:-34% -16%;width:132%;height:168%;overflow:visible;pointer-events:none;z-index:3}
+.loop path{fill:none;stroke:var(--crayon);stroke-width:4.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.on .loop path{animation:draw .9s var(--ease) forwards}
+.on .pick:nth-of-type(n) .loop path{animation-delay:var(--d)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.tag{position:absolute;z-index:4;font:500 20px/1 var(--f-hand);color:var(--sand);white-space:nowrap;opacity:0;transition:opacity .6s var(--ease) var(--d)}
+.on .tag{opacity:1}
+
+/* II. each circled frame opens into its block of the note */
+.picks{padding:clamp(72px,10vw,140px) var(--gut) 40px;background:var(--night)}
+.picks>.k{display:block;margin-bottom:56px}
+.pk{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start;padding:0 0 clamp(64px,9vw,120px)}
+.shot{position:relative}
+.shot img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+.shot .tc{position:absolute;left:-2px;top:-30px;font:600 22px/1 var(--f-cond);letter-spacing:.06em;color:var(--crayon)}
+.shot svg{position:absolute;inset:-6% -5%;width:110%;height:112%;overflow:visible;pointer-events:none}
+.shot svg path{fill:none;stroke:var(--crayon);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
+.pk.seen .shot svg path{stroke-dashoffset:0}
+.blk{border-left:1px solid var(--line);padding:2px 0 0 clamp(18px,2.2vw,30px)}
+.blk h2{margin:0 0 14px;font:italic 400 clamp(26px,2.6vw,40px)/1.08 var(--f-display);color:var(--cream)}
+.blk .claim{margin:0 0 16px;font-weight:600;font-size:clamp(16px,1.2vw,18px);line-height:1.5}
+.blk ul{margin:0;padding:0;list-style:none;color:var(--mute);font-size:15px}
+.blk li{padding:10px 0;border-top:1px solid var(--line)}
+.blk li a{font:600 14px/1 var(--f-cond);letter-spacing:.06em;color:var(--crayon);text-decoration:none;margin-left:6px}
+.blk mark{background:none;color:var(--cream);box-shadow:inset 0 -.42em rgb(226 80 47/.45)}
+
+/* III. then the whole page */
+.page{position:relative;background:var(--red);padding:clamp(72px,10vw,140px) var(--gut);display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(24px,4vw,64px);align-items:center;overflow:hidden}
+.page h2{margin:0;font:600 clamp(36px,4.6vw,72px)/.92 var(--f-cond);text-transform:uppercase;color:var(--night)}
+.page p{margin:20px 0 0;max-width:34ch;color:rgb(23 11 10/.86)}
+.page figure{margin:0;position:relative}
+.page figure img{display:block;width:100%;border-radius:10px;box-shadow:0 40px 90px -30px rgb(23 11 10/.8)}
+.page figcaption{margin-top:12px;color:rgb(23 11 10/.7)}
+
+/* IV. how it runs */
+.how{background:var(--night);padding:clamp(64px,8vw,110px) var(--gut)}
+.how ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,48px);counter-reset:r}
+.how li{border-top:1px solid var(--line);padding-top:18px;counter-increment:r}
+.how li::before{content:"REEL " counter(r,decimal-leading-zero);display:block;font:600 13px/1 var(--f-cond);letter-spacing:.18em;color:var(--crayon);margin-bottom:14px}
+.how b{display:block;font:600 clamp(22px,2vw,30px)/1.05 var(--f-cond);text-transform:uppercase;letter-spacing:.01em;margin-bottom:8px}
+.how span{color:var(--mute);font-size:15px}
+.cost{margin:clamp(40px,5vw,64px) 0 0;font:italic 400 clamp(22px,2.2vw,32px)/1.25 var(--f-display);max-width:36ch}
+
+/* V. foot */
+.foot{background:var(--night);border-top:1px solid var(--line);padding:40px var(--gut) 56px;display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;background:var(--cream);color:var(--night);text-decoration:none;font:500 14px/1 var(--f-ui);transition:transform .25s var(--ease)}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.98)}
+.foot .k a{text-decoration:none}
+.foot .sig{margin-left:auto;font:italic 400 22px/1 var(--f-display);color:var(--mute)}
+.foot .src{flex-basis:100%;font-size:12px;color:rgb(239 228 210/.45)}
+
+@media (max-width:600px){.strip{grid-template-columns:repeat(3,1fr);row-gap:16px}.sheet{padding:20px 14px 24px}}
+@media (max-width:860px){
+  .field{grid-template-columns:1fr;padding-top:84px}
+  .field::after{height:10%}
+  .sheet{transform:rotate(-1.4deg)}
+  .pk,.page{grid-template-columns:1fr}
+  .blk{border-left:0;padding-left:0}
+  .how ol{grid-template-columns:1fr}
+  .top nav{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .loop path,.shot svg path{stroke-dashoffset:0!important;animation:none!important;transition:none!important}
+  .tag{opacity:1!important;transition:none!important}
+  .fr img{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="top"><img src="../assets/icons/video-summary-dark.svg" alt=""><a class="k" href="../#video-summary" style="text-decoration:none">Rex</a><span class="k">/ Video Summary</span><nav><a class="k" href="#how">How it runs</a><a class="k" href="https://github.com/Rexxall/obsidian-video-summary">Code</a></nav></header>
+<main id="app"></main>
+<script>
+const V={
+ chal:{dir:'chal',ext:'jpg',
+  h1:['1 h 50 min of philosophy.','Three frames worth keeping.'],
+  sub:'Video Summary picks the moments that carry the argument and writes your note around them, with every point a click away from the second it was said.',
+  sheet:[136,410,683,956,1230,1503,1688,2050,2193,2596,2870,3143,3406,3690,3963,4236,4510,4783,5056,5330,5603,5876,6150,6423],
+  picks:[
+   {t:1688,tc:'28:08',tag:'the letter',h:'Aura, Claudia and Sammy Jankis: who is on the other end',
+    c:'Users already treat LLMs as persons, so “what are we talking to?” is now a practical question.',
+    li:[['He gets 4 or 5 emails a day from people convinced their AI is sentient.','24:52',1492],['A Claude instance called Sammy Jankis wrote to him after 14 sessions, asking about identity through discontinuity.','27:34',1654]]},
+   {t:2193,tc:'36:33',tag:'the definition',h:'AI consciousness: the X-factor scorecard',
+    c:'Current LLMs are most likely not conscious, but none of the missing ingredients looks insuperable.',
+    li:[['Consciousness means subjective experience: there is something it is like to be the system.','36:33',2193],['No single X factor is a knockdown objection; together they add up probabilistically.','40:49',2449]]},
+   {t:3406,tc:'56:46',tag:'the turn',h:'Model, instance, virtual instance, thread',
+    c:'The interlocutor is neither the abstract model nor a single server; it is a <mark>thread</mark>.',
+    li:[['The model fails: unchanging, “like talking to the number two”.','56:46',3406],['A hardware instance fails on distributed serving and multi-tenancy.','58:57',3537]]}],
+  link:'https://www.youtube.com/watch?v=uUjJOMcNU9w',
+  page:'page.jpg',pageAlt:'The finished Chalmers note in Obsidian: a red-pen takeaway, the key frames, the summary and points with times.',
+  pageCap:'The whole note, unedited plugin output, in the Ithaca look.',
+  src:'Example: David Chalmers, Sarah Douglas Lecture in Philosophy and AI, UC Berkeley (CC BY). Frames from the public recording.'}
+};
+const D=V.chal, A='f/';
+const pickSet=new Map(D.picks.map((p,i)=>[p.t,i]));
+const loop=(seed)=>{let s=seed*9301%233280;const r=()=>(s=(s*9301+49297)%233280)/233280;
+ const a=6+r()*6,b=2+r()*5;return `M${18+r()*6} ${54+r()*6} C ${6+r()*4} ${20+r()*6}, ${44+r()*8} ${a}, ${70+r()*6} ${b+6} C ${96+r()*4} ${10+r()*6}, ${100} ${44+r()*8}, ${88+r()*4} ${70+r()*6} C ${70+r()*6} ${92+r()*4}, ${24+r()*6} ${94}, ${10+r()*4} ${74+r()*6} C ${4} ${60+r()*4}, ${20+r()*8} ${40+r()*6}, ${40+r()*8} ${30+r()*6}`};
+const sec=t=>t>=3600?`${Math.floor(t/3600)}:${String(Math.floor(t%3600/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`:`${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+let h=`<section class="field" id="sheet">
+ <div class="say"><h1>${D.h1[0]}<span>${D.h1[1]}</span></h1><p>${D.sub}</p><p class="k credit">Obsidian plugin</p></div>
+ <div class="sheet" aria-label="Contact sheet of the video, three frames circled in red crayon">
+  <div class="edge"><span>VIDEO SUMMARY 5063</span><span>${D.sheet.length} FRAMES</span><span>▸ R.</span></div>
+  ${[0,1,2,3].map(r=>`<div class="strip">${D.sheet.slice(r*6,r*6+6).map((t,j)=>{const pi=pickSet.get(t);const n=r*6+j+1;
+   return `<div class="fr${pi!==undefined?' pick':''}" style="--d:${pi!==undefined?(.5+pi*.55)+'s':'0s'}"><img src="${A}s${t}.jpg" alt="" loading="eager" width="320" height="180"><span class="no">${n}${n%2?'':'A'}</span>${pi!==undefined?`<svg class="loop" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${loop(t)}"/></svg>`:''}</div>`}).join('')}</div>`).join('')}
+ </div>
+</section>
+<section class="picks"><span class="k">Three circled frames, three blocks of your note</span>
+${D.picks.map((p,i)=>`<article class="pk"><div class="shot"><span class="tc">${p.tc}</span><img src="${A}t${p.t}.jpg" alt="Frame at ${p.tc}" loading="lazy" width="640" height="360"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${loop(p.t+7)}"/></svg></div>
+ <div class="blk"><h2>${p.h}</h2><p class="claim">${p.c}</p><ul>${p.li.map(l=>`<li>${l[0]}<a href="${D.link}&t=${l[2]}">${l[1]}</a></li>`).join('')}</ul></div></article>`).join('')}
+</section>
+<section class="page"><div><h2>Then the whole page, in your vault.</h2><p>A one-line takeaway in red pen, the key frames, a summary and points that each jump back to their second. Your own backend does the fetching and talks only to the services you picked.</p></div>
+ <figure><img src="page.jpg" alt="${D.pageAlt}" loading="lazy"><figcaption class="k">${D.pageCap}</figcaption></figure></section>
+<section class="how" id="how"><ol>
+ <li><b>Paste a link</b><span>YouTube, Bilibili, a local recording, or a transcript you already have. Several at once, one per line.</span></li>
+ <li><b>Your backend reads it</b><span>Subtitles first, speech-to-text only when there are none. It runs on your computer, with your keys.</span></li>
+ <li><b>The note lands</b><span>Summary, key points with times, the full transcript. Reprocessing replaces only its own blocks.</span></li></ol>
+ <p class="cost">Eight summaries, one of them 47 minutes long, cost about ¥0.4 with DeepSeek off-peak.</p></section>
+<footer class="foot"><a class="btn" href="https://community.obsidian.md/plugins/video-summary">Install in Obsidian</a><span class="k"><a href="https://github.com/Rexxall/obsidian-video-summary">Source on GitHub</a></span><span class="sig">R.</span><p class="src">${D.src}</p></footer>`;
+document.getElementById('app').innerHTML=h;
+requestAnimationFrame(()=>setTimeout(()=>document.getElementById('sheet').classList.add('on'),250));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');io.unobserve(e.target)}}),{threshold:.35});
+document.querySelectorAll('.pk').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

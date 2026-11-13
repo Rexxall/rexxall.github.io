@@ -8,7 +8,7 @@
       notes: ["title · tags · folder, <b>proposed</b>", "pick a model, or none", "nothing applied until <b>you tick</b>"] },
     { slug: "polyglot-helper", red: 0, name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#30b0c7", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper",
       notes: ["select a word, reading <b>in place</b>", "Japanese and English, same gesture", "kept in a review list <b>in your vault</b>"] },
-    { slug: "video-summary", red: 2, name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary",
+    { slug: "video-summary", red: 2, name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary", page: "video-summary/",
       notes: ["paste a YouTube or Bilibili link", "key points with <b>timestamps</b>", "a note, <b>not a transcript</b>"] },
     { slug: "japan-work-secretary", red: 2, name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#ff9f0a", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
       notes: ["log a shift in one line", "the week against the <b>28-hour</b> limit", "warned <b>before</b> you cross it"] },
@@ -51,7 +51,7 @@
       <svg class="leaders" aria-hidden="true">${[0, 1, 2].map(() => `<path pathLength="1" d="M0 0"/>`).join("")}</svg>
       <div class="name">
         <div class="nm"><img class="picon" data-icon="assets/icons/${p.slug}-{m}.svg" alt="" width="64" height="64"><div><h2>${p.name}</h2><p class="type">${p.line}</p></div></div>
-        <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a><a href="https://github.com/Rexxall/${p.repo}">code</a></p>
+        <p class="links"><a class="btn" href="https://obsidian.md/plugins?id=${p.dir}">Install in Obsidian</a>${p.page ? `<a href="${p.page}">the page</a>` : ""}<a href="https://github.com/Rexxall/${p.repo}">code</a></p>
       </div>
       <span class="sign" aria-hidden="true">R.</span>`;
     anchor.before(sec);
