@@ -93,6 +93,11 @@ a{color:inherit}
 .how li::before{content:"REEL " counter(r,decimal-leading-zero);display:block;font:600 13px/1 var(--f-cond);letter-spacing:.18em;color:var(--crayon);margin-bottom:14px}
 .how b{display:block;font:600 clamp(22px,2vw,30px)/1.05 var(--f-cond);text-transform:uppercase;letter-spacing:.01em;margin-bottom:8px}
 .how span{color:var(--mute);font-size:15px}
+.how .lite{margin:clamp(40px,5vw,72px) 0 0;max-width:980px}
+.how .lite picture{display:block}
+.how .lite img{display:block;width:100%;height:auto;border-radius:10px;box-shadow:0 40px 90px -30px rgb(0 0 0/.7)}
+.how .lite figcaption{margin-top:14px;color:var(--mute);font-size:15px;max-width:60ch}
+.how .lite figcaption b{display:inline;font:inherit;font-weight:600;text-transform:none;letter-spacing:normal;margin:0;color:var(--paper,#f4efe6)}
 .cost{margin:clamp(40px,5vw,64px) 0 0;font:italic 400 clamp(22px,2.2vw,32px)/1.25 var(--f-display);max-width:36ch}
 
 /* V. foot */
@@ -167,6 +172,7 @@ ${D.picks.map((p,i)=>`<article class="pk"><div class="shot"><span class="tc">${p
  <li><b>Paste a link</b><span>YouTube, Bilibili, a local recording, or a transcript you already have. Several at once, one per line.</span></li>
  <li><b>Your backend reads it</b><span>Subtitles first, speech-to-text only when there are none. It runs on your computer, with your keys.</span></li>
  <li><b>The note lands</b><span>Summary, key points with times, the full transcript. Reprocessing replaces only its own blocks.</span></li></ol>
+ <figure class="lite"><picture><source media="(prefers-reduced-motion: reduce)" srcset="light-tier.jpg"><img src="demo-light-tier.webp" alt="On a YouTube video, Command Shift S sends the captions; in Obsidian the job card says Light tier, Writing the note, and the note streams in without the backend, then opens." loading="lazy" width="960" height="600"></picture><figcaption><b>No backend for YouTube.</b> Press ⌘⇧S on a video with captions; the browser extension hands them straight to your summary model.</figcaption></figure>
  <p class="cost">Eight summaries, one of them 47 minutes long, cost about ¥0.4 with DeepSeek off-peak.</p></section>
 <footer class="foot"><a class="btn" href="https://community.obsidian.md/plugins/video-summary">Install in Obsidian</a><span class="k"><a href="https://github.com/Rexxall/obsidian-video-summary">Source on GitHub</a></span><span class="sig">R.</span><p class="src">${D.src}</p></footer>`;
 document.getElementById('app').innerHTML=h;
