@@ -16,7 +16,7 @@
       notes: ["photograph a receipt", "read and totalled", "<b>checked</b> before it lands"] },
     { slug: "pass-countdown", red: 2, name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#5e5ce6", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
       notes: ["uses left", "time left", "the <b>pace</b> to finish"] },
-    { slug: "tasknotes-countdown", red: 2, name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown",
+    { slug: "tasknotes-countdown", red: 2, name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown", page: "tasknotes-countdown/",
       notes: ["reads your TaskNotes deadlines", "a countdown for each", "<b>will you make it?</b>"] },
   ];
   const root = document.documentElement;

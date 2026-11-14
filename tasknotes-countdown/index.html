@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskNotes Countdown — Rex</title>
+<meta name="description" content="TaskNotes Countdown for Obsidian: days left is the easy part. It reads your TaskNotes deadlines and tells you whether you can still make them.">
+<link rel="icon" href="../assets/x.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400&family=Oswald:wght@300;500&family=Jost:wght@400;500&display=swap">
+<style>
+:root{
+  --board:#0f0e0d; --panel:#161514; --tile:#1f1d1c; --tile-hi:#2a2826; --seam:#0a0909;
+  --ink:#ece7dc; --mute:rgb(236 231 220/.58); --line:rgb(236 231 220/.12);
+  --amber:#f0a540; --warm:#93948c; --sig:#e2502f;
+  --f-cond:"DIN Condensed","Oswald","Arial Narrow",sans-serif;
+  --f-display:"Didot","Bodoni 72","Bodoni Moda",Georgia,serif;
+  --f-label:"Futura","Avenir Next","Jost","Helvetica Neue",sans-serif;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  --gut:clamp(16px,5vw,72px); --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{background:var(--board)}
+body{margin:0;background:var(--board);color:var(--ink);font:16px/1.6 var(--f-ui);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+.k{font:500 11px/1.4 var(--f-label);letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+
+.top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:12px;padding:20px var(--gut)}
+.top img{width:30px;height:30px}
+.top .k{color:var(--ink)}
+.top nav{margin-left:auto;display:flex;gap:22px}
+.top nav a{text-decoration:none}
+
+/* split-flap tiles */
+.flap{display:inline-flex;gap:.08em;vertical-align:baseline}
+.flap i{position:relative;display:inline-grid;place-items:center;min-width:.72em;padding:0 .06em;font-style:normal;background:linear-gradient(var(--tile-hi),var(--tile) 49.4%,var(--seam) 49.6%,var(--seam) 50.4%,var(--tile) 50.6%,#1a1817);border-radius:.06em;box-shadow:inset 0 -1px 0 rgb(0 0 0/.5),0 .02em .04em rgb(0 0 0/.6);color:var(--ink)}
+.flap i.sp{background:none;box-shadow:none;min-width:.3em}
+.flap.amber i{color:var(--amber)}
+
+/* I. the board */
+.hero{min-height:100svh;display:grid;align-content:center;gap:clamp(22px,3vw,40px);padding:110px var(--gut) 72px;background:radial-gradient(120% 70% at 30% 0%,#1c1a18,var(--board) 62%)}
+.dest{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline}
+.dest .k b{color:var(--ink);font-weight:500}
+.big{display:flex;align-items:flex-end;gap:clamp(14px,2.4vw,36px);flex-wrap:wrap}
+.big .num{font:300 clamp(150px,26vw,380px)/.86 var(--f-cond)}
+.big .num i{min-width:.62em}
+.big .unit{font:300 clamp(30px,4.6vw,66px)/1 var(--f-cond);letter-spacing:.42em;padding-bottom:.35em}
+.big .unit i{min-width:.9em}
+.hero h1{margin:0;font:400 clamp(26px,3.2vw,46px)/1.12 var(--f-display);font-style:italic;max-width:24ch}
+.hero h1 b{font-style:normal;font-weight:400;color:var(--amber)}
+.hero p{margin:0;max-width:52ch;color:var(--mute);font-size:clamp(16px,1.2vw,18px)}
+.gone{max-width:min(720px,100%)}
+.gone .bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.gone .bar span{display:block;height:100%;width:0;background:var(--warm);transition:width 1.6s var(--ease) .6s}
+.on .gone .bar span{width:75%}
+.gone .k{margin-top:10px;display:block}
+
+/* II. rows */
+.rows{list-style:none;margin:0;padding:clamp(40px,6vw,90px) var(--gut);background:var(--panel);border-top:1px solid var(--line);counter-reset:r}
+.row{display:grid;grid-template-columns:minmax(0,5.2fr) minmax(0,6fr);gap:clamp(18px,4vw,64px);align-items:center;padding:clamp(28px,4vw,52px) 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .lab{display:flex;gap:18px;align-items:baseline}
+.row .lab .k:first-child{color:var(--warm)}
+.row .val{margin:12px 0 14px;font:500 clamp(44px,6vw,92px)/1 var(--f-cond);letter-spacing:.04em}
+.row p{margin:0;max-width:44ch;color:var(--mute)}
+.row p b{color:var(--ink);font-weight:500}
+.shot{border-radius:12px;overflow:hidden;background:#141312;border:1px solid var(--line);box-shadow:0 30px 70px -40px rgb(0 0 0/.9)}
+.shot.strip img{width:100%}
+.share{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:end}
+.share img{border-radius:10px;box-shadow:0 40px 90px -40px rgb(0 0 0/.95)}
+
+/* III. in the vault */
+.vault{padding:clamp(56px,8vw,120px) var(--gut);display:grid;gap:22px;justify-items:start}
+.vault h2{margin:0;font:400 clamp(30px,3.6vw,54px)/1.05 var(--f-display);font-style:italic}
+.vault figure{margin:0;width:min(1100px,100%)}
+.vault picture{display:block}
+.vault img{border-radius:12px;border:1px solid var(--line);width:100%}
+.vault figcaption{margin-top:14px;max-width:62ch;color:var(--mute);font-size:15px}
+
+/* IV. facts */
+.facts{list-style:none;margin:0;padding:0 var(--gut) clamp(56px,8vw,110px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,44px)}
+.facts li{border-top:1px solid var(--line);padding-top:16px}
+.facts b{display:block;font:500 clamp(20px,1.8vw,26px)/1.1 var(--f-cond);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.facts span{color:var(--mute);font-size:15px}
+
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;padding:36px var(--gut) 48px;border-top:1px solid var(--line)}
+.btn{display:inline-block;padding:11px 20px;border-radius:999px;background:var(--ink);color:var(--board);text-decoration:none;font:500 15px/1 var(--f-ui)}
+.btn:hover{background:#fff}
+.foot .k a{text-decoration:none}
+.sig{margin-left:auto;font:italic 400 30px/1 var(--f-display);color:var(--sig)}
+.foot .src{flex-basis:100%;margin:0;color:var(--mute);font-size:13px}
+
+@media (max-width:820px){
+  .row{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr}
+  .top nav{gap:14px}
+}
+@media (max-width:600px){
+  .top{gap:10px}.top .k{letter-spacing:.2em}.top nav a:first-child{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .gone .bar span{transition:none;width:75%}
+}
+</style>
+</head>
+<body>
+<header class="top"><img src="../assets/icons/tasknotes-countdown-dark.svg" alt=""><a class="k" href="../#tasknotes-countdown" style="text-decoration:none">Rex</a><span class="k">/ TaskNotes Countdown</span><nav><a class="k" href="#board">The board</a><a class="k" href="https://github.com/Rexxall/tasknotes-countdown">Code</a></nav></header>
+
+<main>
+<section class="hero" id="top">
+  <div class="dest"><span class="k">Next deadline</span><span class="k"><b>Video Summary 2.14 release</b></span><span class="k">Due Thu · 18:00</span></div>
+  <div class="big" aria-label="5 days left">
+    <span class="num flap" data-flap="5" aria-hidden="true"></span>
+    <span class="unit flap" data-flap="DAYS" aria-hidden="true"></span>
+  </div>
+  <div class="gone"><div class="bar"><span></span></div><span class="k">75% of the time gone</span></div>
+  <h1>Days left is the easy part. <b>Can you still make it?</b></h1>
+  <p>TaskNotes Countdown reads the deadlines and steps you already keep in TaskNotes, and answers the questions a countdown leaves open.</p>
+</section>
+
+<ol class="rows" id="board">
+  <li class="row">
+    <div><div class="lab"><span class="k">Row 01</span><span class="k">Pace</span></div>
+      <div class="val"><span class="flap amber" data-flap="1H/DAY"></span></div>
+      <p><b>Tight.</b> Four steps, about six hours, five days. It turns amber when the pace is more than the hours you said you can give.</p></div>
+    <div class="shot strip"><img src="f/pace.jpg" alt="Tight · 4 of 6 steps left · about 6 h · 1 h a day" loading="lazy" width="760" height="66"></div>
+  </li>
+  <li class="row">
+    <div><div class="lab"><span class="k">Row 02</span><span class="k">Start by</span></div>
+      <div class="val"><span class="flap amber" data-flap="TODAY"></span></div>
+      <p>Every step gets a latest start day: its due date, minus a buffer, minus the work it still needs. The ones that should start today are marked.</p></div>
+    <div class="shot strip"><img src="f/start.jpg" alt="Store screenshots in three languages · Start today" loading="lazy" width="744" height="72"></div>
+  </li>
+  <li class="row">
+    <div><div class="lab"><span class="k">Row 03</span><span class="k">Waiting on</span></div>
+      <div class="val"><span class="flap" data-flap="6 DAYS"></span></div>
+      <p>Steps marked as waiting count the days, so you know whom to nudge before it becomes your problem.</p></div>
+    <div class="shot strip"><img src="f/wait.jpg" alt="Cover illustration from Xiaoman · Waiting 6 days" loading="lazy" width="744" height="72"></div>
+  </li>
+  <li class="row">
+    <div><div class="lab"><span class="k">Row 04</span><span class="k">Share</span></div>
+      <div class="val"><span class="flap" data-flap="3:4"></span></div>
+      <p>The share button draws the plan as a card in your theme's colours and copies it, ready for a chat or a post.</p></div>
+    <div class="share"><img src="f/share.jpg" alt="Share card: Video Summary 2.14 release, 5 days left, 75% of the time gone, Tight, 1 h a day" loading="lazy" width="810" height="1080"><div class="shot"><img src="f/card.jpg" alt="The same plan in the Next deadlines sidebar" loading="lazy" width="776" height="680"></div></div>
+  </li>
+</ol>
+
+<section class="vault">
+  <span class="k">In the vault</span>
+  <h2>The same board, beside whatever you are working on.</h2>
+  <figure><picture><source media="(prefers-reduced-motion: reduce)" srcset="f/demo-still.jpg"><img src="demo.webp" alt="Obsidian with a Japanese study dashboard open and the Next deadlines sidebar beside it. The camera moves in on the nearest deadline: 5 days left, Tight at 1 h a day, Start today, Waiting 6 days. The share button copies the image, then the card opens." loading="lazy" width="960" height="600"></picture>
+  <figcaption>The sidebar opens from the hourglass in the ribbon. The next deadline also sits in the status bar, and a <code>tasknotes-countdown</code> block puts the nearest few in your daily note.</figcaption></figure>
+</section>
+
+<ul class="facts">
+  <li><b>Read-only</b><span>It never changes a task and stores nothing beyond its settings.</span></li>
+  <li><b>No account, no network</b><span>Everything is read from the TaskNotes you already have, on your device.</span></li>
+  <li><b>Light at startup</b><span>Nothing is read while Obsidian starts; tasks are read once when TaskNotes is ready.</span></li>
+</ul>
+</main>
+
+<footer class="foot"><a class="btn" href="https://community.obsidian.md/plugins/tasknotes-countdown">Install in Obsidian</a><span class="k"><a href="https://github.com/Rexxall/tasknotes-countdown">Source on GitHub</a></span><span class="sig">R.</span><p class="src">Needs TaskNotes 4 and Obsidian 1.12.2+. The tasks shown are made up; the screens are the plugin's own output in an Ithaca-styled vault.</p></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CH = '0123456789ABCDEFGHJKLMNPRSTUVWXYZ:/';
+  const els = [...document.querySelectorAll('[data-flap]')];
+  els.forEach(el => {
+    el.innerHTML = [...el.dataset.flap].map(c => c === ' ' ? '<i class="sp"> </i>' : `<i>${c}</i>`).join('');
+  });
+  const spin = el => {
+    if (reduce) return;
+    [...el.children].forEach((t, k) => {
+      const target = t.textContent; if (target === ' ') return;
+      let n = 6 + k * 3 + Math.floor(Math.random() * 4);
+      const tick = () => { if (n-- <= 0) { t.textContent = target; return; } t.textContent = CH[Math.floor(Math.random() * CH.length)]; setTimeout(tick, 55); };
+      tick();
+    });
+  };
+  const hero = document.querySelector('.hero');
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    if (e.target === hero) { hero.classList.add('on'); hero.querySelectorAll('[data-flap]').forEach(spin); }
+    else spin(e.target);
+    io.unobserve(e.target);
+  }), { threshold: .4 });
+  io.observe(hero);
+  document.querySelectorAll('.rows [data-flap]').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>
