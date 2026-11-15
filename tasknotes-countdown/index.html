@@ -35,7 +35,8 @@ img{display:block;max-width:100%;height:auto}
 
 /* split-flap tiles */
 .flap{display:inline-flex;gap:.08em;vertical-align:baseline}
-.flap i{position:relative;display:inline-grid;place-items:center;min-width:.72em;padding:0 .06em;font-style:normal;background:linear-gradient(var(--tile-hi),var(--tile) 49.4%,var(--seam) 49.6%,var(--seam) 50.4%,var(--tile) 50.6%,#1a1817);border-radius:.06em;box-shadow:inset 0 -1px 0 rgb(0 0 0/.5),0 .02em .04em rgb(0 0 0/.6);color:var(--ink)}
+.flap i{position:relative;display:inline-grid;place-items:center;min-width:.72em;padding:.2em .08em .04em;line-height:1;font-style:normal;background:linear-gradient(var(--tile-hi),var(--tile) 49.4%,var(--seam) 49.6%,var(--seam) 50.4%,var(--tile) 50.6%,#1a1817);border-radius:.06em;box-shadow:inset 0 -1px 0 rgb(0 0 0/.5),0 .02em .04em rgb(0 0 0/.6);color:var(--ink)}
+@supports (text-box: trim-both cap alphabetic){.flap i{text-box:trim-both cap alphabetic;padding:.14em .08em}}
 .flap i.sp{background:none;box-shadow:none;min-width:.3em}
 .flap.amber i{color:var(--amber)}
 
@@ -110,7 +111,7 @@ img{display:block;max-width:100%;height:auto}
 
 <main>
 <section class="hero" id="top">
-  <div class="dest"><span class="k">Next deadline</span><span class="k"><b>Video Summary 2.14 release</b></span><span class="k">Due Thu · 18:00</span></div>
+  <div class="dest"><span class="k">Next deadline</span><span class="k"><b>Video Summary 2.14 release</b></span><span class="k">Due Fri · 18:00</span></div>
   <div class="big" aria-label="5 days left">
     <span class="num flap" data-flap="5" aria-hidden="true"></span>
     <span class="unit flap" data-flap="DAYS" aria-hidden="true"></span>
@@ -125,25 +126,25 @@ img{display:block;max-width:100%;height:auto}
     <div><div class="lab"><span class="k">Row 01</span><span class="k">Pace</span></div>
       <div class="val"><span class="flap amber" data-flap="1H/DAY"></span></div>
       <p><b>Tight.</b> Four steps, about six hours, five days. It turns amber when the pace is more than the hours you said you can give.</p></div>
-    <div class="shot strip"><img src="f/pace.jpg" alt="Tight · 4 of 6 steps left · about 6 h · 1 h a day" loading="lazy" width="760" height="66"></div>
+    <div class="shot strip"><img src="f/pace.jpg" alt="Tight · 4 of 6 steps left · about 6 h · 1 h a day" loading="lazy" width="1746" height="92"></div>
   </li>
   <li class="row">
     <div><div class="lab"><span class="k">Row 02</span><span class="k">Start by</span></div>
       <div class="val"><span class="flap amber" data-flap="TODAY"></span></div>
       <p>Every step gets a latest start day: its due date, minus a buffer, minus the work it still needs. The ones that should start today are marked.</p></div>
-    <div class="shot strip"><img src="f/start.jpg" alt="Store screenshots in three languages · Start today" loading="lazy" width="744" height="72"></div>
+    <div class="shot strip"><img src="f/start.jpg" alt="Store screenshots in three languages · Start today" loading="lazy" width="1774" height="140"></div>
   </li>
   <li class="row">
     <div><div class="lab"><span class="k">Row 03</span><span class="k">Waiting on</span></div>
       <div class="val"><span class="flap" data-flap="6 DAYS"></span></div>
       <p>Steps marked as waiting count the days, so you know whom to nudge before it becomes your problem.</p></div>
-    <div class="shot strip"><img src="f/wait.jpg" alt="Cover illustration from Xiaoman · Waiting 6 days" loading="lazy" width="744" height="72"></div>
+    <div class="shot strip"><img src="f/wait.jpg" alt="Cover illustration from Xiaoman · Waiting 6 days" loading="lazy" width="1774" height="140"></div>
   </li>
   <li class="row">
     <div><div class="lab"><span class="k">Row 04</span><span class="k">Share</span></div>
       <div class="val"><span class="flap" data-flap="3:4"></span></div>
       <p>The share button draws the plan as a card in your theme's colours and copies it, ready for a chat or a post.</p></div>
-    <div class="share"><img src="f/share.jpg" alt="Share card: Video Summary 2.14 release, 5 days left, 75% of the time gone, Tight, 1 h a day" loading="lazy" width="810" height="1080"><div class="shot"><img src="f/card.jpg" alt="The same plan in the Next deadlines sidebar" loading="lazy" width="776" height="680"></div></div>
+    <div class="share"><img src="f/share.jpg" alt="Share card: Video Summary 2.14 release, 5 days left, 75% of the time gone, Tight, 1 h a day" loading="lazy" width="1080" height="1440"><div class="shot"><img src="f/card.jpg" alt="The same plan in the Next deadlines sidebar" loading="lazy" width="1842" height="1360"></div></div>
   </li>
 </ol>
 
