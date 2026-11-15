@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Accounting — Rex</title>
+<meta name="description" content="AI Accounting for Obsidian: a receipt photo in, a checked ledger entry out. The AI drafts every line, you check it, then it goes into a plain Markdown ledger.">
+<link rel="icon" href="../assets/x.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --desk:#1c2029; --desk2:#242a36; --paper:#f6f4ee; --ink:#1d1d1f; --fade:rgb(29 29 31/.58); --rule:rgb(29 29 31/.28);
+  --stamp:#2f5fd0; --sig:#e2502f; --light:rgb(246 244 238/.62);
+  --f-mono:"SF Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif;
+  --f-ja:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
+  --w:min(600px,calc(100vw - 32px)); --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{background:var(--desk)}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.6 var(--f-mono);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 60% at 50% 0%,var(--desk2),var(--desk) 70%)}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+
+.top{display:flex;align-items:center;gap:12px;width:min(1100px,calc(100vw - 32px));margin:0 auto;padding:20px 0;color:var(--paper);font:400 12px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
+.top img{width:28px;height:28px}
+.top a{text-decoration:none}
+.top nav{margin-left:auto;display:flex;gap:22px}
+
+/* the receipt */
+.receipt{position:relative;isolation:isolate;width:var(--w);margin:clamp(16px,4vw,48px) auto 0;padding:44px clamp(20px,5vw,44px) 56px}
+/* the paper and its torn edges live on a layer behind, so stapled screenshots can stick out past it */
+.receipt::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);filter:drop-shadow(0 30px 40px rgb(0 0 0/.45));
+  -webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 8px/100% calc(100% - 16px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 8px repeat-x;
+          mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 8px/100% calc(100% - 16px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 8px repeat-x}
+.c{text-align:center}
+.store{margin:0;font:600 clamp(26px,5vw,34px)/1.1 var(--f-mono);letter-spacing:.06em}
+.meta{margin:8px 0 0;color:var(--fade);font-size:13px}
+.dash{border:0;border-top:1.5px dashed var(--rule);margin:22px 0}
+h1{margin:0;font:600 clamp(24px,4.6vw,34px)/1.2 var(--f-mono);letter-spacing:-.01em;text-wrap:balance}
+.lede{margin:12px 0 0;color:var(--fade)}
+
+.items{list-style:none;margin:0;padding:0}
+.items li{display:flex;align-items:baseline;gap:8px;padding:5px 0}
+.items .q{flex:none;width:2ch;color:var(--fade)}
+.items .n{flex:none}
+.items .dots{flex:1;min-width:16px;border-bottom:1.5px dotted var(--rule);transform:translateY(-4px)}
+.items .p{flex:none;text-align:right}
+.items small{display:block;color:var(--fade);font-size:12px;margin:2px 0 0 calc(2ch + 8px)}
+
+.step{margin:0}
+.step .k{font-size:12px;letter-spacing:.14em;color:var(--fade);text-transform:uppercase}
+.step h2{margin:6px 0 8px;font:600 20px/1.3 var(--f-mono)}
+.step p{margin:0;color:var(--fade)}
+.step p b{color:var(--ink);font-weight:600}
+/* screenshots are stapled on, wider than the receipt on big screens */
+.slip{position:relative;width:min(960px,calc(100vw - 32px));margin:22px 0 4px 50%;transform:translateX(-50%) rotate(var(--r,-.6deg));
+  border-radius:6px;overflow:hidden;background:#0d0d10;box-shadow:0 24px 50px -24px rgb(0 0 0/.65),0 0 0 1px rgb(0 0 0/.25)}
+.slip::before{content:"";position:absolute;z-index:2;left:28px;top:10px;width:46px;height:6px;border-radius:2px;background:linear-gradient(#cfd3da,#8a909b);box-shadow:0 1px 2px rgb(0 0 0/.5)}
+.slip.r{--r:.5deg}
+.demo-slip{--r:0deg}
+
+.total{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.total .sum{font:600 clamp(28px,6vw,40px)/1 var(--f-mono)}
+.total .sum small{font-size:.45em;color:var(--fade);margin-left:6px}
+.check{all:unset;position:relative;cursor:pointer;display:grid;place-items:center;width:112px;height:112px;border-radius:50%;
+  border:2px dashed var(--rule);color:var(--fade);font:400 12px/1.3 var(--f-mono);text-align:center;transition:border-color .2s}
+.check:hover{border-color:var(--stamp);color:var(--stamp)}
+.check:focus-visible{outline:2px solid var(--stamp);outline-offset:4px}
+.seal{position:absolute;inset:-4px;display:grid;place-items:center;align-content:center;border:3px solid var(--stamp);border-radius:50%;color:var(--stamp);
+  transform:rotate(-14deg);opacity:0;pointer-events:none;mix-blend-mode:multiply}
+.seal b{font:700 44px/1 var(--f-ja)}
+.seal span{font:600 10px/1.2 var(--f-mono);letter-spacing:.12em;margin-top:2px}
+.check.on{border-color:transparent;color:transparent}
+.check.on .seal{animation:stamp .32s var(--ease) forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-14deg) scale(1.6)}60%{opacity:1;transform:rotate(-14deg) scale(.94)}100%{opacity:.92;transform:rotate(-14deg) scale(1)}}
+.note{margin:14px 0 0;color:var(--fade);font-size:13px;min-height:1.6em}
+
+.facts{list-style:none;margin:0;padding:0;font-size:13px}
+.facts li{display:flex;justify-content:space-between;gap:16px;padding:3px 0}
+.facts li span:last-child{text-align:right;color:var(--fade)}
+
+.bar{height:54px;margin:26px auto 8px;width:78%;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 9px,var(--ink) 9px 10px,transparent 10px 14px,var(--ink) 14px 17px,transparent 17px 19px)}
+.btn{display:inline-block;margin-top:18px;padding:13px 24px;border-radius:999px;background:var(--ink);color:var(--paper);text-decoration:none;font:500 15px/1 var(--f-ui);transition:transform .15s var(--ease)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.src{display:inline-block;margin:14px 0 0 0;color:var(--fade);font-size:13px}
+.thanks{margin:22px 0 0;color:var(--fade);font-size:12px;letter-spacing:.12em}
+
+.foot{display:flex;justify-content:flex-end;width:var(--w);margin:18px auto 56px;color:var(--light);font-size:12px}
+.sig{font:italic 400 30px/1 "Didot","Bodoni 72",Georgia,serif;color:var(--sig)}
+
+@media (max-width:600px){
+  .top nav a:first-child{display:none}
+  .items{font-size:13px}
+  .items li{gap:6px}
+  .items .dots{min-width:8px}
+  .slip{--r:0deg}
+}
+@media (prefers-reduced-motion:reduce){ .check.on .seal{animation:none;opacity:.92;transform:rotate(-14deg)} .btn{transition:none} }
+</style>
+</head>
+<body>
+<header class="top"><img src="../assets/icons/ai-accounting-dark.svg" alt=""><a href="../#ai-accounting">Rex</a><span>/ AI Accounting</span><nav><a href="#how">How it works</a><a href="https://github.com/Rexxall/obsidian-ai-accounting">GitHub</a></nav></header>
+
+<main class="receipt">
+  <div class="c">
+    <p class="store">AI ACCOUNTING</p>
+    <p class="meta">Obsidian plugin · Reg 02<br>2026-11-15 19:42</p>
+  </div>
+  <hr class="dash">
+  <h1>A receipt in, a checked ledger entry out.</h1>
+  <p class="lede">The AI reads the photo and drafts the line. Nothing goes into your books until you check it.</p>
+  <hr class="dash">
+
+  <ul class="items">
+    <li><span class="q">1</span><span class="n">Reads receipts</span><span class="dots"></span><span class="p">AI drafts</span></li>
+    <li><span class="q">1</span><span class="n">Your check</span><span class="dots"></span><span class="p">every line</span></li>
+    <li><span class="q">1</span><span class="n">Markdown ledger</span><span class="dots"></span><span class="p">a table a month</span></li>
+    <li><span class="q">1</span><span class="n">Any currency</span><span class="dots"></span><span class="p">kept as paid</span></li>
+    <li><span class="q">1</span><span class="n">Refunds, transfers</span><span class="dots"></span><span class="p">counted right</span></li>
+    <li><span class="q">1</span><span class="n">Budgets, charts, CSV</span><span class="dots"></span><span class="p">built in</span></li>
+  </ul>
+  <hr class="dash">
+
+  <section class="step" id="how">
+    <span class="k">01 · Read</span>
+    <h2>Run one command on the note.</h2>
+    <p>Photos embedded in the note, or dropped into an inbox folder, are read by the AI service you choose: date, shop, category, amount, currency and how you paid.</p>
+    <div class="slip"><img src="f/review.jpg" alt="Review before entering: the Kaede Books receipt photo on the left; on the right one AI draft, two used books and a maple bookmark, 1,870 JPY, category 购物消费 / 图书文具, paid in cash, flagged Maybe already entered, with Expense, Refund and Transfer buttons below" width="2048" height="890" loading="lazy"></div>
+  </section>
+  <hr class="dash">
+
+  <section class="step">
+    <span class="k">02 · Check</span>
+    <h2>Every line waits for you.</h2>
+    <p>Fix what was misread, mark a refund or a transfer, or leave a row out. A line that looks like one you already entered says so: <b>Maybe already entered</b>. Close the dialog and the draft is kept.</p>
+  </section>
+  <hr class="dash">
+
+  <section class="step">
+    <span class="k">03 · Enter</span>
+    <h2>It lands in a plain Markdown table.</h2>
+    <p>One table a month, in your vault, readable and editable without the plugin. The ledger view groups it by day, totals the month and shows where the money went.</p>
+    <div class="slip r"><img src="f/ledger.jpg" alt="Ledger for November 2026 grouped by day: Lunch at Café Mori 680 JPY, Kaede Books two used books and bookmark 1,870 JPY, Coffee beans 1,600 JPY, Train to Kamakura 1,840 JPY; beside it Spent in period 111,570 JPY and Where it went by category" width="2330" height="1320" loading="lazy"></div>
+  </section>
+  <hr class="dash">
+
+  <section class="step">
+    <span class="k">In the vault</span>
+    <h2>From photo to ledger in one pass.</h2>
+    <div class="slip demo-slip"><picture><source media="(prefers-reduced-motion: reduce)" srcset="f/ledger.jpg"><img src="demo.webp" alt="A note with a receipt photo: the AI drafts the line next to the receipt; after a check it is entered and appears in the month's ledger" width="960" height="600" loading="lazy"></picture></div>
+  </section>
+  <hr class="dash">
+
+  <div class="total">
+    <div><div class="k" style="font-size:12px;letter-spacing:.14em;color:var(--fade)">TOTAL</div><div class="sum">1,870<small>JPY</small></div></div>
+    <button class="check" id="check" aria-pressed="false"><span>tap to<br>check</span><span class="seal" aria-hidden="true"><b>済</b><span>CHECKED</span></span></button>
+  </div>
+  <p class="note" id="note" aria-live="polite">Draft. Not in your books yet.</p>
+  <hr class="dash">
+
+  <ul class="facts">
+    <li><span>Plugin</span><span>free, no account</span></li>
+    <li><span>Reading receipts</span><span>your own AI key, or a local model</span></li>
+    <li><span>By hand, charts, CSV</span><span>no AI needed</span></li>
+    <li><span>Runs on</span><span>Obsidian 1.13+, desktop and mobile</span></li>
+  </ul>
+
+  <div class="bar" aria-hidden="true"></div>
+  <div class="c">
+    <a class="btn" href="https://community.obsidian.md/plugins/ai-accounting">Install in Obsidian</a><br>
+    <a class="src" href="https://github.com/Rexxall/obsidian-ai-accounting">Source on GitHub</a>
+    <p class="thanks">THANK YOU · ありがとうございました</p>
+  </div>
+</main>
+<footer class="foot"><span class="sig">R.</span></footer>
+
+<script>
+(() => {
+  const b = document.getElementById('check'), note = document.getElementById('note');
+  b.addEventListener('click', () => {
+    const on = !b.classList.contains('on');
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', String(on));
+    note.textContent = on ? 'Checked. Entered in the 2026-11 ledger.' : 'Draft. Not in your books yet.';
+  });
+})();
+</script>
+</body>
+</html>
