@@ -296,3 +296,6 @@ h1.formula { font-size: clamp(76px, 10.5vw, 150px); display: flex; flex-wrap: wr
 .scene, .scene[data-mood] { background: transparent !important; }
 #pulse { display: none !important; }
 .ticks { border-top-color: transparent; }
+
+/* each plugin scene draws its circles and marks in its own icon colour (the facade it comes from) */
+.scene.plate-scene[data-mood] { --m-red: var(--c); }

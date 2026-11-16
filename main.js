@@ -2,21 +2,21 @@
 (function () {
   const RAW = "https://raw.githubusercontent.com/Rexxall/";
   const PLUGINS = [
-    { slug: "git-note-history", red: 2, name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", c: "#7a5af0", roman: "II", dir: "git-note-history", repo: "obsidian-git-history-view", page: "git-note-history/",
+    { slug: "git-note-history", red: 2, name: "Git Note History", line: "Find a sentence you deleted. Take back only that part.", c: "#8ec5ff", roman: "II", dir: "git-note-history", repo: "obsidian-git-history-view", page: "git-note-history/",
       notes: ["every save is a <b>commit</b>", "search any sentence you ever wrote", "take back <b>one line</b>, not the file"] },
-    { slug: "ai-assistant-suite", red: 2, name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", c: "#0a84ff", roman: "III", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite",
+    { slug: "ai-assistant-suite", red: 2, name: "AI Assistant Suite", line: "AI suggests title, tags and folder. You tick what to apply.", c: "#ee6a60", roman: "III", dir: "ai-assistant-suite", repo: "obsidian-ai-assistant-suite",
       notes: ["title · tags · folder, <b>proposed</b>", "pick a model, or none", "nothing applied until <b>you tick</b>"] },
-    { slug: "polyglot-helper", red: 0, name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#30b0c7", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper", page: "polyglot-helper/",
+    { slug: "polyglot-helper", red: 0, name: "Polyglot Helper", line: "Look up Japanese and English words, keep them for review.", c: "#ff4d8f", roman: "IV", dir: "polyglot-helper", repo: "obsidian-polyglot-helper", page: "polyglot-helper/",
       notes: ["select a word, reading <b>in place</b>", "Japanese and English, same gesture", "kept in a review list <b>in your vault</b>"] },
-    { slug: "video-summary", red: 2, name: "Video Summary", line: "A video link in, a finished note out.", c: "#ff375f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary", page: "video-summary/",
+    { slug: "video-summary", red: 2, name: "Video Summary", line: "A video link in, a finished note out.", c: "#e2502f", roman: "V", dir: "video-summary", repo: "obsidian-video-summary", page: "video-summary/",
       notes: ["paste a YouTube or Bilibili link", "key points with <b>timestamps</b>", "a note, <b>not a transcript</b>"] },
-    { slug: "japan-work-secretary", red: 2, name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#ff9f0a", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
+    { slug: "japan-work-secretary", red: 2, name: "Japan Work Secretary", line: "Part-time shifts in Japan, warned before 28 hours.", c: "#e3c4b2", roman: "VI", dir: "japan-work-secretary", repo: "japan-work-secretary",
       notes: ["log a shift in one line", "the week against the <b>28-hour</b> limit", "warned <b>before</b> you cross it"] },
-    { slug: "ai-accounting", red: 2, name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", c: "#34c759", roman: "VII", dir: "ai-accounting", repo: "obsidian-ai-accounting", page: "ai-accounting/",
+    { slug: "ai-accounting", red: 2, name: "AI Accounting", line: "A receipt in, a checked ledger entry out.", c: "#7fa2f0", roman: "VII", dir: "ai-accounting", repo: "obsidian-ai-accounting", page: "ai-accounting/",
       notes: ["photograph a receipt", "read and totalled", "<b>checked</b> before it lands"] },
-    { slug: "pass-countdown", red: 2, name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#5e5ce6", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
+    { slug: "pass-countdown", red: 2, name: "Pass Countdown", line: "Uses left, time left, and the pace to finish.", c: "#91c2bc", roman: "VIII", dir: "pass-countdown", repo: "obsidian-pass-countdown",
       notes: ["uses left", "time left", "the <b>pace</b> to finish"] },
-    { slug: "tasknotes-countdown", red: 2, name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#bf5af2", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown", page: "tasknotes-countdown/",
+    { slug: "tasknotes-countdown", red: 2, name: "TaskNotes Countdown", line: "Deadlines from TaskNotes, and whether you will make it.", c: "#f0a540", roman: "IX", dir: "tasknotes-countdown", repo: "tasknotes-countdown", page: "tasknotes-countdown/",
       notes: ["reads your TaskNotes deadlines", "a countdown for each", "<b>will you make it?</b>"] },
   ];
   const root = document.documentElement;
