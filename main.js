@@ -59,9 +59,11 @@
   }
   // phones: two columns of equal width, so each poster's height carries its share instead
   function columns(items, W, gap) {
-    const cw = (W - gap) / 2, minV = Math.min(...items.map(i => i.v)), unit = Math.max(cw * 1.25 / items[0].v, 116 / minV), colH = [0, 0], out = [];
+    const n = W >= 720 ? 3 : 2, cw = (W - gap * (n - 1)) / n;
+    const minV = Math.min(...items.map(i => i.v));
+    const unit = Math.max(cw * 1.25 / items[0].v, 128 / minV), colH = new Array(n).fill(0), out = [];
     items.forEach(it => {
-      const c = colH[0] <= colH[1] ? 0 : 1, h = it.v * unit;
+      const c = colH.indexOf(Math.min(...colH)), h = it.v * unit;
       out.push({ ...it, x: c * (cw + gap), y: colH[c], w: cw + gap, h: h + gap });
       colH[c] += h + gap;
     });
@@ -74,13 +76,15 @@
     const gap = narrow ? 10 : 12;
     const items = weights().sort((a, b) => b.v - a.v);
     let out = [];
-    if (narrow) out = columns(items, W, gap);
-    else {
+    if (!narrow) {
       wall.style.height = "";
       const H = wall.clientHeight;
       if (!W || !H) return;
       squarify(items, 0, 0, W + gap, H + gap, out);
+      // every poster must stay readable; if the treemap can't promise that, hang them in columns
+      if (out.some(r => r.w - gap < 170 || r.h - gap < 140)) out = [];
     }
+    if (!out.length) out = columns(items, W, gap);
     out.forEach(r => {
       Object.assign(r.el.style, {
         left: r.x + "px", top: r.y + "px",

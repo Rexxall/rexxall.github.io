@@ -57,6 +57,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .pst .dl b{font-weight:600;opacity:1}
 /* name on top instead of bottom */
 .pst.up .nm{bottom:auto;top:7cqmin}
+.pst.up .ln{display:none!important}
 @container (min-width:300px) and (min-height:240px){
   .pst .ln{display:block;position:absolute;left:7cqmin;top:9cqmin;max-width:46cqw;font:400 15px/1.35 var(--text);opacity:.86}
 }
