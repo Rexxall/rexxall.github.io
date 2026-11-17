@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rex — research</title>
+<meta name="description" content="When does a person need help, and when should a machine step in? I trained in medicine, I build tools around this question, and I want to study it in the brain.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#e6e5e1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="../assets/x.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=66">
+<link rel="stylesheet" href="research.css?v=1">
+</head>
+<body class="rs">
+
+<header class="bar">
+  <a class="me" href="../" aria-label="Rex, home">Rex</a>
+  <nav aria-label="Pages">
+    <a href="../#work">Work</a>
+    <a href="./" aria-current="page">Research</a>
+    <a href="https://github.com/Rexxall" rel="me">GitHub</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="q" aria-labelledby="h-q">
+    <h1 id="h-q">When does a person need help, and when should a machine step in?</h1>
+    <p class="q-sub">I trained in medicine. I build tools around this question, and I want to study it where it starts: in the brain.</p>
+  </section>
+
+  <div class="fork" aria-hidden="true"><i class="stem"></i><i class="bar-h"></i><i class="l"></i><i class="r"></i></div>
+
+  <div class="branches">
+
+    <section class="br" aria-labelledby="h-brain">
+      <p class="tag">What I want to study</p>
+      <h2 id="h-brain">The brain changing state</h2>
+      <p class="lede">Going from awake to asleep takes the brain a few minutes. I want to see that switch as it happens, and learn when the brain is ready for something and when it is not.</p>
+
+      <article class="card">
+        <h3>A year on the wards</h3>
+        <p>Internal medicine, surgery, neurology, psychiatry, emergency, night shifts. On rounds I learned to put symptoms and medicines on one timeline before guessing a cause. In neurology I watched EEG and imaging steer a diagnosis; in psychiatry, sleep trouble came with many conditions.</p>
+      </article>
+
+      <article class="card">
+        <h3>Reading a claim, not repeating it</h3>
+        <p>For a treatment question I framed the PICO, searched PubMed, judged allocation, blinding and follow-up, and worked the result down to a number a doctor can use.</p>
+        <p class="fig"><span class="big">NNT ≈ 7</span><span class="cap">about 15 points of absolute difference</span></p>
+      </article>
+
+      <article class="card">
+        <h3>Learning the signal</h3>
+        <p>Since October 2026 I have been learning to read sleep EEG on public recordings, starting from the stages and the spectrum.</p>
+      </article>
+    </section>
+
+    <section class="br" aria-labelledby="h-tools">
+      <p class="tag">What I already build</p>
+      <h2 id="h-tools">Tools that choose their moment</h2>
+      <p class="lede">Eight of my plugins are in Obsidian’s community directory. Each one ended up answering the same question in a small way.</p>
+
+      <article class="card rules">
+        <h3>Rules the tools follow</h3>
+        <ol>
+          <li><span><b>Let the reader answer first.</b> Noesis asks you to explain a passage before it shows anything.</span></li>
+          <li><span><b>Short of facts? Count on the safe side.</b> Japan Work Secretary counts a shift in full until you confirm the break, the way a ward plans for the worse case.</span></li>
+          <li><span><b>Not sure? Don’t guess.</b> Git Note History links a renamed note to its past only when the text matches closely.</span></li>
+          <li><span><b>You changed it? Step back.</b> Before writing, a plugin checks the note again and stops if it moved.</span></li>
+        </ol>
+      </article>
+
+
+      <article class="card">
+        <h3>Downloads, read every morning</h3>
+        <div class="dl" id="dl" role="img" aria-label="Downloads per plugin"></div>
+        <p class="cap" id="dl-cap">From Obsidian’s stats file.</p>
+      </article>
+    </section>
+
+  </div>
+
+  <figure class="shot">
+    <video src="../assets/noesis/demo-wide.mp4" poster="../assets/noesis/poster-wide.jpg" width="1760" height="1100" muted loop playsinline autoplay preload="none" aria-label="Noesis: concepts underlined, a plain-language rewrite appears in the margin"></video>
+    <figcaption>Noesis, my paper reader. The help sits in the margin and waits for you.</figcaption>
+  </figure>
+
+  <section class="how" aria-labelledby="h-how">
+    <h2 id="h-how">How I work</h2>
+    <div class="how-grid">
+
+      <article class="card">
+        <h3>Check before building</h3>
+        <p>Before I commit to a question I search for who answered it already, and ask several models to argue against me. When a search showed one of my questions had been answered in 2021, I dropped it and started over.</p>
+      </article>
+
+      <article class="card">
+        <h3>Ship, then keep shipping</h3>
+        <p>I decide what to build, use every version, find what is off and choose the fix. AI writes most of the code, and I am learning to program along the way. The eight plugins have had 103 releases since July 2026.</p>
+      </article>
+
+      <article class="card wide">
+        <h3>Deliver for years</h3>
+        <p>Since 2021 I have translated part-time, mostly Chinese into English, plus software localisation. I keep my own term base and run QA before every delivery.</p>
+        <div class="tr" role="img" aria-label="Source characters translated per year: 2021 318 thousand, 2022 657 thousand, 2023 340 thousand, 2024 112 thousand, 2025 65 thousand to June">
+          <div style="--v:.485"><b>318k</b><span>2021</span></div>
+          <div style="--v:1"><b>657k</b><span>2022</span></div>
+          <div style="--v:.518"><b>340k</b><span>2023</span></div>
+          <div style="--v:.17"><b>112k</b><span>2024</span></div>
+          <div style="--v:.099"><b>65k</b><span>2025*</span></div>
+        </div>
+        <p class="cap">1.49 million source characters over 44 months. One comic series alone: 200 chapters, 9,968 lines. *To June.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="bg" aria-labelledby="h-bg">
+    <h2 id="h-bg">Background</h2>
+    <dl>
+      <div><dt>2019–2024</dt><dd>Clinical medicine, five-year programme, with a year of hospital rotations</dd></div>
+      <div><dt>2021–</dt><dd>Part-time translator and localiser</dd></div>
+      <div><dt>2025–</dt><dd>Japanese language school in Tokyo</dd></div>
+      <div><dt>2026–</dt><dd>Obsidian plugins and two browser apps</dd></div>
+      <div><dt>Languages</dt><dd>Chinese; English (TOEFL iBT 99); Japanese (JLPT N2, N1 in December 2026)</dd></div>
+    </dl>
+    <p class="pdf"><button type="button" class="btn" id="print">Save this page as PDF</button></p>
+  </section>
+
+</main>
+
+<footer class="foot"><span class="sig">R.</span></footer>
+
+<script src="research.js?v=1" defer></script>
+</body>
+</html>
