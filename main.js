@@ -22,8 +22,8 @@
       notes: ["Uses left", "Time left", "The pace you need to finish"] },
     "tasknotes-countdown": { page: "tasknotes-countdown/", media: { src: "tasknotes-countdown/f/card.jpg", w: 1842, h: 1360 }, install: true,
       notes: ["Reads your TaskNotes deadlines", "A countdown for each", "Whether you will make it"] },
-    noesis: { media: { src: "assets/noesis-light.jpg", dark: "assets/noesis-dark.jpg", w: 1600, h: 1000 }, app: "https://rexxall.github.io/noesis-paper-companion/", repo: "noesis-paper-companion",
-      notes: ["Skeleton: the abstract, every figure, the conclusion, and one sentence of yours", "Close reading: notes and answers in the margin beside their paragraph", "Last pass: say what the paper did in your own words; the AI never writes it for you"] },
+    noesis: { media: { video: "assets/noesis/demo-wide.mp4", poster: "assets/noesis/poster-wide.jpg", w: 1760, h: 1100, max: 880, narrow: { video: "assets/noesis/demo-narrow.mp4", poster: "assets/noesis/poster-narrow.jpg", w: 960, h: 1200 } }, app: "https://rexxall.github.io/noesis-paper-companion/", repo: "noesis-paper-companion",
+      notes: ["Paste an arXiv ID or drop a PDF, and you are reading page 1", "With your AI key, the concepts the paper assumes you know are underlined; press W for a plain-language rewrite in the margin", "Finish by saying what the paper did in your own words; the AI never writes it for you"] },
     bunmyaku: { media: { src: "assets/bunmyaku-light.jpg", dark: "assets/bunmyaku-dark.jpg", w: 1600, h: 1000 }, app: "https://rexxall.github.io/bunmyaku-nihongo/", repo: "bunmyaku-nihongo",
       notes: ["Any Japanese material, turned into a lesson pack", "Readings, vocabulary, grammar and listening in one desk", "Content and keys stay on your machine"] },
   };
@@ -143,10 +143,15 @@
     $("sheet-line").textContent = el.querySelector(".ln").textContent;
     $("sheet-notes").innerHTML = info.notes.map(n => `<li>${n}</li>`).join("");
     const m = info.media, alt = el.querySelector(".nm").textContent + " in use";
-    $("sheet-shot").innerHTML = m.video
-      ? `<video src="${m.video}" poster="${m.poster}" width="${m.w}" height="${m.h}" autoplay muted loop playsinline preload="none" aria-label="${alt}"></video>`
+    const narrow = m.narrow && matchMedia("(max-width: 600px)").matches ? m.narrow : null, vm = narrow || m;
+    sheet.classList.toggle("has-video", !!m.video);
+    $("sheet-shot").hidden = !!m.video;
+    $("sheet-wide").hidden = !m.video;
+    $("sheet-wide").innerHTML = m.video
+      ? `<video src="${vm.video}" poster="${vm.poster}" width="${vm.w}" height="${vm.h}" autoplay muted loop playsinline preload="none" aria-label="${alt}"${m.max && !narrow ? ` style="max-width:${m.max}px"` : ""}></video>` : "";
+    $("sheet-shot").innerHTML = m.video ? ""
       : `${m.dark ? `<source media="(prefers-color-scheme: dark)" srcset="${m.dark}">` : ""}<img src="${m.src}" alt="${alt}" width="${m.w}" height="${m.h}" decoding="async" style="${m.max ? `max-width:${m.max}px` : ""}">`;
-    const v = $("sheet-shot").querySelector("video");
+    const v = $("sheet-wide").querySelector("video");
     if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.controls = true; }
 
     const s = REPO[id], strip = $("sheet-strip");
