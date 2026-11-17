@@ -163,10 +163,17 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .shot img,.shot video{display:block;width:100%;height:auto;border-radius:6px}
 .shot video,.shot img[src$=".jpg"]{box-shadow:0 0 0 1px var(--line)}
 .sheet-wide{grid-column:1/-1;padding:0 clamp(20px,3vw,40px) clamp(20px,3vw,40px)}
-.sheet-wide video{display:block;width:100%;margin:0 auto;height:auto;border-radius:8px;box-shadow:0 0 0 1px var(--line);background:var(--wall)}
+.sheet-wide video{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 200px);margin:0 auto;height:auto;border-radius:8px;box-shadow:0 0 0 1px var(--line);background:var(--wall)}
 .sheet.has-video{width:min(1200px,calc(100vw - 32px))}
-.sheet.has-video .sheet-in{min-height:0}
-.sheet.has-video .sheet-text{padding-bottom:24px}
+.sheet.has-video .sheet-in{min-height:0;grid-template-columns:minmax(0,1fr)}
+.sheet.has-video .sheet-poster{display:none}
+.sheet.has-video .sheet-text{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:4px 28px;padding:24px 76px 20px clamp(20px,3vw,40px)}
+.sheet.has-video .sheet-text h2{margin:0}
+.sheet.has-video .sheet-text>.shot{display:none}
+.sheet.has-video .sheet-line{margin:0;font-size:17px;color:var(--dim)}
+.sheet.has-video .sheet-links{justify-content:flex-end}
+.sheet-wide .sheet-notes{max-width:880px;margin:18px auto 0}
+.sheet-wide .strip{max-width:880px;margin:18px auto 0}
 .strip{margin:0 0 18px}
 .bars{display:flex;align-items:flex-end;gap:2px;height:64px;border-bottom:1px solid var(--ink)}
 .bars i{flex:1;min-width:2px;background:var(--ink);opacity:.82;border-radius:1px 1px 0 0}
@@ -193,6 +200,8 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
   .sec{grid-template-columns:minmax(0,1fr)}
   .sheet-in{grid-template-columns:minmax(0,1fr)}
   .sheet-poster{min-height:46vw}
+  .sheet.has-video .sheet-text{grid-template-columns:minmax(0,1fr);padding-right:68px}
+  .sheet.has-video .sheet-links{justify-content:flex-start;margin-top:10px}
 }
 @media (max-width:520px){
   body{font-size:16px}
