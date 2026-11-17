@@ -160,7 +160,7 @@
       strip.hidden = false;
     } else if (s && s.downloads != null) {
       $("sheet-bars").innerHTML = "";
-      $("sheet-cap").textContent = `${fmtN(s.downloads)}${plural(s.downloads)}, last seen in the stats file on ${s.seen ? fmt(s.seen) : "an earlier day"}. Per-version counts return when Obsidian lists it again.`;
+      $("sheet-cap").textContent = `${fmtN(s.downloads)}${plural(s.downloads)}.`;
       strip.hidden = false;
     } else strip.hidden = true;
 
