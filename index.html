@@ -1,123 +1,177 @@
 <!doctype html>
-<html lang="en" data-chrome="tense">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rex — a plugin shelf</title>
-<meta name="description" content="Rex: trained as a doctor, now building the tools his notes were missing. Eight Obsidian plugins and three web apps. The tool proposes, you decide, undo always.">
+<title>Rex — small tools for Obsidian</title>
+<meta name="description" content="Rex, trained in medicine, makes small local tools for Obsidian: eight plugins in the community directory and two browser apps. Download counts update every morning.">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#e6e5e1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="assets/x.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400;1,6..96,700&family=Jost:wght@400;500&family=Caveat:wght@500&family=Pinyon+Script&display=swap">
-<link rel="icon" type="image/svg+xml" href="assets/x.svg">
-<link rel="stylesheet" href="style.css?v=58">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Oswald:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&text=%E6%96%87%E8%84%88&display=swap">
+<link rel="stylesheet" href="style.css?v=60">
 </head>
 <body>
 
-<header class="top">
-  <a class="fig" href="#i">REXXALL</a>
-  <nav class="top-nav" aria-label="Sections">
-    <a href="#ii">Plugins</a>
-    <a href="#x">Web</a>
-    <a href="#now">Now</a>
+<header class="bar">
+  <a class="me" href="#top" aria-label="Rex, back to top">Rex</a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#how">How I build</a>
+    <a href="#log">Log</a>
+    <a href="#uses">Uses</a>
     <a href="https://github.com/Rexxall" rel="me">GitHub</a>
   </nav>
 </header>
 
-<nav class="rail" id="rail" aria-label="Plates"></nav>
+<main id="top">
 
-<main class="reel" id="reel">
+  <section class="room" id="work" aria-labelledby="h-work">
+    <h1 id="h-work"><span>Rex makes small tools for Obsidian.</span> <span class="dim">Trained in medicine. Your notes stay files on your own disk.</span></h1>
 
-  <section class="scene hero" id="i" data-roman="I">
-    <canvas id="pulse" aria-hidden="true"></canvas>
-    <div class="hero-text">
-      <p class="eyebrow"><span class="xmark" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 2.5 9.5 9.5M9.5 2.5 2.5 9.5"/></svg></span><span class="atlas-only">PLATE I · <span id="day"></span>THE NOTE, DISSECTED</span><span class="film-only">FIG. I · REXXALL</span></p>
-      <h1 class="formula" aria-label="Rex times medicine, code, language and design">
-        <span class="f-rex">Rex</span><button class="f-x xmark" type="button" aria-expanded="false" aria-controls="terms" aria-label="Expand: what each field turned into"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5 9.5 9.5M9.5 2.5 2.5 9.5"/></svg></button>
-        <span class="f-paren" aria-hidden="true">(medicine + code + language + design)</span>
-      </h1>
-      <ol class="terms" id="terms" aria-label="What two fields multiplied into">
-        <li><span class="t-eq">Rex × medicine × code</span><span class="t-op" aria-hidden="true">=</span><span class="t-out"><a href="https://rexxall.github.io/noesis-paper-companion/">Noesis</a>, <a href="#video-summary">Video Summary</a></span></li>
-        <li><span class="t-eq">Rex × language × code</span><span class="t-op" aria-hidden="true">=</span><span class="t-out"><a href="#polyglot-helper">Polyglot Helper</a></span></li>
-        <li class="t-next"><span class="t-eq">Rex × design × code</span><span class="t-op" aria-hidden="true">=</span><span class="t-out">Ithaca theme <small>next</small></span></li>
+    <div class="hang">
+      <ol class="wall" id="wall" aria-label="Plugins and apps, larger posters have more downloads">
+        <li class="pst p-vs" data-id="video-summary" data-d="139"><a href="#video-summary">
+          <img class="obj" src="assets/icons/video-summary-dark.svg" alt="" width="100" height="100">
+          <span class="nm">Video Summary</span><span class="ln">A video link in, a finished note out.</span>
+          <span class="dl"><b><!--dl:video-summary-->139<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-aas" data-id="ai-assistant-suite" data-d="108"><a href="#ai-assistant-suite">
+          <img class="obj" src="assets/icons/ai-assistant-suite-light.svg" alt="" width="100" height="100">
+          <span class="nm">AI Assistant Suite</span><span class="ln">AI suggests title, tags and folder. You tick what to apply.</span>
+          <span class="dl"><b><!--dl:ai-assistant-suite-->108<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-gnh up" data-id="git-note-history" data-d="103"><a href="#git-note-history">
+          <img class="obj" src="assets/icons/git-note-history-dark.svg" alt="" width="100" height="100">
+          <span class="nm">Git Note History</span><span class="ln">Find a sentence you deleted. Take back only that part.</span>
+          <span class="dl"><b><!--dl:git-note-history-->103<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-acc up" data-id="ai-accounting" data-d="97"><a href="#ai-accounting">
+          <img class="obj" src="assets/icons/ai-accounting-light.svg" alt="" width="100" height="100">
+          <span class="nm">AI Accounting</span><span class="ln">A receipt in, a checked ledger entry out.</span>
+          <span class="dl"><b><!--dl:ai-accounting-->97<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-pg" data-id="polyglot-helper" data-d="94"><a href="#polyglot-helper">
+          <img class="obj" src="assets/icons/polyglot-helper-light.svg" alt="" width="100" height="100">
+          <span class="nm">Polyglot Helper</span><span class="ln">Look up a word where you read. Meet it again.</span>
+          <span class="dl"><b><!--dl:polyglot-helper-->94<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-jws up" data-id="japan-work-secretary" data-d="69"><a href="#japan-work-secretary">
+          <img class="obj" src="assets/icons/japan-work-secretary-light.svg" alt="" width="100" height="100">
+          <span class="nm">Japan Work Secretary</span><span class="ln">Part-time shifts in Japan, warned before 28 hours.</span>
+          <span class="dl"><b><!--dl:japan-work-secretary-->69<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-pc" data-id="pass-countdown" data-d="55"><a href="#pass-countdown">
+          <img class="obj" src="assets/icons/pass-countdown-light.svg" alt="" width="100" height="100">
+          <span class="nm">Pass Countdown</span><span class="ln">Uses left, time left, and the pace to finish.</span>
+          <span class="dl"><b><!--dl:pass-countdown-->55<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-tnc" data-id="tasknotes-countdown" data-d="49"><a href="#tasknotes-countdown">
+          <span class="flap" aria-hidden="true"><i>4</i><i>9</i></span>
+          <span class="nm">TaskNotes Countdown</span><span class="ln">Deadlines from TaskNotes, and whether you will make it.</span>
+          <span class="dl"><b><!--dl:tasknotes-countdown-->49<!--/dl--></b> downloads</span></a></li>
+        <li class="pst p-noe" data-id="noesis" data-d="0"><a href="#noesis">
+          <span class="obj glyph" aria-hidden="true">N</span>
+          <span class="nm">Noesis</span><span class="ln">Read a paper in three passes and come out able to explain it.</span>
+          <span class="dl">web app · no counter</span></a></li>
+        <li class="pst p-bun" data-id="bunmyaku" data-d="0"><a href="#bunmyaku">
+          <span class="obj glyph" lang="ja" aria-hidden="true">文脈</span>
+          <span class="nm">Bunmyaku</span><span class="ln">Turn any Japanese material into a local study desk.</span>
+          <span class="dl">web app · no counter</span></a></li>
       </ol>
-      <p class="tag">One person × many fields, and the tools in between.</p>
-      <p class="tag-sub">Trained as a doctor. Now I build the tools my notes were missing.</p>
-      <p class="principles"><span>the tool proposes</span><span>you decide</span><span>undo always</span></p>
-      <p class="hint" aria-hidden="true">scroll, or press ↓</p>
+
+      <aside class="label" aria-label="About the wall">
+        <p class="who">Rex</p>
+        <p>Trained in medicine. Speaks Chinese, Uyghur, English and Japanese. Builds the tools his own notes were missing.</p>
+        <dl>
+          <div><dt>On this wall</dt><dd>8 Obsidian plugins, 2 browser apps</dd></div>
+          <div><dt>Downloads</dt><dd><b class="num"><!--dl:total-->714<!--/dl--></b> in all</dd></div>
+          <div><dt>Poster size</dt><dd>Area follows downloads. No poster is smaller than a third of the largest, so every one stays readable. The apps have no counter and hang at that size.</dd></div>
+        </dl>
+        <span class="sig" aria-hidden="true">R.</span>
+      </aside>
     </div>
-    <ol class="ticks" id="ticks" aria-label="Plugins"></ol>
-    <span class="sign" aria-hidden="true">R.</span>
+
+    <p class="src">Counts from <a href="https://github.com/obsidianmd/obsidian-releases/blob/master/community-plugin-stats.json">Obsidian’s public stats file</a>, read <time datetime="2026-11-17T13:48:08Z" id="fetched"><!--fetched-->17 Nov 2026, 13:48 UTC<!--/fetched--></time> and every morning after. A download is any install or update, so it is not a count of people. <a href="data/stats.json">Raw numbers</a>.</p>
   </section>
 
-  <!-- scenes II–IX are built by main.js from the plugin list -->
+  <section class="sec" id="how" aria-labelledby="h-how">
+    <h2 id="h-how">How I build</h2>
+    <div class="body">
+      <div class="rule">
+        <h3>Local, fast, at hand.</h3>
+        <p>Obsidian is good because it is local and quick. A plugin of mine may not slow the vault down. If a feature costs that, the feature goes.</p>
+      </div>
+      <div class="rule">
+        <h3>The tool proposes, you decide, undo always.</h3>
+        <p>Nothing an AI suggests lands in a note until you tick it, and anything a plugin writes can be taken back.</p>
+      </div>
+      <div class="rule wide">
+        <h3>When to act, and when to hand back.</h3>
+        <p>Most of the design work turned out to be one question, asked again in every plugin.</p>
+        <table class="acts">
+          <tbody>
+            <tr><th scope="row">Not sure? Don’t guess.</th><td>Git Note History will not link a renamed note to its past unless the text is close enough.</td></tr>
+            <tr><th scope="row">Short of facts? Count on the safe side.</th><td>Japan Work Secretary counts a shift in full until you confirm the break.</td></tr>
+            <tr><th scope="row">Retrying won’t help? Stop offering it.</th><td>Video Summary sorts its failures and hides Retry when the cause is on the other side.</td></tr>
+            <tr><th scope="row">You changed the note? Step back.</th><td>Before writing, the plugin compares the note again and stops if it moved.</td></tr>
+            <tr><th scope="row">Let the reader answer first.</th><td>Noesis asks you to explain a passage, then hints, and shows its answer only when you open it.</td></tr>
+            <tr><th scope="row">Don’t interrupt.</th><td>AI Assistant Suite moved from pop-ups to a side panel you open when you want it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rule wide">
+        <h3>Who writes the code.</h3>
+        <p>AI coding tools write it. I decide what to build and what to leave out, use every version myself, find what is wrong, choose the fix and decide when it ships. I have read the key parts and can explain why they work the way they do.</p>
+      </div>
+    </div>
+  </section>
 
-  <section class="scene web" id="x" data-roman="X">
-    <div class="plate-head"><span class="num">PLATE X – XII</span><span class="k"><span class="atlas-only">Web · runs in the browser, keeps nothing</span><span class="film-only">Scenes X – XII · Web</span></span></div>
-    <span class="file">REX_PLATE_X</span>
-    <span class="tab" aria-hidden="true">X</span>
-    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
-    <ol class="webgrid">
-      <li>
-        <figure class="specimen"><img data-still="assets/noesis-{m}.jpg?v=2" alt="Noesis Paper Reader" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="31"/></svg></figure>
-        <span class="num">FIG. X</span>
-        <h2>Noesis Paper Reader</h2>
-        <p class="hand">read a paper in three passes and come out able to explain it</p>
-        <p class="links"><a class="btn" href="https://rexxall.github.io/noesis-paper-companion/">Open</a><a href="https://github.com/Rexxall/noesis-paper-companion">code</a></p>
-      </li>
-      <li>
-        <figure class="specimen"><img data-still="assets/bunmyaku-{m}.jpg?v=2" alt="Bunmyaku" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="32"/></svg></figure>
-        <span class="num">FIG. XI</span>
-        <h2>Bunmyaku</h2>
-        <p class="hand">turn any Japanese material into a local study desk</p>
-        <p class="links"><a class="btn" href="https://rexxall.github.io/bunmyaku-nihongo/">Open</a><a href="https://github.com/Rexxall/bunmyaku-nihongo">code</a></p>
-      </li>
-      <li>
-        <figure class="specimen"><img data-still="assets/evidence-inbox-{m}.jpg?v=2" alt="Evidence Inbox" loading="lazy" decoding="async"><svg class="frame" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" data-seed="33"/></svg></figure>
-        <span class="num">FIG. XII</span>
-        <h2>Evidence Inbox</h2>
-        <p class="hand">save a public post into Obsidian with its text, images and source link</p>
-        <p class="links"><a class="btn" href="https://github.com/Rexxall/obsidian-evidence-inbox">Code</a></p>
-      </li>
+  <section class="sec" id="log" aria-labelledby="h-log">
+    <h2 id="h-log">Log</h2>
+    <ol class="body log">
+      <li><time datetime="2026-11-17">17 Nov 2026</time><p>This site becomes a wall. The counts now refresh every morning on their own.</p></li>
+      <li><time datetime="2026-11-16">16 Nov 2026</time><p>One shared AI layer ships inside four plugins: keys are stored once, and every error says what to try next.</p></li>
+      <li><time datetime="2026-11-12">12 Nov 2026</time><p>Two rules for every plugin: never trade away local, fast and at hand; release when a batch is worth it, not for every small fix.</p></li>
+      <li><time datetime="2026-11-05">5 Nov 2026</time><p>TaskNotes Countdown, a deadline board for another author’s plugin, gets its first release.</p></li>
+      <li><time datetime="2026-07-22">22 Jul 2026</time><p>Git Note History, the first plugin, gets its first release.</p></li>
     </ol>
-    <div class="name"><div><p class="type">Three things that run in a tab. Nothing leaves your machine.</p></div></div>
-    <span class="sign" aria-hidden="true">R.</span>
   </section>
 
-  <section class="scene now" id="now" data-roman="XIII">
-    <div class="plate-head"><span class="num">PLATE XIII</span><span class="k"><span class="atlas-only">Lab notes · what moved this week</span><span class="film-only">Dailies · what moved this week</span></span></div>
-    <span class="file">REX_PLATE_XIII</span>
-    <span class="tab" aria-hidden="true">XIII</span>
-    <div class="holes" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="plate">
-      <ol class="feed" id="feed"><li class="hand dim">reading the commit log…</li></ol>
-      <p class="aside"><span class="hand">pulled live from GitHub when the page opens</span>AI features in the plugins use your own key, with DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu built in.</p>
-    </div>
-    <div class="name"><div><p class="type">The last commit on each repository, newest first.</p></div><p class="links"><a class="btn" href="https://github.com/Rexxall">All repositories</a></p></div>
-    <span class="sign" aria-hidden="true">R.</span>
-  </section>
-
-  <section class="scene credits" id="credits" data-roman="∞">
-    <div class="roll" id="roll">
-      <div class="verse"><p class="en">The tool proposes, you decide, undo always.</p><p class="zh">工具提议，你来决定，随时撤销。</p><p class="by">— the one line under every plugin</p></div>
-      <p class="k">WRITTEN, BUILT AND TESTED BY</p>
-      <p class="big">Rex</p>
-      <p class="k">HOW I BUILD</p>
-      <p class="hand-l">start from a real chore</p>
-      <p class="hand-l">keep data local, in Markdown and Git</p>
-      <p class="hand-l">follow the host app's theme</p>
-      <p class="k red">THE TOOL PROPOSES · YOU DECIDE · UNDO ALWAYS</p>
-      <p class="k">LANGUAGES</p>
-      <p class="hand-l">Chinese · Uyghur · English · Japanese</p>
-      <p class="k">FIND ME</p>
-      <p class="hand-l"><a href="https://github.com/Rexxall">github.com/Rexxall</a></p>
-      <p class="k dim">— end of plate —</p>
-    </div>
-    <span class="sign" aria-hidden="true">R.</span>
+  <section class="sec" id="uses" aria-labelledby="h-uses">
+    <h2 id="h-uses">Uses</h2>
+    <dl class="body uses">
+      <div><dt>Notes</dt><dd>Obsidian, one vault called Ithaca, with a theme of my own.</dd></div>
+      <div><dt>Plugins</dt><dd>TypeScript and esbuild on the Obsidian API. Notes stay Markdown; history stays in Git.</dd></div>
+      <div><dt>Writing code</dt><dd>Claude Code and Codex. Gemini reads the long videos and PDFs.</dd></div>
+      <div><dt>AI in the plugins</dt><dd>Your own key. DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu are built in.</dd></div>
+      <div><dt>This site</dt><dd>Plain HTML, CSS and JavaScript, no build step, on GitHub Pages. A GitHub Action fetches the counts each morning.</dd></div>
+      <div><dt>Machine</dt><dd>MacBook Pro, M1 Pro.</dd></div>
+    </dl>
   </section>
 
 </main>
 
-<script src="main.js?v=56"></script>
+<footer class="end">
+  <a href="https://github.com/Rexxall" rel="me">github.com/Rexxall</a>
+  <span class="sig" aria-hidden="true">R.</span>
+</footer>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-name">
+  <div class="sheet-in" tabindex="-1">
+    <button class="close" type="button" aria-label="Close" data-close><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5 9.5 9.5M9.5 2.5 2.5 9.5"/></svg></button>
+    <div class="sheet-poster" id="sheet-poster"></div>
+    <div class="sheet-text">
+      <h2 id="sheet-name"></h2>
+      <p class="sheet-line" id="sheet-line"></p>
+      <ul class="sheet-notes" id="sheet-notes"></ul>
+      <picture class="shot" id="sheet-shot"></picture>
+      <figure class="strip" id="sheet-strip" hidden>
+        <div class="bars" id="sheet-bars"></div>
+        <figcaption id="sheet-cap"></figcaption>
+      </figure>
+      <p class="sheet-links" id="sheet-links"></p>
+    </div>
+  </div>
+</dialog>
+
+<script src="main.js?v=60"></script>
 </body>
 </html>
