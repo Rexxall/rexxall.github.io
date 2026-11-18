@@ -124,7 +124,9 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .acts{width:100%;border-collapse:collapse;margin-top:14px;font-size:15.5px}
 .acts th{text-align:left;font-weight:500;padding:12px 24px 12px 0;vertical-align:top;width:38%;border-top:1px solid var(--line)}
 .acts td{padding:12px 0;color:var(--dim);border-top:1px solid var(--line)}
-.log{list-style:none}
+.log{list-style:none;margin:0;padding:0}
+.act{margin:0 0 36px}
+.act .cap{margin:0;font-size:14px;color:var(--dim)}
 .log li{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line)}
 .log li:first-child{border-top:0;padding-top:0}
 .log time{font:400 13.5px/1.9 var(--mono);color:var(--dim);font-variant-numeric:tabular-nums}
@@ -187,6 +189,13 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .close svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;fill:none}
 .sheet-in{position:relative}
 .sheet-in:focus{outline:none}
+
+/* ---------- activity grid (heat.js) ---------- */
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:auto repeat(7,1fr);gap:3px;margin:14px 0 12px}
+.heat i{aspect-ratio:1;border-radius:2px;background:var(--ink);opacity:var(--o)}
+.heat i.z{background:var(--line);opacity:1}
+.heat i.f{visibility:hidden}
+.heat em{grid-row:1;overflow:visible;width:0;font:400 12px/1 var(--mono);font-style:normal;color:var(--dim);white-space:nowrap;padding-bottom:4px}
 
 /* ---------- narrow ---------- */
 @media (max-width:860px){

@@ -64,6 +64,8 @@
 .tr b{order:0;font:400 13px/1 var(--mono);font-variant-numeric:tabular-nums}
 .tr span{order:2;font:400 13px/1 var(--mono);color:var(--dim)}
 
+.how-grid .full{grid-column:1/-1}
+
 /* ---------- background ---------- */
 .bg dl{margin:0;display:grid}
 .bg dl div{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid var(--line)}

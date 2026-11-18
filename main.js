@@ -221,6 +221,7 @@
     if (INFO[id]) open(id, false); else close();
   }
   addEventListener("popstate", fromHash);
+  window.drawHeat && drawHeat(document.getElementById("heat"), document.getElementById("heat-cap"), "data/activity.json");
   if (location.hash) {
     Promise.race([ready, new Promise(r => setTimeout(r, 800))]).then(fromHash);
   }

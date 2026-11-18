@@ -15,6 +15,8 @@
     cap.textContent = `${d.total} downloads in all, from Obsidian’s stats file, last read ${when}.`;
   }).catch(() => { box.hidden = true; });
 
+  window.drawHeat && drawHeat(document.getElementById("heat"), document.getElementById("heat-cap"), "../data/activity.json");
+
   const v = document.querySelector(".shot video");
   if (v && matchMedia("(max-width: 600px)").matches) {
     v.poster = "../assets/noesis/poster-narrow.jpg"; v.src = "../assets/noesis/demo-narrow.mp4";
