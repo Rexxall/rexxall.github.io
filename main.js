@@ -5,7 +5,7 @@
   const posters = [...wall.querySelectorAll(".pst")];
 
   const INFO = {
-    "video-summary": { page: "video-summary/", media: { video: "video-summary/demo.mp4", poster: "video-summary/demo-poster.jpg", w: 1920, h: 1200 }, install: true,
+    "video-summary": { page: "video-summary/", media: { video: "video-summary/demo.mp4", poster: "video-summary/demo-poster.jpg", w: 1920, h: 1200, inline: true }, install: true,
       notes: ["Paste a YouTube or Bilibili link", "Key points with timestamps, and the frames worth keeping", "A note you can read, not a transcript"],
       extra: '<a href="https://chromewebstore.google.com/detail/video-summary-capture/jomhbnehfmgblkllekjeioancoocppjn">Chrome companion</a>' },
     "ai-assistant-suite": { media: { src: "assets/cabinet/aas.png?v=3", w: 2225, h: 1515, max: 481 }, install: true,
@@ -145,21 +145,23 @@
     $("sheet-notes").innerHTML = info.notes.map(n => `<li>${n}</li>`).join("");
     const m = info.media, alt = el.querySelector(".nm").textContent + " in use";
     const narrow = m.narrow && matchMedia("(max-width: 600px)").matches ? m.narrow : null, vm = narrow || m;
-    const wide = !!(m.video || m.wide);
+    const inline = !!(m.video && m.inline), wide = !inline && !!(m.video || m.wide);
     sheet.classList.toggle("has-video", wide);
-    $("sheet-shot").hidden = wide;
+    $("sheet-shot").hidden = wide || inline;
+    $("sheet-clip").hidden = !inline;
+    $("sheet-clip").innerHTML = inline ? `<video src="${m.video}" poster="${m.poster}" width="${m.w}" height="${m.h}" autoplay muted loop playsinline preload="none" aria-label="${alt}"></video>` : "";
     $("sheet-wide").hidden = !wide;
     $("sheet-vid").innerHTML = m.wide && !m.video
       ? `<picture>${m.dark ? `<source media="(prefers-color-scheme: dark)" srcset="${m.dark}">` : ""}<img src="${m.src}" alt="${alt}" width="${m.w}" height="${m.h}" decoding="async" style="max-width:min(${m.max || m.w}px,100%)"></picture>`
-      : m.video
+      : wide && m.video
       ? `<video src="${vm.video}" poster="${vm.poster}" width="${vm.w}" height="${vm.h}" autoplay muted loop playsinline preload="none" aria-label="${alt}"${m.max && !narrow ? ` style="max-width:min(${m.max}px,100%)"` : ""}></video>` : "";
-    $("sheet-shot").innerHTML = wide ? ""
+    $("sheet-shot").innerHTML = wide || inline ? ""
       : `${m.dark ? `<source media="(prefers-color-scheme: dark)" srcset="${m.dark}">` : ""}<img src="${m.src}" alt="${alt}" width="${m.w}" height="${m.h}" decoding="async" style="${m.max ? `max-width:${m.max}px` : ""}">`;
     // with a video: notes and version strip go under it; without: back beside the poster
     const text = sheet.querySelector(".sheet-text");
     if (wide) $("sheet-wide").append($("sheet-notes"), $("sheet-strip"));
     else text.insertBefore($("sheet-notes"), $("sheet-shot")), text.insertBefore($("sheet-strip"), $("sheet-links"));
-    const v = $("sheet-vid").querySelector("video");
+    const v = $("sheet-vid").querySelector("video") || $("sheet-clip").querySelector("video");
     if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.controls = true; }
 
     const s = REPO[id], strip = $("sheet-strip");
