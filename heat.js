@@ -1,4 +1,4 @@
-/* One year of GitHub activity as a grid: a column per week, darker = busier. Used on / and /research/. */
+/* One year of GitHub activity as a grid: a column per week, darker = busier. Used on the home page. */
 window.drawHeat = (heat, hcap, url) => {
   if (!heat) return;
   fetch(url).then(r => r.json()).then(a => {

@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Oswald:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&text=%E6%96%87%E8%84%88&display=swap">
-<link rel="stylesheet" href="style.css?v=79">
+<link rel="stylesheet" href="style.css?v=80">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
   <a class="me" href="#top" aria-label="Rex, back to top">Rex</a>
   <nav aria-label="Sections">
     <a href="#work">Work</a>
-    <a href="research/">Research</a>
+    <a href="#about">About</a>
     <a href="#how" class="opt">How I build</a>
     <a href="#log">Log</a>
     <a href="#uses" class="opt">Uses</a>
@@ -93,7 +93,7 @@
         <dl>
           <div><dt>On this wall</dt><dd>8 Obsidian plugins, 2 browser apps</dd></div>
           <div><dt>Downloads</dt><dd><b class="num"><!--dl:total-->739<!--/dl--></b> in all</dd></div>
-          <div><dt>Research</dt><dd><a href="research/">When should a machine step in?</a></dd></div>
+          <div><dt>About</dt><dd><a href="#about">When is a person ready?</a></dd></div>
           <div><dt>Poster size</dt><dd>The more downloads, the bigger the poster. The smallest is a third of the largest.</dd></div>
         </dl>
         <span class="sig" aria-hidden="true">R.</span>
@@ -103,21 +103,30 @@
     <p class="src">Downloads from <a href="https://github.com/obsidianmd/obsidian-releases/blob/master/community-plugin-stats.json">Obsidian’s stats file</a>, updated every morning. Last read <time datetime="2026-11-18T01:02:08Z" id="fetched"><!--fetched-->18 Nov 2026, 01:02 UTC<!--/fetched--></time>. <a href="data/stats.json">Raw numbers</a>.</p>
   </section>
 
-  <section class="brief" aria-labelledby="h-brief">
-    <div class="brief-q">
-      <h2 id="h-brief">When is a person ready, and when should a machine step in?</h2>
-      <p><a class="btn" href="research/">Research</a></p>
+  <section class="about" id="about" aria-labelledby="h-about">
+    <div class="about-q">
+      <h2 id="h-about">When is a person ready, and when should a machine step in?</h2>
+      <p>Trained in medicine, with a year on hospital wards. Translating since 2021. Now living in Japan.</p>
     </div>
-    <dl class="brief-n">
-      <div><dt><!--dl:total-->739<!--/dl--></dt><dd>downloads across eight plugins</dd></div>
-      <div><dt>103</dt><dd>releases since July</dd></div>
-      <div><dt>1 year</dt><dd>on hospital wards</dd></div>
-    </dl>
+    <div class="about-lists">
+      <div>
+        <h3>Curious about</h3>
+        <ul><li>Sleep</li><li>Learning</li><li>Timing of help</li><li>Clinical AI</li><li>Machines in real rooms</li><li>Medical images</li></ul>
+      </div>
+      <div>
+        <h3>Outside work</h3>
+        <ul><li>Films, at the highest bitrate I can find</li><li>A home media server I run myself</li><li>Wallpapers, and the design rules I pull from them</li><li>Languages, one tool at a time</li></ul>
+      </div>
+    </div>
   </section>
 
   <section class="sec" id="how" aria-labelledby="h-how">
     <h2 id="h-how">How I build</h2>
     <div class="body">
+      <dl class="rule wide nums">
+        <div><dt>103</dt><dd>releases across eight plugins since July 2026</dd></div>
+        <div><dt>1.49 million</dt><dd>characters translated since 2021</dd></div>
+      </dl>
       <div class="rule">
         <h3>Local, fast, at hand.</h3>
         <p>If a feature slows the vault, the feature goes.</p>
@@ -158,7 +167,7 @@
         <figcaption class="cap" id="heat-cap">Every square is a day of work on GitHub.</figcaption>
       </figure>
     <ol class="log">
-      <li><time datetime="2026-11-18">18 Nov 2026</time><p>A <a href="research/">research page</a>: the question behind the tools, and what I want to study next.</p></li>
+      <li><time datetime="2026-11-18">18 Nov 2026</time><p>An <a href="#about">about section</a>: the question behind the tools, and what I’m curious about.</p></li>
       <li><time datetime="2026-11-17">17 Nov 2026</time><p>This site, rebuilt as a wall that redraws itself every morning.</p></li>
       <li><time datetime="2026-11-16">16 Nov 2026</time><p>One AI layer inside four plugins: one key, and errors that say what to try next.</p></li>
       <li><time datetime="2026-11-12">12 Nov 2026</time><p>My vault turned slow once, and I hated it. Since then, nothing I build gets to slow Obsidian down.</p></li>
