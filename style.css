@@ -36,7 +36,7 @@ a,button{touch-action:manipulation}
   padding:calc(14px + env(safe-area-inset-top,0px)) var(--gutr) 14px var(--gut);background:var(--wall)}
 .me{font:italic 400 28px/1 var(--display);text-decoration:none;letter-spacing:-.01em}
 .bar nav{margin-left:auto;display:flex;gap:clamp(14px,2.4vw,28px);font:500 13px/1 var(--text);letter-spacing:.14em;text-transform:uppercase}
-.bar nav a{text-decoration:none;color:var(--dim);padding:8px 0}
+.bar nav a{text-decoration:none;color:var(--dim);padding:8px 0;white-space:nowrap}
 @media (hover:hover) and (pointer:fine){.bar nav a:hover{color:var(--ink)}}
 
 /* ---------- the room ---------- */
@@ -112,6 +112,17 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .label .num{font:600 26px/1.1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
 .label .sig{position:absolute;right:18px;bottom:16px}
 .src{margin:18px 0 0;max-width:64ch;font-size:13.5px;color:var(--dim)}
+
+/* ---------- the question, under the wall ---------- */
+.brief{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px clamp(32px,5vw,80px);align-items:end;
+  max-width:1480px;margin:clamp(56px,8vw,104px) auto 0;padding:32px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
+.brief h2{margin:0 0 14px;max-width:20ch;font:500 clamp(30px,3.4vw,50px)/1.08 var(--display);letter-spacing:-.015em;text-wrap:balance}
+.brief-q p{margin:0 0 18px;max-width:44ch}
+.brief-n{margin:0;display:grid;gap:0}
+.brief-n div{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);gap:18px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
+.brief-n div:first-child{border-top:0}
+.brief-n dt{font:600 clamp(26px,2.4vw,34px)/1 var(--text);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.brief-n dd{margin:0;color:var(--dim)}
 
 /* ---------- text sections ---------- */
 .sec{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,3fr);gap:20px clamp(24px,4vw,64px);
@@ -205,6 +216,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 
 /* ---------- narrow ---------- */
 @media (max-width:860px){
+  .brief{grid-template-columns:minmax(0,1fr)}
   .hang{grid-template-columns:minmax(0,1fr)}
   .wall{height:auto;aspect-ratio:4/3.4}
   .label{padding:16px 18px 18px}
@@ -222,7 +234,8 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
   body{font-size:16px}
   .bar{gap:12px}
   .bar nav{gap:14px;font-size:12px;letter-spacing:.1em}
-  .bar nav a[rel="me"]{display:none}
+  .bar nav a[rel="me"],.bar nav a.opt{display:none}
+  .brief-n div{grid-template-columns:minmax(0,1fr);gap:4px}
   .wall{aspect-ratio:auto;height:auto;min-height:600px}
   .acts th{width:auto;display:block;padding-bottom:0}
   #how .body{grid-template-columns:minmax(0,1fr)}

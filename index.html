@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Oswald:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&text=%E6%96%87%E8%84%88&display=swap">
-<link rel="stylesheet" href="style.css?v=73">
+<link rel="stylesheet" href="style.css?v=76">
 </head>
 <body>
 
@@ -22,9 +22,9 @@
   <nav aria-label="Sections">
     <a href="#work">Work</a>
     <a href="research/">Research</a>
-    <a href="#how">How I build</a>
+    <a href="#how" class="opt">How I build</a>
     <a href="#log">Log</a>
-    <a href="#uses">Uses</a>
+    <a href="#uses" class="opt">Uses</a>
     <a href="https://github.com/Rexxall" rel="me">GitHub</a>
   </nav>
 </header>
@@ -84,6 +84,7 @@
         <dl>
           <div><dt>On this wall</dt><dd>8 Obsidian plugins, 2 browser apps</dd></div>
           <div><dt>Downloads</dt><dd><b class="num"><!--dl:total-->714<!--/dl--></b> in all</dd></div>
+          <div><dt>Research</dt><dd><a href="research/">When should a machine step in?</a></dd></div>
           <div><dt>Poster size</dt><dd>The more downloads, the bigger the poster. The smallest is a third of the largest.</dd></div>
         </dl>
         <span class="sig" aria-hidden="true">R.</span>
@@ -91,6 +92,19 @@
     </div>
 
     <p class="src">Downloads from <a href="https://github.com/obsidianmd/obsidian-releases/blob/master/community-plugin-stats.json">Obsidian’s stats file</a>, updated every morning. Last read <time datetime="2026-11-17T14:45:35Z" id="fetched"><!--fetched-->17 Nov 2026, 14:45 UTC<!--/fetched--></time>. <a href="data/stats.json">Raw numbers</a>.</p>
+  </section>
+
+  <section class="brief" aria-labelledby="h-brief">
+    <div class="brief-q">
+      <h2 id="h-brief">When does a person need help, and when should a machine step in?</h2>
+      <p>The question behind every tool on this wall, and what I want to study next.</p>
+      <p><a class="btn" href="research/">Research</a></p>
+    </div>
+    <dl class="brief-n">
+      <div><dt id="brief-days">315 / 368</dt><dd>days of work on GitHub this year</dd></div>
+      <div><dt>103</dt><dd>releases across eight plugins since July 2026</dd></div>
+      <div><dt>1 year</dt><dd>on hospital wards before any of this</dd></div>
+    </dl>
   </section>
 
   <section class="sec" id="how" aria-labelledby="h-how">
@@ -183,6 +197,6 @@
 </dialog>
 
 <script src="heat.js?v=2"></script>
-<script src="main.js?v=68"></script>
+<script src="main.js?v=69"></script>
 </body>
 </html>
