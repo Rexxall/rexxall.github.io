@@ -212,7 +212,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 
 /* Bodoni at a small optical size: thicker hairlines, readable at display sizes.
    After the rules above because the font shorthand resets font-variation-settings. */
-:is(h1,h2,.me,.label .who,.sheet-text h2){font-optical-sizing:none!important;font-variation-settings:"opsz" 8!important}
+:is(h1,h2,.me,.label .who,.sheet-text h2,.int-list b){font-optical-sizing:none!important;font-variation-settings:"opsz" 8!important}
 
 /* ---------- narrow ---------- */
 @media (max-width:860px){
