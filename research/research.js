@@ -12,7 +12,8 @@
     box.innerHTML = rows.map(p => `<div><span>${NAMES[p.id]}</span><i style="--v:${(p.downloads / max).toFixed(3)}"></i><b>${p.downloads}</b></div>`).join("");
     box.setAttribute("aria-label", rows.map(p => `${NAMES[p.id]} ${p.downloads}`).join(", "));
     const when = new Date(d.fetchedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-    cap.textContent = `${d.total} downloads in all, from Obsidian’s stats file, last read ${when}.`;
+    document.getElementById("dl-big").textContent = `${d.total} downloads`;
+    cap.textContent = `From Obsidian’s stats file, read ${when}.`;
   }).catch(() => { box.hidden = true; });
 
   window.drawHeat && drawHeat(document.getElementById("heat"), document.getElementById("heat-cap"), "../data/activity.json");

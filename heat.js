@@ -27,7 +27,9 @@ window.drawHeat = (heat, hcap, url) => {
     const fmt = d => new Date(d + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
     heat.setAttribute("aria-label", `GitHub activity on ${a.active} of ${days.length} days, ${fmt(a.from)} to ${fmt(a.to)}`);
     const shown = cells.filter(Boolean), act = shown.filter(c => c[1]).length, tot = shown.reduce((t, c) => t + c[1], 0);
-    hcap.textContent = `Work on GitHub on ${act} of the last ${shown.length} days, public and private repositories together: ${tot.toLocaleString("en")} contributions. The stronger the square, the busier the day.`;
+    const num = heat.closest("[data-heat]")?.querySelector("[data-heat-num]");
+    if (num) num.textContent = `${act} / ${shown.length} days`;
+    hcap.textContent = `${act} of the last ${shown.length} days, public and private repositories: ${tot.toLocaleString("en")} contributions. Stronger squares, busier days.`;
   }).catch(() => { (heat.closest("[data-heat]") || heat).hidden = true; });
 
 };

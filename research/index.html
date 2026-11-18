@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,500;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=69">
-<link rel="stylesheet" href="research.css?v=4">
+<link rel="stylesheet" href="research.css?v=5">
 </head>
 <body class="rs">
 
@@ -30,7 +30,7 @@
 
   <section class="q" aria-labelledby="h-q">
     <h1 id="h-q">When does a person need help, and when should a machine step in?</h1>
-    <p class="q-sub">I trained in medicine. I build tools around this question, and I want to study it where it starts: in the brain.</p>
+    <p class="q-sub">Trained in medicine. Building tools around this question. Next: studying it in the brain.</p>
   </section>
 
   <div class="fork" aria-hidden="true"><i class="stem"></i><i class="bar-h"></i><i class="l"></i><i class="r"></i></div>
@@ -39,42 +39,44 @@
 
     <section class="br" aria-labelledby="h-brain">
       <h2 id="h-brain">The brain changing state</h2>
-      <p class="lede">What I want to study. Going from awake to asleep takes the brain a few minutes. I want to see that switch as it happens, and learn when the brain is ready for something and when it is not.</p>
+      <p class="lede">From awake to asleep, the brain switches in minutes. I want to watch it happen.</p>
 
-      <article class="card">
-        <h3>A year on the wards</h3>
-        <p>Internal medicine, surgery, neurology, psychiatry, emergency, night shifts. On rounds I learned to put symptoms and medicines on one timeline before guessing a cause. In neurology I watched EEG and imaging steer a diagnosis; in psychiatry, sleep trouble came with many conditions.</p>
+      <article class="card stat">
+        <p class="big">1 year</p>
+        <h3>on hospital wards</h3>
+        <p>Neurology, psychiatry, emergency, night shifts.</p>
       </article>
 
-      <article class="card">
-        <h3>Reading a claim, not repeating it</h3>
-        <p>For a treatment question I framed the PICO, searched PubMed, judged allocation, blinding and follow-up, and worked the result down to a number a doctor can use.</p>
-        <p class="fig"><span class="big">NNT ≈ 7</span><span class="cap">about 15 points of absolute difference</span></p>
+      <article class="card stat">
+        <p class="big">NNT ≈ 7</p>
+        <h3>one treatment claim, appraised by hand</h3>
+        <p>PICO, search, bias, down to a number a doctor can use.</p>
       </article>
 
-      <article class="card">
-        <h3>Learning the signal</h3>
-        <p>Since October 2026 I have been learning to read sleep EEG on public recordings, starting from the stages and the spectrum.</p>
+      <article class="card stat">
+        <p class="big">Sleep EEG</p>
+        <h3>what I am learning to read now</h3>
+        <p>On public recordings, since October 2026.</p>
       </article>
     </section>
 
     <section class="br" aria-labelledby="h-tools">
       <h2 id="h-tools">Tools that choose their moment</h2>
-      <p class="lede">What I already build. Eight of my plugins are in Obsidian’s community directory. Each one ended up answering the same question in a small way.</p>
+      <p class="lede">Every plugin I ship answers the question in a small way.</p>
 
       <article class="card rules">
-        <h3>Rules the tools follow</h3>
+        <h3>Four rules they follow</h3>
         <ol>
-          <li><span><b>Let the reader answer first.</b> Noesis asks you to explain a passage before it shows anything.</span></li>
-          <li><span><b>Short of facts? Count on the safe side.</b> Japan Work Secretary counts a shift in full until you confirm the break, the way a ward plans for the worse case.</span></li>
-          <li><span><b>Not sure? Don’t guess.</b> Git Note History links a renamed note to its past only when the text matches closely.</span></li>
-          <li><span><b>You changed it? Step back.</b> Before writing, a plugin checks the note again and stops if it moved.</span></li>
+          <li><b>Let the reader answer first.</b><span>Noesis</span></li>
+          <li><b>Short of facts? Take the safe side.</b><span>Japan Work Secretary</span></li>
+          <li><b>Not sure? Don’t guess.</b><span>Git Note History</span></li>
+          <li><b>You changed it? Step back.</b><span>every plugin that writes</span></li>
         </ol>
       </article>
 
-
-      <article class="card">
-        <h3>Downloads, read every morning</h3>
+      <article class="card stat">
+        <p class="big" id="dl-big">8 plugins</p>
+        <h3>eight plugins, Obsidian’s community directory</h3>
         <div class="dl" id="dl" role="img" aria-label="Downloads per plugin"></div>
         <p class="cap" id="dl-cap">From Obsidian’s stats file.</p>
       </article>
@@ -84,32 +86,36 @@
 
   <figure class="shot">
     <video src="../assets/noesis/demo-wide.mp4" poster="../assets/noesis/poster-wide.jpg" width="1760" height="1100" muted loop playsinline autoplay preload="none" aria-label="Noesis: concepts underlined, a plain-language rewrite appears in the margin"></video>
-    <figcaption>Noesis, my paper reader. The help sits in the margin and waits for you.</figcaption>
+    <figcaption>Noesis, my paper reader: the help waits in the margin.</figcaption>
   </figure>
 
   <section class="how" aria-labelledby="h-how">
     <h2 id="h-how">How I work</h2>
     <div class="how-grid">
 
-      <article class="card">
-        <h3>Check before building</h3>
-        <p>Before I commit to a question I search for who answered it already, and ask several models to argue against me. When a search showed one of my questions had been answered in 2021, I dropped it and started over.</p>
+      <article class="card stat">
+        <p class="big">103 releases</p>
+        <h3>across eight plugins since July 2026</h3>
+        <p>AI writes most of the code. I decide, test and ship, and I am learning to program.</p>
       </article>
 
-      <article class="card">
-        <h3>Ship, then keep shipping</h3>
-        <p>I decide what to build, use every version, find what is off and choose the fix. AI writes most of the code, and I am learning to program along the way. The eight plugins have had 103 releases since July 2026.</p>
+      <article class="card stat">
+        <p class="big">Search first</p>
+        <h3>then build</h3>
+        <p>When I found my question already answered in 2021, I dropped it and started over.</p>
       </article>
 
-      <article class="card full" data-heat>
-        <h3>A year at the desk, day by day</h3>
+      <article class="card full stat" data-heat>
+        <p class="big" data-heat-num>315 / 368 days</p>
+        <h3>of work on GitHub this year</h3>
         <div class="heat" id="heat" role="img" aria-label="GitHub activity per day over the last year"></div>
-        <p class="cap" id="heat-cap">Every square is a day of work on GitHub.</p>
+        <p class="cap" id="heat-cap">Public and private repositories together.</p>
       </article>
 
-      <article class="card wide">
-        <h3>Deliver for years</h3>
-        <p>Since 2021 I have translated part-time, mostly Chinese into English, plus software localisation. I keep my own term base and run QA before every delivery.</p>
+      <article class="card wide stat">
+        <p class="big">1.49 million</p>
+        <h3>characters translated since 2021</h3>
+        <p>Mostly Chinese into English. One comic series: 200 chapters.</p>
         <div class="tr" role="img" aria-label="Source characters translated per year: 2021 318 thousand, 2022 657 thousand, 2023 340 thousand, 2024 112 thousand, 2025 65 thousand to June">
           <div style="--v:.485"><b>318k</b><span>2021</span></div>
           <div style="--v:1"><b>657k</b><span>2022</span></div>
@@ -117,7 +123,7 @@
           <div style="--v:.17"><b>112k</b><span>2024</span></div>
           <div style="--v:.099"><b>65k</b><span>2025*</span></div>
         </div>
-        <p class="cap">1.49 million source characters over 44 months. One comic series alone: 200 chapters, 9,968 lines. *To June.</p>
+        <p class="cap">*2025 to June.</p>
       </article>
 
     </div>
@@ -139,7 +145,7 @@
 
 <footer class="foot"><span class="sig">R.</span></footer>
 
-<script src="../heat.js?v=2" defer></script>
-<script src="research.js?v=3" defer></script>
+<script src="../heat.js?v=3" defer></script>
+<script src="research.js?v=4" defer></script>
 </body>
 </html>

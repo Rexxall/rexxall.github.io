@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,400;1,6..96,600&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Oswald:wght@500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&text=%E6%96%87%E8%84%88&display=swap">
-<link rel="stylesheet" href="style.css?v=69">
+<link rel="stylesheet" href="style.css?v=71">
 </head>
 <body>
 
@@ -98,33 +98,32 @@
     <div class="body">
       <div class="rule">
         <h3>Local, fast, at hand.</h3>
-        <p>Obsidian is good because it is local and quick, and my plugins keep it that way. If a feature slows the vault, I drop the feature.</p>
+        <p>If a feature slows the vault, the feature goes.</p>
       </div>
       <div class="rule">
-        <h3>The tool proposes, you decide, undo always.</h3>
-        <p>An AI suggestion goes into your note only when you tick it, and you can undo anything a plugin writes.</p>
+        <h3>The tool proposes, you decide.</h3>
+        <p>AI writes into your note only when you tick it, and every write can be undone.</p>
       </div>
       <div class="rule wide">
-        <h3>When to act, and when to hand back.</h3>
-        <p>Every plugin ended up asking me the same question: when should a tool act on its own, and when should it wait for you?</p>
+        <h3>When to act, and when to wait.</h3>
         <table class="acts">
           <tbody>
-            <tr><th scope="row">Not sure? Don’t guess.</th><td>Git Note History links a renamed note to its past only when the text matches closely.</td></tr>
-            <tr><th scope="row">Short of facts? Count on the safe side.</th><td>Japan Work Secretary counts a shift in full until you confirm the break.</td></tr>
-            <tr><th scope="row">Retrying won’t help? Stop offering it.</th><td>Video Summary sorts its failures and hides Retry when the cause is on the other side.</td></tr>
-            <tr><th scope="row">You changed the note? Step back.</th><td>Before writing, the plugin compares the note again and stops if it moved.</td></tr>
-            <tr><th scope="row">Let the reader answer first.</th><td>Noesis asks you to explain a passage, then hints, and shows its answer only when you open it.</td></tr>
-            <tr><th scope="row">Don’t interrupt.</th><td>AI Assistant Suite moved from pop-ups to a side panel you open when you want it.</td></tr>
+            <tr><th scope="row">Not sure? Don’t guess.</th><td>Git Note History</td></tr>
+            <tr><th scope="row">Short of facts? Take the safe side.</th><td>Japan Work Secretary</td></tr>
+            <tr><th scope="row">Retrying won’t help? Stop offering it.</th><td>Video Summary</td></tr>
+            <tr><th scope="row">You changed the note? Step back.</th><td>every plugin that writes</td></tr>
+            <tr><th scope="row">Let the reader answer first.</th><td>Noesis</td></tr>
+            <tr><th scope="row">Don’t interrupt.</th><td>AI Assistant Suite</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="rule wide">
-        <h3>How I work with AI.</h3>
-        <p>AI writes most of the code, but not alone. I decide what is worth building, use every version, find what feels wrong and choose the fix. Along the way I have been learning to program, on purpose, and each plugin teaches me a bit more.</p>
+      <div class="rule">
+        <h3>AI writes the code. I steer.</h3>
+        <p>I decide, test and ship, and I am learning to program as I go.</p>
       </div>
-      <div class="rule wide">
-        <h3>Where this is going.</h3>
-        <p>Tools anyone can install in one click, then reshape with an AI agent until they fit the way that person works. That is what I wanted when nothing fit me.</p>
+      <div class="rule">
+        <h3>Next: one click, then yours.</h3>
+        <p>Tools anyone can install, then reshape with an AI agent until they fit.</p>
       </div>
     </div>
   </section>
@@ -138,8 +137,8 @@
       </figure>
     <ol class="log">
       <li><time datetime="2026-11-18">18 Nov 2026</time><p>A <a href="research/">research page</a>: the question behind the tools, and what I want to study next.</p></li>
-      <li><time datetime="2026-11-17">17 Nov 2026</time><p>I rebuilt this site as a wall. The counts update every morning.</p></li>
-      <li><time datetime="2026-11-16">16 Nov 2026</time><p>One shared AI layer now runs inside four plugins: you enter a key once, and every error says what to try next.</p></li>
+      <li><time datetime="2026-11-17">17 Nov 2026</time><p>This site, rebuilt as a wall that redraws itself every morning.</p></li>
+      <li><time datetime="2026-11-16">16 Nov 2026</time><p>One AI layer inside four plugins: one key, and errors that say what to try next.</p></li>
       <li><time datetime="2026-11-12">12 Nov 2026</time><p>My vault turned slow once, and I hated it. Since then, nothing I build gets to slow Obsidian down.</p></li>
       <li><time datetime="2026-11-05">5 Nov 2026</time><p>TaskNotes Countdown, a deadline board for another author’s plugin, gets its first release.</p></li>
       <li><time datetime="2026-07-22">22 Jul 2026</time><p>Git Note History, my first plugin, gets its first release.</p></li>
@@ -150,12 +149,10 @@
   <section class="sec" id="uses" aria-labelledby="h-uses">
     <h2 id="h-uses">Uses</h2>
     <dl class="body uses">
-      <div><dt>Notes</dt><dd>Obsidian, one vault called Ithaca, with my own theme.</dd></div>
-      <div><dt>Plugins</dt><dd>TypeScript and esbuild on the Obsidian API. Notes stay Markdown; history stays in Git.</dd></div>
-      <div><dt>Writing code</dt><dd>Claude Code and Codex. Gemini reads long videos and PDFs for me.</dd></div>
-      <div><dt>AI in the plugins</dt><dd>You bring your own key. DeepSeek, Qwen, SiliconFlow, Kimi and Zhipu are built in.</dd></div>
-      <div><dt>This site</dt><dd>Plain HTML, CSS and JavaScript, no build step, on GitHub Pages. A GitHub Action updates the counts each morning.</dd></div>
-      <div><dt>Machine</dt><dd>MacBook Pro, M1 Pro.</dd></div>
+      <div><dt>Notes</dt><dd>Obsidian, one vault, my own theme</dd></div>
+      <div><dt>Code</dt><dd>TypeScript, Claude Code, Codex</dd></div>
+      <div><dt>AI in plugins</dt><dd>Your own key; five Chinese providers built in</dd></div>
+      <div><dt>This site</dt><dd>Plain HTML, no build step, updated each morning</dd></div>
     </dl>
   </section>
 
