@@ -114,8 +114,8 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .src{margin:18px 0 0;max-width:64ch;font-size:13.5px;color:var(--dim)}
 
 /* ---------- the question, under the wall ---------- */
-.brief{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px clamp(32px,5vw,80px);align-items:end;
-  max-width:1480px;margin:clamp(56px,8vw,104px) auto 0;padding:32px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
+.brief{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px clamp(32px,5vw,80px);align-items:center;
+  max-width:1480px;margin:clamp(48px,6vw,80px) auto 0;padding:32px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
 .brief h2{margin:0 0 14px;max-width:20ch;font:500 clamp(30px,3.4vw,50px)/1.08 var(--display);letter-spacing:-.015em;text-wrap:balance}
 .brief-q p{margin:0 0 18px;max-width:44ch}
 .brief-n{margin:0;display:grid;gap:0}
@@ -126,7 +126,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 
 /* ---------- text sections ---------- */
 .sec{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,3fr);gap:20px clamp(24px,4vw,64px);
-  max-width:1480px;margin:clamp(72px,10vw,128px) auto 0;padding:28px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
+  max-width:1480px;margin:clamp(56px,7vw,92px) auto 0;padding:28px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
 .sec h2{margin:0;font:italic 400 clamp(26px,2.6vw,34px)/1.1 var(--display)}
 .body{margin:0;padding:0;max-width:820px}
 .rule{margin-bottom:34px}
