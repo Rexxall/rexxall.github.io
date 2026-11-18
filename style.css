@@ -111,6 +111,8 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .label dd{margin:2px 0 0;color:var(--dim)}
 .label .num{font:600 26px/1.1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
 .label .sig{position:absolute;right:18px;bottom:16px}
+.nw{white-space:nowrap}
+.label dd{text-wrap-style:pretty}
 .src{margin:18px 0 0;max-width:64ch;font-size:13.5px;color:var(--dim)}
 
 /* ---------- about: the question, curiosities, outside work ---------- */
@@ -247,7 +249,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
   .bar{gap:12px}
   .bar nav{gap:14px;font-size:12px;letter-spacing:.1em}
   .bar nav a[rel="me"],.bar nav a.opt{display:none}
-  .about-lists,.nums{grid-template-columns:minmax(0,1fr)}
+  .about-lists,.nums,.label dl{grid-template-columns:minmax(0,1fr)}
   .wall{aspect-ratio:auto;height:auto;min-height:600px}
   .acts th{width:auto;display:block;padding-bottom:0}
   #how .body{grid-template-columns:minmax(0,1fr)}

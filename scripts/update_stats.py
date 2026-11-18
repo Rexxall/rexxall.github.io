@@ -78,6 +78,18 @@ def main():
         except Exception:
             if old.get("latest"):
                 entry["latest"] = old["latest"]
+        try:
+            n, page = 0, 1
+            while True:
+                batch = json.loads(get(f"https://api.github.com/repos/Rexxall/{repo}/releases?per_page=100&page={page}", 30))
+                n += sum(1 for r in batch if not r.get("draft"))
+                if len(batch) < 100:
+                    break
+                page += 1
+            entry["releases"] = n
+        except Exception:
+            if old.get("releases") is not None:
+                entry["releases"] = old["releases"]
         plugins.append(entry)
 
     total = sum(p["downloads"] or 0 for p in plugins)
@@ -114,6 +126,9 @@ def main():
         digits = "".join(f"<i>{c}</i>" for c in str(tnc["downloads"]))
         html = re.sub(r'(<span class="flap" aria-hidden="true">).*?(</span>)', rf"\g<1>{digits}\g<2>", html)
     html = re.sub(r"(<!--dl:total-->)[^<]*(<!--/dl-->)", rf"\g<1>{total:,}\g<2>", html)
+    if all(p.get("releases") is not None for p in plugins):
+        rels = sum(p["releases"] for p in plugins)
+        html = re.sub(r"(<!--rel:total-->)[^<]*(<!--/rel-->)", rf"\g<1>{rels}\g<2>", html)
     stamp = now.strftime("%-d %b %Y, %H:%M UTC")
     html = re.sub(r"(<!--fetched-->)[^<]*(<!--/fetched-->)", rf"\g<1>{stamp}\g<2>", html)
     html = re.sub(r'(<time datetime=")[^"]*(" id="fetched")', rf"\g<1>{data['fetchedAt']}\g<2>", html)
