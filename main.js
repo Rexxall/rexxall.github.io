@@ -24,7 +24,7 @@
       notes: ["Reads your TaskNotes deadlines", "A countdown for each", "Whether you will make it"] },
     noesis: { media: { video: "assets/noesis/demo-wide.mp4", poster: "assets/noesis/poster-wide.jpg", w: 1760, h: 1100, max: 880, narrow: { video: "assets/noesis/demo-narrow.mp4", poster: "assets/noesis/poster-narrow.jpg", w: 960, h: 1200 } }, app: "https://rexxall.github.io/noesis-paper-companion/", repo: "noesis-paper-companion",
       notes: ["Paste an arXiv ID or drop a PDF, and you are reading page 1", "With your AI key, the concepts the paper assumes you know are underlined; press W for a plain-language rewrite in the margin", "Finish by saying what the paper did in your own words; the AI never writes it for you"] },
-    bunmyaku: { media: { src: "assets/bunmyaku-light.jpg", dark: "assets/bunmyaku-dark.jpg", w: 1600, h: 1000 }, app: "https://rexxall.github.io/bunmyaku-nihongo/", repo: "bunmyaku-nihongo",
+    bunmyaku: { media: { src: "assets/bunmyaku-light.jpg", dark: "assets/bunmyaku-dark.jpg", w: 1600, h: 1000, wide: true, max: 880 }, app: "https://rexxall.github.io/bunmyaku-nihongo/", repo: "bunmyaku-nihongo",
       notes: ["Any Japanese material, turned into a lesson pack", "Readings, vocabulary, grammar and listening in one desk", "Your material and keys are stored on your machine"] },
   };
   const REPO = {};
@@ -145,16 +145,19 @@
     $("sheet-notes").innerHTML = info.notes.map(n => `<li>${n}</li>`).join("");
     const m = info.media, alt = el.querySelector(".nm").textContent + " in use";
     const narrow = m.narrow && matchMedia("(max-width: 600px)").matches ? m.narrow : null, vm = narrow || m;
-    sheet.classList.toggle("has-video", !!m.video);
-    $("sheet-shot").hidden = !!m.video;
-    $("sheet-wide").hidden = !m.video;
-    $("sheet-vid").innerHTML = m.video
+    const wide = !!(m.video || m.wide);
+    sheet.classList.toggle("has-video", wide);
+    $("sheet-shot").hidden = wide;
+    $("sheet-wide").hidden = !wide;
+    $("sheet-vid").innerHTML = m.wide && !m.video
+      ? `<picture>${m.dark ? `<source media="(prefers-color-scheme: dark)" srcset="${m.dark}">` : ""}<img src="${m.src}" alt="${alt}" width="${m.w}" height="${m.h}" decoding="async" style="max-width:min(${m.max || m.w}px,100%)"></picture>`
+      : m.video
       ? `<video src="${vm.video}" poster="${vm.poster}" width="${vm.w}" height="${vm.h}" autoplay muted loop playsinline preload="none" aria-label="${alt}"${m.max && !narrow ? ` style="max-width:min(${m.max}px,100%)"` : ""}></video>` : "";
-    $("sheet-shot").innerHTML = m.video ? ""
+    $("sheet-shot").innerHTML = wide ? ""
       : `${m.dark ? `<source media="(prefers-color-scheme: dark)" srcset="${m.dark}">` : ""}<img src="${m.src}" alt="${alt}" width="${m.w}" height="${m.h}" decoding="async" style="${m.max ? `max-width:${m.max}px` : ""}">`;
     // with a video: notes and version strip go under it; without: back beside the poster
     const text = sheet.querySelector(".sheet-text");
-    if (m.video) $("sheet-wide").append($("sheet-notes"), $("sheet-strip"));
+    if (wide) $("sheet-wide").append($("sheet-notes"), $("sheet-strip"));
     else text.insertBefore($("sheet-notes"), $("sheet-shot")), text.insertBefore($("sheet-strip"), $("sheet-links"));
     const v = $("sheet-vid").querySelector("video");
     if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.controls = true; }
