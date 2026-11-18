@@ -116,7 +116,7 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 /* ---------- the question, under the wall ---------- */
 .brief{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px clamp(32px,5vw,80px);align-items:center;
   max-width:1480px;margin:clamp(48px,6vw,80px) auto 0;padding:32px var(--gutr) 0 var(--gut);border-top:1px solid var(--line)}
-.brief h2{margin:0 0 14px;max-width:20ch;font:500 clamp(30px,3.4vw,50px)/1.08 var(--display);letter-spacing:-.015em;text-wrap:balance}
+.brief h2{margin:0 0 24px;max-width:20ch;font:500 clamp(30px,3.4vw,50px)/1.08 var(--display);letter-spacing:-.015em;text-wrap:balance}
 .brief-q p{margin:0 0 18px;max-width:44ch}
 .brief-n{margin:0;display:grid;gap:0}
 .brief-n div{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);gap:18px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
