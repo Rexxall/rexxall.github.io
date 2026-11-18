@@ -25,7 +25,7 @@
     noesis: { media: { video: "assets/noesis/demo-wide.mp4", poster: "assets/noesis/poster-wide.jpg", w: 1760, h: 1100, max: 880, narrow: { video: "assets/noesis/demo-narrow.mp4", poster: "assets/noesis/poster-narrow.jpg", w: 960, h: 1200 } }, app: "https://rexxall.github.io/noesis-paper-companion/", repo: "noesis-paper-companion",
       notes: ["Paste an arXiv ID or drop a PDF, and you are reading page 1", "With your AI key, the concepts the paper assumes you know are underlined; press W for a plain-language rewrite in the margin", "Finish by saying what the paper did in your own words; the AI never writes it for you"] },
     bunmyaku: { media: { src: "assets/bunmyaku-light.jpg", dark: "assets/bunmyaku-dark.jpg", w: 1600, h: 1000 }, app: "https://rexxall.github.io/bunmyaku-nihongo/", repo: "bunmyaku-nihongo",
-      notes: ["Any Japanese material, turned into a lesson pack", "Readings, vocabulary, grammar and listening in one desk", "Content and keys stay on your machine"] },
+      notes: ["Any Japanese material, turned into a lesson pack", "Readings, vocabulary, grammar and listening in one desk", "Your material and keys are stored on your machine"] },
   };
   const REPO = {};
 
@@ -130,6 +130,7 @@
   const fmt = iso => new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   let lastFocus = null;
 
+  let closing = 0;
   function open(id, push) {
     const el = wall.querySelector(`[data-id="${id}"]`), info = INFO[id];
     if (!el || !info) return;
@@ -186,6 +187,7 @@
     const r = el.getBoundingClientRect(), vw = innerWidth, vh = innerHeight;
     const sw = Math.min(1080, vw - 32), sh = Math.min(vh - 32, 900);
     sheet.style.setProperty("--from", `${r.left + r.width / 2 - (vw - sw) / 2}px ${r.top + r.height / 2 - (vh - sh) / 2}px`);
+    closing++;                              // cancel any close still running from the last sheet
     sheet.classList.remove("out");
     if (!sheet.open) sheet.showModal();
     sheet.querySelector(".sheet-in").focus({ preventScroll: true });
@@ -195,7 +197,8 @@
   function close() {
     if (!sheet.open || sheet.classList.contains("out")) return;
     sheet.classList.add("out");
-    const done = () => { sheet.classList.remove("out"); if (sheet.open) sheet.close(); };
+    const my = ++closing;
+    const done = () => { if (my !== closing) return; sheet.classList.remove("out"); if (sheet.open) sheet.close(); };
     sheet.addEventListener("animationend", done, { once: true });
     setTimeout(done, 260);
   }
