@@ -8,7 +8,7 @@
     "video-summary": { page: "video-summary/", media: { video: "video-summary/demo.mp4", poster: "video-summary/demo-poster.jpg", w: 1920, h: 1200 }, install: true,
       notes: ["Paste a YouTube or Bilibili link", "Key points with timestamps, and the frames worth keeping", "A note you can read, not a transcript"],
       extra: '<a href="https://chromewebstore.google.com/detail/video-summary-capture/jomhbnehfmgblkllekjeioancoocppjn">Chrome companion</a>' },
-    "ai-assistant-suite": { media: { src: "assets/cabinet/aas.png?v=3", w: 2225, h: 1515, wide: true, max: 880 }, install: true,
+    "ai-assistant-suite": { media: { src: "assets/cabinet/aas.png?v=3", w: 2225, h: 1515, max: 481 }, install: true,
       notes: ["Title, tags, folder and tidier text, proposed", "Cloud models or one on your own machine", "Nothing changes until you tick it"] },
     "git-note-history": { page: "git-note-history/", media: { src: "git-note-history/f/trail.jpg", w: 1060, h: 690, max: 530 }, install: true,
       notes: ["Every save is a commit", "Search any sentence you ever wrote", "Take back one passage, not the whole file"] },
