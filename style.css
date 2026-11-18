@@ -199,6 +199,10 @@ h1 .dim{display:block;color:var(--dim);font-style:italic;font-weight:400}
 .heat i.f{visibility:hidden}
 .heat em{grid-row:1;overflow:visible;width:0;font:400 12px/1 var(--mono);font-style:normal;color:var(--dim);white-space:nowrap;padding-bottom:4px}
 
+/* Bodoni at a small optical size: thicker hairlines, readable at display sizes.
+   After the rules above because the font shorthand resets font-variation-settings. */
+:is(h1,h2,.me,.label .who,.sheet-text h2){font-optical-sizing:none!important;font-variation-settings:"opsz" 8!important}
+
 /* ---------- narrow ---------- */
 @media (max-width:860px){
   .hang{grid-template-columns:minmax(0,1fr)}
