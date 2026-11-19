@@ -130,10 +130,16 @@
   const fmt = iso => new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   let lastFocus = null;
 
+  // GoatCounter events: which poster was opened, which link inside it was followed. No per-person data.
+  const track = (path, title) => { try { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path, title, event: true }); } catch (e) {} };
+  let current = null;
+
   let closing = 0;
   function open(id, push) {
     const el = wall.querySelector(`[data-id="${id}"]`), info = INFO[id];
     if (!el || !info) return;
+    if (current !== id || !sheet.open) track("open-" + id, "Opened " + id);
+    current = id;
     lastFocus = el.querySelector("a");
     const clone = el.cloneNode(true);
     clone.removeAttribute("style");
@@ -212,6 +218,10 @@
     $("sheet-shot").replaceChildren();
     if (location.hash && INFO[location.hash.slice(1)]) history.pushState(null, "", location.pathname + location.search);
     if (lastFocus) lastFocus.focus({ preventScroll: true });
+  });
+  $("sheet-links").addEventListener("click", e => {
+    const a = e.target.closest("a");
+    if (a && current) track("link-" + current + "-" + a.textContent.trim().toLowerCase().replace(/\s+/g, "-"), a.href);
   });
   sheet.addEventListener("click", e => {
     if (e.target === sheet || e.target.closest("[data-close]")) close();
